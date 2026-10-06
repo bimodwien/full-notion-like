@@ -16,5 +16,8 @@
     "lint": "turbo run lint",
     "test": "turbo run test",
     "format": "prettier --write ."
+  },
+  "devDependencies": {
+    "prettier": "3.9.9"
   }
 }
