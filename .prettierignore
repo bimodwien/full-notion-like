@@ -9,3 +9,4 @@ package.json
 services/sync/bin
 services/sync/tmp
 DESIGN.md
+apps/api/src/generated
