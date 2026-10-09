@@ -5,6 +5,7 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as argon2 from 'argon2';
+import { isUniqueViolation } from '../prisma/prisma.errors';
 import { UsersService } from '../users/users.service';
 import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
@@ -25,9 +26,15 @@ export class AuthService {
     }
 
     const password = await argon2.hash(dto.password);
-    const user = await this.usersService.create({ ...dto, password });
-
-    return { id: user.id, email: user.email, name: user.name };
+    try {
+      const user = await this.usersService.create({ ...dto, password });
+      return { id: user.id, email: user.email, name: user.name };
+    } catch (error) {
+      if (isUniqueViolation(error)) {
+        throw new ConflictException('Email already exists');
+      }
+      throw error;
+    }
   }
 
   async login(dto: LoginDto) {
@@ -37,8 +44,22 @@ export class AuthService {
       throw new UnauthorizedException('Invalid Email or Password');
     }
 
-    const accessToken = await this.jwtService.signAsync({ sub: user.id });
-    const refreshToken = await this.refreshTokenService.issue(user.id);
+    return this.issueTokens(user.id);
+  }
+
+  async refresh(refreshToken: string) {
+    const userId = await this.refreshTokenService.consume(refreshToken);
+    if (!userId) throw new UnauthorizedException('Invalid refresh token');
+    return this.issueTokens(userId);
+  }
+
+  async logout(refreshToken: string) {
+    await this.refreshTokenService.revoke(refreshToken);
+  }
+
+  private async issueTokens(userId: string) {
+    const accessToken = await this.jwtService.signAsync({ sub: userId });
+    const refreshToken = await this.refreshTokenService.issue(userId);
     return { accessToken, refreshToken };
   }
 }

@@ -23,4 +23,23 @@ export class RefreshTokenService {
   private hash(token: string) {
     return createHash('sha256').update(token).digest('hex');
   }
+
+  async consume(token: string) {
+    const record = await this.prisma.refreshToken.findUnique({
+      where: { tokenHash: this.hash(token) },
+    });
+    if (!record) return null;
+
+    const { count } = await this.prisma.refreshToken.deleteMany({
+      where: { id: record.id },
+    });
+    if (count === 0 || record.expiresAt < new Date()) return null;
+    return record.userId;
+  }
+
+  async revoke(token: string) {
+    await this.prisma.refreshToken.deleteMany({
+      where: { tokenHash: this.hash(token) },
+    });
+  }
 }

@@ -10,6 +10,7 @@ import {
 import { AuthService } from './auth.service';
 import type { AuthenticatedRequest } from './authenticated.request';
 import { LoginDto } from './dto/login.dto';
+import { RefreshTokenDto } from './dto/refresh.token.dto';
 import { RegisterDto } from './dto/register.dto';
 import { JwtAuthGuard } from './jwt.auth.guard';
 
@@ -26,6 +27,18 @@ export class AuthController {
   @HttpCode(200)
   login(@Body() dto: LoginDto) {
     return this.authService.login(dto);
+  }
+
+  @Post('refresh')
+  @HttpCode(200)
+  refresh(@Body() dto: RefreshTokenDto) {
+    return this.authService.refresh(dto.refreshToken);
+  }
+
+  @Post('logout')
+  @HttpCode(204)
+  async logout(@Body() dto: RefreshTokenDto) {
+    await this.authService.logout(dto.refreshToken);
   }
 
   @UseGuards(JwtAuthGuard)
