@@ -8,12 +8,14 @@ import * as argon2 from 'argon2';
 import { UsersService } from '../users/users.service';
 import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
+import { RefreshTokenService } from './refresh.token.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private usersService: UsersService,
     private jwtService: JwtService,
+    private refreshTokenService: RefreshTokenService,
   ) {}
 
   async register(dto: RegisterDto) {
@@ -36,6 +38,7 @@ export class AuthService {
     }
 
     const accessToken = await this.jwtService.signAsync({ sub: user.id });
-    return { accessToken };
+    const refreshToken = await this.refreshTokenService.issue(user.id);
+    return { accessToken, refreshToken };
   }
 }
