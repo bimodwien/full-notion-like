@@ -27,7 +27,11 @@ export class AuthService {
 
     const password = await argon2.hash(dto.password);
     try {
-      const user = await this.usersService.create({ ...dto, password });
+      const user = await this.usersService.create({
+        email: dto.email,
+        name: dto.name,
+        password,
+      });
       return { id: user.id, email: user.email, name: user.name };
     } catch (error) {
       if (isUniqueViolation(error)) {
