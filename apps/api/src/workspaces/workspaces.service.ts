@@ -37,4 +37,16 @@ export class WorkspacesService {
       orderBy: { createdAt: 'desc' },
     });
   }
+
+  findMembership(workspaceId: string, userId: string) {
+    return this.prisma.workspaceMember.findUnique({
+      where: { workspaceId_userId: { workspaceId, userId } },
+    });
+  }
+
+  findOne(workspaceId: string) {
+    return this.prisma.workspace.findUnique({
+      where: { id: workspaceId },
+    });
+  }
 }

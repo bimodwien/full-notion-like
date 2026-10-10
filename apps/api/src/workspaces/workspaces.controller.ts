@@ -1,5 +1,14 @@
-import { Controller, Post, Body, Req, UseGuards, Get } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Req,
+  UseGuards,
+  Get,
+  Param,
+} from '@nestjs/common';
 import { WorkspacesService } from './workspaces.service';
+import { WorkspaceMemberGuard } from './workspaces.member.guard';
 import { WorkSpaceDto } from './dto/workspace.dto';
 import { JwtAuthGuard } from '../auth/jwt.auth.guard';
 import type { AuthenticatedRequest } from '../auth/authenticated.request';
@@ -18,5 +27,11 @@ export class WorkspacesController {
   @Get()
   findAll(@Req() req: AuthenticatedRequest) {
     return this.workspacesService.findAllForUser(req.user!.id);
+  }
+
+  @UseGuards(JwtAuthGuard, WorkspaceMemberGuard)
+  @Get(':workspaceId')
+  findOne(@Param('workspaceId') workspaceId: string) {
+    return this.workspacesService.findOne(workspaceId);
   }
 }
