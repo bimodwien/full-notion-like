@@ -1,6 +1,6 @@
 import { IsString, IsNotEmpty, MaxLength } from 'class-validator';
 
-export class WorkSpaceDto {
+export class CreateWorkspaceDto {
   @IsString()
   @IsNotEmpty()
   @MaxLength(100)
