@@ -24,6 +24,13 @@ export class WorkspacesService {
     });
   }
 
+  update(workspaceId: string, name: string) {
+    return this.prisma.workspace.update({
+      where: { id: workspaceId },
+      data: { name },
+    });
+  }
+
   findAllForUser(userId: string) {
     return this.prisma.workspace.findMany({
       where: {
@@ -46,6 +53,12 @@ export class WorkspacesService {
 
   findOne(workspaceId: string) {
     return this.prisma.workspace.findUnique({
+      where: { id: workspaceId },
+    });
+  }
+
+  remove(workspaceId: string) {
+    return this.prisma.workspace.delete({
       where: { id: workspaceId },
     });
   }
