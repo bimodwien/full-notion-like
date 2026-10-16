@@ -6,6 +6,8 @@ const nextConfig: NextConfig = {
     agentFeedback: true,
   },
   cacheComponents: true,
+  // The default bottom-left spot covers the profile button in the workspace sidebar.
+  devIndicators: { position: 'bottom-right' },
   partialPrefetching: true,
   turbopack: {
     rules: {

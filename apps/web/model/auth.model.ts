@@ -27,3 +27,9 @@ export type AuthContextValue = {
   signIn: (tokens: AuthToken) => void;
   signOut: () => void;
 };
+
+export type UserProfile = {
+  id: string;
+  email: string;
+  name: string;
+};

@@ -6,7 +6,7 @@ import { useAuth } from '@/context/auth.context';
 import { logout } from '@/helper/auth.api';
 import { getRefreshToken } from '@/util/token.storage';
 
-export function SignOutButton() {
+export function SignOutButton({ className = buttonStyles('utility') }: { className?: string }) {
   const { signOut } = useAuth();
 
   function handleClick() {
@@ -18,7 +18,7 @@ export function SignOutButton() {
   }
 
   return (
-    <button type="button" onClick={handleClick} className={buttonStyles('utility')}>
+    <button type="button" onClick={handleClick} className={className}>
       Sign out
     </button>
   );

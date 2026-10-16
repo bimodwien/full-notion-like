@@ -9,20 +9,14 @@ function HeroAction() {
 
   if (status === 'loading') return null;
 
-  if (status === 'authenticated') {
-    return (
-      <p className="max-w-136 text-base text-on-primary">
-        You&apos;re signed in. Workspaces have no screen here yet, so there is nothing to open.
-      </p>
-    );
-  }
+  const signedIn = status === 'authenticated';
 
   return (
     <Link
-      href="/register"
+      href={signedIn ? '/workspaces' : '/register'}
       className={buttonStyles('secondary', 'focus-visible:outline-on-primary')}
     >
-      Create an account
+      {signedIn ? 'Open your workspace' : 'Create an account'}
     </Link>
   );
 }
