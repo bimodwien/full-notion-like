@@ -61,6 +61,13 @@ export class AuthService {
     await this.refreshTokenService.revoke(refreshToken);
   }
 
+  // A token can outlive its user, so a missing row means signed out, not 404.
+  async me(userId: string) {
+    const profile = await this.usersService.findProfile(userId);
+    if (!profile) throw new UnauthorizedException();
+    return profile;
+  }
+
   private async issueTokens(userId: string) {
     const accessToken = await this.jwtService.signAsync({ sub: userId });
     const refreshToken = await this.refreshTokenService.issue(userId);
