@@ -84,11 +84,40 @@ function WorkspaceRows({ state, currentId, onPick, onRetry }: Omit<MenuProps, 'i
   );
 }
 
-export function WorkspaceMenu({ id, ...rows }: MenuProps) {
+type ActionsProps = {
+  currentId: string;
+  isOwner: boolean;
+  onPick: () => void;
+  onCreate: () => void;
+};
+
+function MenuActions({ currentId, isOwner, onPick, onCreate }: ActionsProps) {
+  return (
+    <>
+      <div className="my-1 border-t border-hairline" />
+      <button type="button" onClick={onCreate} className={MENU_ROW}>
+        New workspace
+      </button>
+      {isOwner && (
+        <Link href={`/workspaces/${currentId}/settings`} onClick={onPick} className={MENU_ROW}>
+          Workspace settings
+        </Link>
+      )}
+    </>
+  );
+}
+
+export function WorkspaceMenu({ id, isOwner, onCreate, ...rows }: MenuProps & ActionsProps) {
   return (
     <div id={id} className={`${MENU_PANEL} top-full mt-1`}>
       <p className="px-2 pt-1 pb-1 text-xs font-medium text-ink-muted">Workspaces</p>
       <WorkspaceRows {...rows} />
+      <MenuActions
+        currentId={rows.currentId}
+        isOwner={isOwner}
+        onPick={rows.onPick}
+        onCreate={onCreate}
+      />
     </div>
   );
 }

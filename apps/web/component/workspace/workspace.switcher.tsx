@@ -3,6 +3,7 @@
 import { useId, useRef, useState } from 'react';
 import { MENU_TRIGGER } from '@/component/ui/menu.styles';
 import { useDismiss } from '@/component/ui/use.dismiss';
+import { CreateWorkspaceDialog } from '@/component/workspace/create.workspace.dialog';
 import { WorkspacesState } from '@/component/workspace/use.workspaces';
 import { WorkspaceMenu } from '@/component/workspace/workspace.menu';
 
@@ -10,15 +11,22 @@ type SwitcherProps = {
   label: string;
   state: WorkspacesState;
   currentId: string;
+  isOwner: boolean;
   onRetry: () => void;
 };
 
-export function WorkspaceSwitcher({ label, state, currentId, onRetry }: SwitcherProps) {
+export function WorkspaceSwitcher({ label, state, currentId, isOwner, onRetry }: SwitcherProps) {
   const [open, setOpen] = useState(false);
   const root = useRef<HTMLDivElement>(null);
   const trigger = useRef<HTMLButtonElement>(null);
+  const createDialog = useRef<HTMLDialogElement>(null);
   const menuId = useId();
   useDismiss(open, setOpen, { root, trigger });
+
+  function openCreate() {
+    setOpen(false);
+    createDialog.current?.showModal();
+  }
 
   return (
     <div ref={root} className="relative">
@@ -42,10 +50,13 @@ export function WorkspaceSwitcher({ label, state, currentId, onRetry }: Switcher
           id={menuId}
           state={state}
           currentId={currentId}
+          isOwner={isOwner}
           onPick={() => setOpen(false)}
+          onCreate={openCreate}
           onRetry={onRetry}
         />
       )}
+      <CreateWorkspaceDialog ref={createDialog} onClose={() => trigger.current?.focus()} />
     </div>
   );
 }

@@ -3,7 +3,9 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { SiteNav } from '@/component/home/site.nav';
+import { toast } from 'sonner';
 import { buttonStyles } from '@/component/ui/button.styles';
+import { CreateWorkspaceForm } from '@/component/workspace/create.workspace.form';
 import { useWorkspaces } from '@/component/workspace/use.workspaces';
 import { Workspace } from '@/model/workspace.model';
 import { getLastWorkspace } from '@/util/last.workspace';
@@ -36,12 +38,22 @@ function ErrorState({ onRetry }: { onRetry: () => void }) {
 }
 
 function EmptyState() {
+  const router = useRouter();
+
+  function handleCreated(workspace: Workspace) {
+    toast('Workspace created.');
+    router.replace(`/workspaces/${workspace.id}`);
+  }
+
   return (
-    <div>
+    <div className="max-w-md">
       <p className="text-base font-semibold text-ink">You aren&apos;t in a workspace yet.</p>
-      <p className="mt-1 max-w-xl text-base text-ink-muted">
-        This site can&apos;t create one yet. A workspace owner can add you as a member meanwhile.
+      <p className="mt-1 text-base text-ink-muted">
+        Create one to start writing pages, or ask a workspace owner to add you.
       </p>
+      <div className="mt-6">
+        <CreateWorkspaceForm onCreated={handleCreated} />
+      </div>
     </div>
   );
 }

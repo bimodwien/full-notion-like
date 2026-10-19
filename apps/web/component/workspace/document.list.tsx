@@ -1,32 +1,35 @@
 'use client';
 
+import { useParams } from 'next/navigation';
 import { buttonStyles } from '@/component/ui/button.styles';
-import { useDocuments } from '@/component/workspace/use.documents';
+import { DocumentRow, PageTree } from '@/component/workspace/document.row';
+import { NewPageButton } from '@/component/workspace/new.page.button';
+import { useWorkspaceDocuments } from '@/component/workspace/documents.context';
 import { WorkspaceDocument } from '@/model/document.model';
+import { ancestorIds, childrenOf } from '@/util/document.tree';
 
 function DocumentRows({ documents }: { documents: WorkspaceDocument[] }) {
-  // Child pages wait for the expandable tree.
-  const topLevel = documents.filter((doc) => doc.parentId === null);
+  const { documentId } = useParams<{ documentId?: string }>();
+  const topLevel = childrenOf(documents, null);
   if (topLevel.length === 0) {
     return <p className="px-2 py-2 text-body-sm text-ink-muted">No pages yet.</p>;
   }
+  const tree: PageTree = {
+    documents,
+    activeId: documentId,
+    trail: ancestorIds(documents, documentId),
+  };
   return (
     <ul>
       {topLevel.map((doc) => (
-        <li
-          key={doc.id}
-          title={doc.title}
-          className="truncate px-2 py-2 text-body-sm text-ink-secondary"
-        >
-          {doc.title}
-        </li>
+        <DocumentRow key={doc.id} doc={doc} tree={tree} depth={0} />
       ))}
     </ul>
   );
 }
 
-function DocumentsBody({ workspaceId }: { workspaceId: string }) {
-  const { state, retry } = useDocuments(workspaceId);
+function DocumentsBody() {
+  const { canEdit, state, retry } = useWorkspaceDocuments();
 
   if (state.kind === 'loading') {
     return (
@@ -45,16 +48,21 @@ function DocumentsBody({ workspaceId }: { workspaceId: string }) {
       </div>
     );
   }
-  return <DocumentRows documents={state.documents} />;
+  return (
+    <>
+      <DocumentRows documents={state.documents} />
+      {canEdit && <NewPageButton />}
+    </>
+  );
 }
 
-export function DocumentList({ workspaceId }: { workspaceId: string }) {
+export function DocumentList() {
   return (
     <section aria-labelledby="pages-heading" className="mt-4 min-h-0 flex-1 overflow-y-auto">
       <h2 id="pages-heading" className="px-2 pb-1 text-xs font-medium text-ink-muted">
         Pages
       </h2>
-      <DocumentsBody workspaceId={workspaceId} />
+      <DocumentsBody />
     </section>
   );
 }

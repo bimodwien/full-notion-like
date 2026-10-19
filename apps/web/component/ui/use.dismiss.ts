@@ -23,6 +23,8 @@ export function useDismiss(
     }
     function onKeyDown(event: KeyboardEvent) {
       if (event.key !== 'Escape') return;
+      // Marks the Escape as used, so a drawer around this menu stays open.
+      event.preventDefault();
       setOpen(false);
       trigger.current?.focus();
     }
