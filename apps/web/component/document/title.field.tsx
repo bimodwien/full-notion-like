@@ -1,7 +1,7 @@
 'use client';
 
 import { KeyboardEvent, useRef, useState } from 'react';
-import { useWorkspaceDocuments } from '@/component/workspace/documents.context';
+import { useWorkspaceDocuments } from '@/component/document/documents.context';
 import { updateDocument } from '@/helper/document.api';
 import { WorkspaceDocument } from '@/model/document.model';
 

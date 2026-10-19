@@ -1,4 +1,4 @@
-import { DocumentView } from '@/component/workspace/document.view';
+import { DocumentView } from '@/component/document/document.view';
 
 // Auth lives in localStorage, which the server can't read. Revisit after moving tokens to cookies.
 export const instant = false;

@@ -1,7 +1,7 @@
 'use client';
 
 import { createContext, useContext } from 'react';
-import { useDocuments } from '@/component/workspace/use.documents';
+import { useDocuments } from '@/component/document/use.documents';
 
 type WorkspaceDocuments = ReturnType<typeof useDocuments> & {
   workspaceId: string;

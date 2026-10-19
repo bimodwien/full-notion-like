@@ -2,12 +2,12 @@
 
 import { useEffect } from 'react';
 import { useParams } from 'next/navigation';
-import { DocumentsProvider } from '@/component/workspace/documents.context';
-import { MobileTopBar } from '@/component/workspace/mobile.top.bar';
-import { useSidebarDrawer } from '@/component/workspace/use.sidebar.drawer';
+import { DocumentsProvider } from '@/component/document/documents.context';
+import { MobileTopBar } from '@/component/workspace/shell/mobile.top.bar';
+import { useSidebarDrawer } from '@/component/workspace/shell/use.sidebar.drawer';
 import { findWorkspace, WorkspacesState } from '@/component/workspace/use.workspaces';
-import { WorkspaceSidebar } from '@/component/workspace/workspace.sidebar';
-import { WorkspaceSwitcher } from '@/component/workspace/workspace.switcher';
+import { WorkspaceSidebar } from '@/component/workspace/shell/workspace.sidebar';
+import { WorkspaceSwitcher } from '@/component/workspace/switcher/workspace.switcher';
 import { useWorkspacesContext, WorkspacesProvider } from '@/component/workspace/workspaces.context';
 import { saveLastWorkspace } from '@/util/last.workspace';
 

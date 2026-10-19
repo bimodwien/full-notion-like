@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import { RefObject, startTransition, useRef, useState } from 'react';
 import { buttonStyles } from '@/component/ui/button.styles';
 import { DIALOG_PANEL } from '@/component/ui/dialog.styles';
-import { useWorkspaceDocuments } from '@/component/workspace/documents.context';
+import { useWorkspaceDocuments } from '@/component/document/documents.context';
 import { deleteDocument } from '@/helper/document.api';
 import { WorkspaceDocument } from '@/model/document.model';
 

@@ -2,9 +2,9 @@
 
 import { useParams } from 'next/navigation';
 import { buttonStyles } from '@/component/ui/button.styles';
-import { DeletePageButton } from '@/component/workspace/delete.page.button';
-import { useWorkspaceDocuments } from '@/component/workspace/documents.context';
-import { TitleField } from '@/component/workspace/title.field';
+import { DeletePageButton } from '@/component/document/delete.page.button';
+import { useWorkspaceDocuments } from '@/component/document/documents.context';
+import { TitleField } from '@/component/document/title.field';
 
 function MissingPage() {
   return (

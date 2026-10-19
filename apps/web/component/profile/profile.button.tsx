@@ -3,8 +3,8 @@
 import { useId, useRef, useState } from 'react';
 import { MENU_TRIGGER } from '@/component/ui/menu.styles';
 import { useDismiss } from '@/component/ui/use.dismiss';
-import { ProfileMenu } from '@/component/workspace/profile.menu';
-import { ProfileState, useProfile } from '@/component/workspace/use.profile';
+import { ProfileMenu } from '@/component/profile/profile.menu';
+import { ProfileState, useProfile } from '@/component/profile/use.profile';
 
 function profileText(state: ProfileState) {
   if (state.kind === 'ready') return { name: state.profile.name, email: state.profile.email };

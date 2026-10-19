@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { useWorkspaceDocuments } from '@/component/workspace/documents.context';
+import { useWorkspaceDocuments } from '@/component/document/documents.context';
 import { createDocument } from '@/helper/document.api';
 
 // Shared by "New page" and the per-row "+": create, add to the sidebar, open it.

@@ -2,9 +2,9 @@
 
 import { useParams } from 'next/navigation';
 import { buttonStyles } from '@/component/ui/button.styles';
-import { DocumentRow, PageTree } from '@/component/workspace/document.row';
-import { NewPageButton } from '@/component/workspace/new.page.button';
-import { useWorkspaceDocuments } from '@/component/workspace/documents.context';
+import { DocumentRow, PageTree } from '@/component/document/document.row';
+import { NewPageButton } from '@/component/document/new.page.button';
+import { useWorkspaceDocuments } from '@/component/document/documents.context';
 import { WorkspaceDocument } from '@/model/document.model';
 import { ancestorIds, childrenOf } from '@/util/document.tree';
 

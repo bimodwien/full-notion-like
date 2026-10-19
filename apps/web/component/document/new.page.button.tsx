@@ -1,7 +1,7 @@
 'use client';
 
 import { MENU_TRIGGER } from '@/component/ui/menu.styles';
-import { useCreatePage } from '@/component/workspace/use.create.page';
+import { useCreatePage } from '@/component/document/use.create.page';
 
 export function NewPageButton() {
   const { busy, failed, create } = useCreatePage();

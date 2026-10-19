@@ -2,8 +2,8 @@
 
 import { useParams } from 'next/navigation';
 import { buttonStyles } from '@/component/ui/button.styles';
-import { DeleteWorkspaceSection } from '@/component/workspace/delete.workspace.section';
-import { RenameWorkspaceForm } from '@/component/workspace/rename.workspace.form';
+import { DeleteWorkspaceSection } from '@/component/workspace/settings/delete.workspace.section';
+import { RenameWorkspaceForm } from '@/component/workspace/settings/rename.workspace.form';
 import { findWorkspace } from '@/component/workspace/use.workspaces';
 import { useWorkspacesContext } from '@/component/workspace/workspaces.context';
 

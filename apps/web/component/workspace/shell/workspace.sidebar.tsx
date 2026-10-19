@@ -1,9 +1,9 @@
 'use client';
 
 import { RefObject } from 'react';
-import { DocumentList } from '@/component/workspace/document.list';
-import { SIDEBAR_ID } from '@/component/workspace/mobile.top.bar';
-import { ProfileButton } from '@/component/workspace/profile.button';
+import { DocumentList } from '@/component/document/document.list';
+import { SIDEBAR_ID } from '@/component/workspace/shell/mobile.top.bar';
+import { ProfileButton } from '@/component/profile/profile.button';
 
 // Phones: an off-canvas drawer, hidden (and out of the tab order) until opened.
 // From md up: the fixed-width column it has always been.

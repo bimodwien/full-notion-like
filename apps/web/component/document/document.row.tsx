@@ -2,8 +2,8 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
-import { useWorkspaceDocuments } from '@/component/workspace/documents.context';
-import { useCreatePage } from '@/component/workspace/use.create.page';
+import { useWorkspaceDocuments } from '@/component/document/documents.context';
+import { useCreatePage } from '@/component/document/use.create.page';
 import { WorkspaceDocument } from '@/model/document.model';
 import { childrenOf } from '@/util/document.tree';
 

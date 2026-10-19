@@ -3,9 +3,9 @@
 import { useId, useRef, useState } from 'react';
 import { MENU_TRIGGER } from '@/component/ui/menu.styles';
 import { useDismiss } from '@/component/ui/use.dismiss';
-import { CreateWorkspaceDialog } from '@/component/workspace/create.workspace.dialog';
+import { CreateWorkspaceDialog } from '@/component/workspace/switcher/create.workspace.dialog';
 import { WorkspacesState } from '@/component/workspace/use.workspaces';
-import { WorkspaceMenu } from '@/component/workspace/workspace.menu';
+import { WorkspaceMenu } from '@/component/workspace/switcher/workspace.menu';
 
 type SwitcherProps = {
   label: string;

@@ -2,7 +2,7 @@
 
 import { useParams } from 'next/navigation';
 import { RefObject } from 'react';
-import { useWorkspaceDocuments } from '@/component/workspace/documents.context';
+import { useWorkspaceDocuments } from '@/component/document/documents.context';
 
 export const SIDEBAR_ID = 'workspace-sidebar';
 
