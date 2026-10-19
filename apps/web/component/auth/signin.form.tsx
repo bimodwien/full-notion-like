@@ -75,7 +75,7 @@ export function SigninForm() {
         error={errors.password}
       />
       <FormAlert message={formError} />
-      <button type="submit" disabled={pending} className={buttonStyles('primary', 'w-full')}>
+      <button type="submit" disabled={pending} className={buttonStyles('primary', 'mt-2 w-full')}>
         {pending ? 'Signing in…' : 'Sign in'}
       </button>
       <AuthSwitch question="New here?" href="/register" label="Create an account" />

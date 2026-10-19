@@ -83,7 +83,7 @@ export function RegisterForm() {
         error={errors.password}
       />
       <FormAlert message={formError} />
-      <button type="submit" disabled={pending} className={buttonStyles('primary', 'w-full')}>
+      <button type="submit" disabled={pending} className={buttonStyles('primary', 'mt-2 w-full')}>
         {pending ? 'Creating account…' : 'Create account'}
       </button>
       <AuthSwitch question="Already have an account?" href="/signin" label="Sign in" />
