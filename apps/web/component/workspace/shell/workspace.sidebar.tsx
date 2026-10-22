@@ -4,6 +4,7 @@ import { RefObject } from 'react';
 import { DocumentList } from '@/component/document/document.list';
 import { SIDEBAR_ID } from '@/component/workspace/shell/mobile.top.bar';
 import { ProfileButton } from '@/component/profile/profile.button';
+import { TasksLink } from '@/component/task/tasks.link';
 
 // Phones: an off-canvas drawer, hidden (and out of the tab order) until opened.
 // From md up: the fixed-width column it has always been.
@@ -60,6 +61,7 @@ export function WorkspaceSidebar({ switcher, open, onClose, closeButtonRef }: Pr
           <div className="min-w-0 flex-1">{switcher}</div>
           <CloseButton buttonRef={closeButtonRef} onClose={onClose} />
         </div>
+        <TasksLink />
         <DocumentList />
         <ProfileButton />
       </aside>
