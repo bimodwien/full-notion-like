@@ -2,6 +2,7 @@
 
 import { useParams } from 'next/navigation';
 import { buttonStyles } from '@/component/ui/button.styles';
+import { MembersSection } from '@/component/workspace/members/members.section';
 import { DeleteWorkspaceSection } from '@/component/workspace/settings/delete.workspace.section';
 import { RenameWorkspaceForm } from '@/component/workspace/settings/rename.workspace.form';
 import { findWorkspace } from '@/component/workspace/use.workspaces';
@@ -50,7 +51,7 @@ function SettingsBody({ workspaceId }: { workspaceId: string }) {
     return (
       <Notice
         title="Only the owner can change these settings."
-        text="Ask the workspace owner if the name needs to change."
+        text="Ask the workspace owner if the name or the member list needs to change."
       />
     );
   }
@@ -58,6 +59,7 @@ function SettingsBody({ workspaceId }: { workspaceId: string }) {
     <>
       <h1 className="mb-8 text-h2 text-ink">Workspace settings</h1>
       <RenameWorkspaceForm key={workspace.id} workspace={workspace} />
+      <MembersSection key={`members-${workspace.id}`} workspaceId={workspace.id} />
       <DeleteWorkspaceSection workspace={workspace} />
     </>
   );

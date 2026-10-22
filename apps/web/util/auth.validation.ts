@@ -2,7 +2,7 @@ import { LoginInput, RegisterInput } from '@/model/auth.model';
 
 export type FieldErrors<T> = Partial<Record<keyof T, string>>;
 
-const EMAIL_SHAPE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+export const EMAIL_SHAPE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 // Same minimum as RegisterDto in the API.
 const PASSWORD_MIN = 6;

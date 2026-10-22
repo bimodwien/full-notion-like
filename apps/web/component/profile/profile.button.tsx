@@ -1,6 +1,7 @@
 'use client';
 
 import { useId, useRef, useState } from 'react';
+import { Initial } from '@/component/ui/initial';
 import { MENU_TRIGGER } from '@/component/ui/menu.styles';
 import { useDismiss } from '@/component/ui/use.dismiss';
 import { ProfileMenu } from '@/component/profile/profile.menu';
@@ -10,18 +11,6 @@ function profileText(state: ProfileState) {
   if (state.kind === 'ready') return { name: state.profile.name, email: state.profile.email };
   if (state.kind === 'error') return { name: 'Your account', email: "Profile didn't load" };
   return { name: 'Loading…', email: '' };
-}
-
-// No profile photos yet, so the first letter of the name stands in.
-function Initial({ name }: { name: string }) {
-  return (
-    <span
-      aria-hidden="true"
-      className="flex size-8 shrink-0 items-center justify-center rounded-full bg-hairline text-body-sm font-semibold text-ink"
-    >
-      {name.trim().charAt(0).toUpperCase()}
-    </span>
-  );
 }
 
 export function ProfileButton() {
