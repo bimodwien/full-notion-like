@@ -3,6 +3,8 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import { useWorkspaceDocuments } from '@/component/document/documents.context';
+import { PageActions } from '@/component/document/page.actions';
+import { REVEAL_ON_ROW, ROW_ICON } from '@/component/document/row.styles';
 import { useCreatePage } from '@/component/document/use.create.page';
 import { WorkspaceDocument } from '@/model/document.model';
 import { childrenOf } from '@/util/document.tree';
@@ -15,9 +17,6 @@ export type PageTree = {
 };
 
 const INDENT_PX = 12;
-// 28px wide keeps nested titles readable in a 240px sidebar; height stays 44px.
-const ROW_ICON =
-  'grid h-11 w-7 shrink-0 cursor-pointer place-items-center rounded-sm text-ink-muted hover:text-ink';
 
 type ToggleProps = { title: string; open: boolean; hasChildren: boolean; onToggle: () => void };
 
@@ -47,8 +46,7 @@ function AddSubpageButton({ title, busy, onAdd }: AddProps) {
       disabled={busy}
       aria-label={`Add a page inside ${title}`}
       title="Add a page inside"
-      // Hidden until the row is hovered or focused; touch screens have no hover, so always shown there.
-      className={`${ROW_ICON} opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 pointer-coarse:opacity-100 disabled:cursor-wait`}
+      className={`${ROW_ICON} ${REVEAL_ON_ROW} disabled:cursor-wait`}
     >
       <span aria-hidden="true">+</span>
     </button>
@@ -96,7 +94,12 @@ export function DocumentRow({ doc, tree, depth }: RowProps) {
         >
           <span className="truncate">{doc.title}</span>
         </Link>
-        {canEdit && <AddSubpageButton title={doc.title} busy={busy} onAdd={() => create(doc.id)} />}
+        {canEdit && (
+          <>
+            <PageActions doc={doc} />
+            <AddSubpageButton title={doc.title} busy={busy} onAdd={() => create(doc.id)} />
+          </>
+        )}
       </div>
       {failed && (
         <p role="alert" style={indent} className="pb-1 pl-7 text-body-sm text-ink">

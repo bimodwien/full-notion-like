@@ -21,7 +21,7 @@ export async function createDocument(workspaceId: string, parentId: string | nul
 export async function updateDocument(
   workspaceId: string,
   documentId: string,
-  changes: { title?: string },
+  changes: { title?: string; parentId?: string | null },
 ) {
   const { data } = await api.patch<WorkspaceDocument>(
     documentPath(workspaceId, documentId),

@@ -59,7 +59,7 @@ function DocumentsBody() {
 export function DocumentList() {
   return (
     <section aria-labelledby="pages-heading" className="mt-4 min-h-0 flex-1 overflow-y-auto">
-      <h2 id="pages-heading" className="px-2 pb-1 text-xs font-medium text-ink-muted">
+      <h2 id="pages-heading" tabIndex={-1} className="px-2 pb-1 text-xs font-medium text-ink-muted">
         Pages
       </h2>
       <DocumentsBody />

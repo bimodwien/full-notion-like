@@ -3,25 +3,10 @@
 import { useEffect, useState } from 'react';
 import { getDocuments } from '@/helper/document.api';
 import { WorkspaceDocument } from '@/model/document.model';
+import { subtreeIds } from '@/util/document.tree';
 
 export type DocumentsState =
   { kind: 'loading' } | { kind: 'error' } | { kind: 'ready'; documents: WorkspaceDocument[] };
-
-// The API deletes child pages with their parent, so the list drops the whole subtree too.
-function withoutSubtree(documents: WorkspaceDocument[], rootId: string) {
-  const removed = new Set([rootId]);
-  let grew = true;
-  while (grew) {
-    grew = false;
-    for (const doc of documents) {
-      if (doc.parentId && removed.has(doc.parentId) && !removed.has(doc.id)) {
-        removed.add(doc.id);
-        grew = true;
-      }
-    }
-  }
-  return documents.filter((doc) => !removed.has(doc.id));
-}
 
 export function useDocuments(workspaceId: string) {
   const [state, setState] = useState<DocumentsState>({ kind: 'loading' });
@@ -62,9 +47,19 @@ export function useDocuments(workspaceId: string) {
     );
   }
 
-  function remove(documentId: string) {
-    updateList((documents) => withoutSubtree(documents, documentId));
+  function move(documentId: string, parentId: string | null) {
+    updateList((documents) =>
+      documents.map((doc) => (doc.id === documentId ? { ...doc, parentId } : doc)),
+    );
   }
 
-  return { state, retry, add, rename, remove };
+  // The API deletes child pages with their parent, so the list drops the whole subtree too.
+  function remove(documentId: string) {
+    updateList((documents) => {
+      const gone = subtreeIds(documents, documentId);
+      return documents.filter((doc) => !gone.has(doc.id));
+    });
+  }
+
+  return { state, retry, add, rename, move, remove };
 }
