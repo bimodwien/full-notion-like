@@ -5,6 +5,7 @@ import { buttonStyles } from '@/component/ui/button.styles';
 import { DeletePageButton } from '@/component/document/delete.page.button';
 import { useWorkspaceDocuments } from '@/component/document/documents.context';
 import { TitleField } from '@/component/document/title.field';
+import { PageTasks } from '@/component/task/page.tasks';
 
 function MissingPage() {
   return (
@@ -46,14 +47,20 @@ function DocumentBody({ documentId }: { documentId: string }) {
 
   const document = state.documents.find((doc) => doc.id === documentId);
   if (!document) return <MissingPage />;
-  if (!canEdit) return <h1 className="text-h1 wrap-break-word text-ink">{document.title}</h1>;
   return (
     <>
-      <div className="mb-6 flex justify-end">
-        <DeletePageButton document={document} />
-      </div>
-      {/* Keyed so switching pages resets the unsaved draft. */}
-      <TitleField key={document.id} document={document} />
+      {canEdit ? (
+        <>
+          <div className="mb-6 flex justify-end">
+            <DeletePageButton document={document} />
+          </div>
+          {/* Keyed so switching pages resets the unsaved draft. */}
+          <TitleField key={document.id} document={document} />
+        </>
+      ) : (
+        <h1 className="text-h1 wrap-break-word text-ink">{document.title}</h1>
+      )}
+      <PageTasks key={document.id} documentId={document.id} />
     </>
   );
 }

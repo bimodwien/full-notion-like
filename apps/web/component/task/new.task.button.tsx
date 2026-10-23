@@ -10,7 +10,7 @@ import { useWorkspaceTasks } from '@/component/task/tasks.context';
 
 export function NewTaskButton() {
   const { workspaceId } = useWorkspaceDocuments();
-  const { add } = useWorkspaceTasks();
+  const { add, documentId } = useWorkspaceTasks();
   const [open, setOpen] = useState(false);
   const trigger = useRef<HTMLButtonElement>(null);
 
@@ -35,7 +35,12 @@ export function NewTaskButton() {
         New task
       </button>
       {open && (
-        <NewTaskDialog workspaceId={workspaceId} onCreated={handleCreated} onClose={close} />
+        <NewTaskDialog
+          workspaceId={workspaceId}
+          documentId={documentId}
+          onCreated={handleCreated}
+          onClose={close}
+        />
       )}
     </>
   );

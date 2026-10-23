@@ -11,9 +11,10 @@ import { NEXT_STATUS, STATUS_LABEL } from '@/util/task.board';
 const TRIGGER =
   '-my-3 -mr-2 grid h-11 w-9 shrink-0 cursor-pointer place-items-center rounded-sm text-ink-muted hover:bg-black/5 hover:text-ink aria-expanded:bg-black/5 aria-expanded:text-ink';
 
-// The card is gone after a delete, so focus lands on the column it was in.
-function focusColumn(status: TaskStatus) {
-  document.getElementById(`column-${status}`)?.focus();
+// The card is gone after a delete: focus its board column, or the page's Tasks heading.
+function focusAfterDelete(status: TaskStatus) {
+  const column = document.getElementById(`column-${status}`);
+  (column ?? document.getElementById('page-tasks-heading'))?.focus();
 }
 
 type MenuProps = {
@@ -92,7 +93,7 @@ export function TaskActions({ task, onAdvance }: Props) {
         <DeleteTaskDialog
           task={task}
           onClose={closeDialog}
-          onDeleted={() => focusColumn(task.status)}
+          onDeleted={() => focusAfterDelete(task.status)}
         />
       )}
     </div>

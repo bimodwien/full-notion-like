@@ -22,7 +22,11 @@ function readForm(form: HTMLFormElement) {
   };
 }
 
-function useNewTaskForm(workspaceId: string, onCreated: (task: Task) => void) {
+function useNewTaskForm(
+  workspaceId: string,
+  documentId: string | undefined,
+  onCreated: (task: Task) => void,
+) {
   const [error, setError] = useState('');
   const [formError, setFormError] = useState('');
   const [pending, setPending] = useState(false);
@@ -38,7 +42,7 @@ function useNewTaskForm(workspaceId: string, onCreated: (task: Task) => void) {
 
     setPending(true);
     try {
-      onCreated(await createTask(workspaceId, input));
+      onCreated(await createTask(workspaceId, { ...input, documentId }));
     } catch (caught) {
       setFormError(requestErrorMessage(caught));
       setPending(false);
@@ -50,16 +54,21 @@ function useNewTaskForm(workspaceId: string, onCreated: (task: Task) => void) {
 
 type Props = {
   workspaceId: string;
+  documentId?: string;
   onCreated: (task: Task) => void;
   onClose: () => void;
 };
 
-export function NewTaskDialog({ workspaceId, onCreated, onClose }: Props) {
+export function NewTaskDialog({ workspaceId, documentId, onCreated, onClose }: Props) {
   const ref = useRef<HTMLDialogElement>(null);
-  const { error, formError, pending, handleSubmit } = useNewTaskForm(workspaceId, (task) => {
-    onCreated(task);
-    ref.current?.close();
-  });
+  const { error, formError, pending, handleSubmit } = useNewTaskForm(
+    workspaceId,
+    documentId,
+    (task) => {
+      onCreated(task);
+      ref.current?.close();
+    },
+  );
   useShowModal(ref);
 
   return (

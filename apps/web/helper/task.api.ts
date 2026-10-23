@@ -21,8 +21,10 @@ export type TaskChanges = {
   reviewerId?: string | null;
 };
 
-export async function getTasks(workspaceId: string) {
-  const { data } = await api.get<Task[]>(`/workspaces/${workspaceId}/tasks`);
+export async function getTasks(workspaceId: string, documentId?: string) {
+  const { data } = await api.get<Task[]>(`/workspaces/${workspaceId}/tasks`, {
+    params: { documentId },
+  });
   return data;
 }
 

@@ -6,6 +6,7 @@ import { TaskOpenButton } from '@/component/task/task.open.button';
 import { useAdvanceTask } from '@/component/task/use.advance.task';
 import { Task, TaskPriority } from '@/model/task.model';
 import { TaskAssignee } from '@/component/task/task.assignee';
+import { STATUS_LABEL } from '@/util/task.board';
 
 const PRIORITY_TEXT: Record<TaskPriority, string> = {
   LOW: 'text-ink-muted',
@@ -13,7 +14,9 @@ const PRIORITY_TEXT: Record<TaskPriority, string> = {
   CRITICAL: 'font-medium text-error',
 };
 
-export function TaskCard({ task }: { task: Task }) {
+type Props = { task: Task; showStatus?: boolean };
+
+export function TaskCard({ task, showStatus = false }: Props) {
   const { failed, advance } = useAdvanceTask(task);
   return (
     <li
@@ -26,10 +29,18 @@ export function TaskCard({ task }: { task: Task }) {
         <TaskActions task={task} onAdvance={advance} />
       </div>
       <div className="flex items-center justify-between gap-2">
-        <p className={`text-xs ${PRIORITY_TEXT[task.priority]}`}>
-          <span className="sr-only">Priority: </span>
-          {PRIORITY_LABEL[task.priority]}
-        </p>
+        <div className="flex items-center gap-3 text-xs">
+          {showStatus && (
+            <p className="text-ink-secondary">
+              <span className="sr-only">Status: </span>
+              {STATUS_LABEL[task.status]}
+            </p>
+          )}
+          <p className={PRIORITY_TEXT[task.priority]}>
+            <span className="sr-only">Priority: </span>
+            {PRIORITY_LABEL[task.priority]}
+          </p>
+        </div>
         <TaskAssignee assigneeId={task.assigneeId} />
       </div>
       {failed && (
