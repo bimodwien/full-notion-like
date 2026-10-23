@@ -13,10 +13,10 @@ function HeroAction() {
 
   return (
     <Link
-      href={signedIn ? '/workspaces' : '/register'}
+      href={signedIn ? '/workspaces' : '/signin'}
       className={buttonStyles('secondary', 'focus-visible:outline-on-primary')}
     >
-      {signedIn ? 'Open your workspace' : 'Create an account'}
+      {signedIn ? 'Open your workspace' : 'Sign in to your workspace'}
     </Link>
   );
 }
