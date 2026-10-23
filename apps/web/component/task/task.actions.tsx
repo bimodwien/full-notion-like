@@ -4,17 +4,16 @@ import { useId, useRef, useState } from 'react';
 import { MENU_ROW, MENU_SURFACE } from '@/component/ui/menu.styles';
 import { useDismiss } from '@/component/ui/use.dismiss';
 import { useWorkspaceDocuments } from '@/component/document/documents.context';
-import { REVEAL_ON_ROW } from '@/component/document/row.styles';
 import { DeleteTaskDialog } from '@/component/task/delete.task.dialog';
 import { Task, TaskStatus } from '@/model/task.model';
 import { NEXT_STATUS, STATUS_LABEL } from '@/util/task.board';
 
 const TRIGGER =
-  '-my-3 -mr-2 grid h-11 w-9 shrink-0 cursor-pointer place-items-center rounded-sm text-ink-muted hover:bg-black/5 hover:text-ink aria-expanded:opacity-100';
+  '-my-3 -mr-2 grid h-11 w-9 shrink-0 cursor-pointer place-items-center rounded-sm text-ink-muted hover:bg-black/5 hover:text-ink aria-expanded:bg-black/5 aria-expanded:text-ink';
 
 // The card is gone after a delete, so focus lands on the column it was in.
-function focusDoneHeading() {
-  document.getElementById('column-DONE')?.focus();
+function focusColumn(status: TaskStatus) {
+  document.getElementById(`column-${status}`)?.focus();
 }
 
 type MenuProps = {
@@ -24,7 +23,7 @@ type MenuProps = {
   onDelete: () => void;
 };
 
-// The API only lets a task move one step forward, and only Done tasks can be deleted.
+// The API only lets a task move one step forward.
 function TaskActionsMenu({ id, task, onAdvance, onDelete }: MenuProps) {
   const next = NEXT_STATUS[task.status];
   return (
@@ -34,11 +33,9 @@ function TaskActionsMenu({ id, task, onAdvance, onDelete }: MenuProps) {
           Move to {STATUS_LABEL[next]}
         </button>
       )}
-      {task.status === 'DONE' && (
-        <button type="button" onClick={onDelete} className={MENU_ROW}>
-          Delete
-        </button>
-      )}
+      <button type="button" onClick={onDelete} className={MENU_ROW}>
+        Delete
+      </button>
     </div>
   );
 }
@@ -76,7 +73,7 @@ export function TaskActions({ task, onAdvance }: Props) {
         aria-controls={menuId}
         aria-label={`More actions for ${task.title}`}
         data-task-actions={task.id}
-        className={`${TRIGGER} ${REVEAL_ON_ROW}`}
+        className={TRIGGER}
       >
         <span aria-hidden="true">⋯</span>
       </button>
@@ -92,7 +89,11 @@ export function TaskActions({ task, onAdvance }: Props) {
         />
       )}
       {deleting && (
-        <DeleteTaskDialog task={task} onClose={closeDialog} onDeleted={focusDoneHeading} />
+        <DeleteTaskDialog
+          task={task}
+          onClose={closeDialog}
+          onDeleted={() => focusColumn(task.status)}
+        />
       )}
     </div>
   );

@@ -1,6 +1,5 @@
 import {
   BadRequestException,
-  ConflictException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -9,7 +8,7 @@ import { TaskStatus } from '../generated/prisma/enums';
 import { CreateTaskDto } from './dto/create.task.dto';
 import { UpdateTaskDto } from './dto/update.task.dto';
 import { ListTasksQueryDto } from './dto/list.tasks.query.dto';
-import { canDelete, canTransition } from './tasks.transitions';
+import { canTransition } from './tasks.transitions';
 
 interface TaskRefs {
   documentId?: string | null;
@@ -59,10 +58,7 @@ export class TasksService {
   }
 
   async remove(workspaceId: string, taskId: string) {
-    const task = await this.findInWorkspace(workspaceId, taskId);
-    if (!canDelete(task.status)) {
-      throw new ConflictException('Only DONE tasks can be deleted');
-    }
+    await this.findInWorkspace(workspaceId, taskId);
     await this.prisma.task.delete({ where: { id: taskId } });
   }
 

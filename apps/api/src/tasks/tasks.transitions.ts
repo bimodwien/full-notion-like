@@ -11,7 +11,3 @@ const NEXT_STATUS: Record<TaskStatus, TaskStatus | null> = {
 export function canTransition(from: TaskStatus, to: TaskStatus) {
   return NEXT_STATUS[from] === to;
 }
-
-export function canDelete(status: TaskStatus) {
-  return status === TaskStatus.DONE;
-}
