@@ -11,6 +11,16 @@ export type NewTask = {
   reviewerId?: string;
 };
 
+// Mirrors UpdateTaskDto: a missing field stays as it is, null clears it.
+export type TaskChanges = {
+  title?: string;
+  description?: string | null;
+  priority?: TaskPriority;
+  documentId?: string | null;
+  assigneeId?: string | null;
+  reviewerId?: string | null;
+};
+
 export async function getTasks(workspaceId: string) {
   const { data } = await api.get<Task[]>(`/workspaces/${workspaceId}/tasks`);
   return data;
@@ -18,6 +28,11 @@ export async function getTasks(workspaceId: string) {
 
 export async function createTask(workspaceId: string, task: NewTask) {
   const { data } = await api.post<Task>(`/workspaces/${workspaceId}/tasks`, task);
+  return data;
+}
+
+export async function updateTask(workspaceId: string, taskId: string, changes: TaskChanges) {
+  const { data } = await api.patch<Task>(`/workspaces/${workspaceId}/tasks/${taskId}`, changes);
   return data;
 }
 

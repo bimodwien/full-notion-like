@@ -34,16 +34,20 @@ export function subtreeIds(documents: WorkspaceDocument[], rootId: string) {
 
 export type MoveTarget = { doc: WorkspaceDocument; depth: number };
 
-// Pages in sidebar order with their depth, leaving out the moving page and its own subpages.
-export function moveTargets(documents: WorkspaceDocument[], movingId: string) {
-  const targets: MoveTarget[] = [];
+// Pages in sidebar order with their depth, leaving out skipId and its own subpages.
+export function pagesInTreeOrder(documents: WorkspaceDocument[], skipId?: string) {
+  const pages: MoveTarget[] = [];
   function walk(parentId: string | null, depth: number) {
     for (const doc of childrenOf(documents, parentId)) {
-      if (doc.id === movingId) continue;
-      targets.push({ doc, depth });
+      if (doc.id === skipId) continue;
+      pages.push({ doc, depth });
       walk(doc.id, depth + 1);
     }
   }
   walk(null, 0);
-  return targets;
+  return pages;
+}
+
+export function moveTargets(documents: WorkspaceDocument[], movingId: string) {
+  return pagesInTreeOrder(documents, movingId);
 }

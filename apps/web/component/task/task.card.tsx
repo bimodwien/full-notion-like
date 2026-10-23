@@ -2,6 +2,7 @@
 
 import { PRIORITY_LABEL } from '@/component/task/priority.field';
 import { TaskActions } from '@/component/task/task.actions';
+import { TaskOpenButton } from '@/component/task/task.open.button';
 import { useAdvanceTask } from '@/component/task/use.advance.task';
 import { Task, TaskPriority } from '@/model/task.model';
 
@@ -17,10 +18,10 @@ export function TaskCard({ task }: { task: Task }) {
     <li
       tabIndex={-1}
       data-task-card={task.id}
-      className="group flex flex-col gap-2 rounded-sm border border-hairline bg-canvas p-3"
+      className="group relative flex flex-col gap-2 rounded-sm border border-hairline bg-canvas p-3 hover:border-field"
     >
       <div className="flex items-start gap-2">
-        <p className="min-w-0 flex-1 text-body-sm wrap-break-word text-ink">{task.title}</p>
+        <TaskOpenButton task={task} />
         <TaskActions task={task} onAdvance={advance} />
       </div>
       <p className={`text-xs ${PRIORITY_TEXT[task.priority]}`}>
