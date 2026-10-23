@@ -5,6 +5,7 @@ import { TaskActions } from '@/component/task/task.actions';
 import { TaskOpenButton } from '@/component/task/task.open.button';
 import { useAdvanceTask } from '@/component/task/use.advance.task';
 import { Task, TaskPriority } from '@/model/task.model';
+import { TaskAssignee } from '@/component/task/task.assignee';
 
 const PRIORITY_TEXT: Record<TaskPriority, string> = {
   LOW: 'text-ink-muted',
@@ -24,10 +25,13 @@ export function TaskCard({ task }: { task: Task }) {
         <TaskOpenButton task={task} />
         <TaskActions task={task} onAdvance={advance} />
       </div>
-      <p className={`text-xs ${PRIORITY_TEXT[task.priority]}`}>
-        <span className="sr-only">Priority: </span>
-        {PRIORITY_LABEL[task.priority]}
-      </p>
+      <div className="flex items-center justify-between gap-2">
+        <p className={`text-xs ${PRIORITY_TEXT[task.priority]}`}>
+          <span className="sr-only">Priority: </span>
+          {PRIORITY_LABEL[task.priority]}
+        </p>
+        <TaskAssignee assigneeId={task.assigneeId} />
+      </div>
       {failed && (
         <p role="alert" className="text-xs text-error">
           Couldn&apos;t move this task. Try again.
