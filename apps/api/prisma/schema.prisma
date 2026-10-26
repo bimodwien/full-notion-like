@@ -127,6 +127,7 @@ model Task {
   description String?
   priority    TaskPriority @default(MEDIUM)
   status      TaskStatus   @default(TODO)
+  position    Float
   createdAt   DateTime     @default(now()) @map("created_at")
   updatedAt   DateTime     @updatedAt @map("updated_at")
 
@@ -136,7 +137,7 @@ model Task {
   assignee  User?     @relation("TaskAssignee", fields: [assigneeId], references: [id], onDelete: SetNull)
   reviewer  User?     @relation("TaskReviewer", fields: [reviewerId], references: [id], onDelete: SetNull)
 
-  @@index([workspaceId, status])
+  @@index([workspaceId, status, position])
   @@index([assigneeId])
   @@map("tasks")
 }

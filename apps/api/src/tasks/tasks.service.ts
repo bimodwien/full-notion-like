@@ -8,7 +8,9 @@ import { TaskStatus } from '../generated/prisma/enums';
 import { CreateTaskDto } from './dto/create.task.dto';
 import { UpdateTaskDto } from './dto/update.task.dto';
 import { ListTasksQueryDto } from './dto/list.tasks.query.dto';
+import { UpdateTaskStatusDto } from './dto/update.task.status.dto';
 import { canTransition } from './tasks.transitions';
+import { hasRoom, positionBetween } from './tasks.position';
 
 interface TaskRefs {
   documentId?: string | null;
@@ -22,15 +24,16 @@ export class TasksService {
 
   async create(workspaceId: string, userId: string, dto: CreateTaskDto) {
     await this.assertRefsInWorkspace(workspaceId, dto);
+    const position = await this.topPosition(workspaceId, TaskStatus.TODO);
     return this.prisma.task.create({
-      data: { ...dto, workspaceId, createdById: userId },
+      data: { ...dto, workspaceId, createdById: userId, position },
     });
   }
 
   list(workspaceId: string, query: ListTasksQueryDto) {
     return this.prisma.task.findMany({
       where: { workspaceId, ...query },
-      orderBy: { createdAt: 'desc' },
+      orderBy: [{ status: 'asc' }, { position: 'asc' }, { createdAt: 'desc' }],
     });
   }
 
@@ -44,16 +47,31 @@ export class TasksService {
     return this.prisma.task.update({ where: { id: taskId }, data: dto });
   }
 
-  async changeStatus(workspaceId: string, taskId: string, next: TaskStatus) {
+  async changeStatus(
+    workspaceId: string,
+    taskId: string,
+    dto: UpdateTaskStatusDto,
+  ) {
     const task = await this.findInWorkspace(workspaceId, taskId);
-    if (!canTransition(task.status, next)) {
+    const { status, aboveId, belowId } = dto;
+    const reorder = Boolean(aboveId || belowId);
+    if (status !== task.status && !canTransition(task.status, status)) {
       throw new BadRequestException(
-        `Cannot change status from ${task.status} to ${next}`,
+        `Cannot change status from ${task.status} to ${status}`,
       );
     }
+    if (status === task.status && !reorder) {
+      throw new BadRequestException(`Task is already ${status}`);
+    }
+    if (aboveId === taskId || belowId === taskId) {
+      throw new BadRequestException('A task cannot sit next to itself');
+    }
+    const position = reorder
+      ? await this.positionBetweenTasks(workspaceId, status, aboveId, belowId)
+      : await this.topPosition(workspaceId, status);
     return this.prisma.task.update({
       where: { id: taskId },
-      data: { status: next },
+      data: { status, position },
     });
   }
 
@@ -68,6 +86,69 @@ export class TasksService {
     });
     if (!task) throw new NotFoundException();
     return task;
+  }
+
+  private async topPosition(workspaceId: string, status: TaskStatus) {
+    const { _min } = await this.prisma.task.aggregate({
+      where: { workspaceId, status },
+      _min: { position: true },
+    });
+    return positionBetween(undefined, _min.position ?? undefined);
+  }
+
+  private async positionBetweenTasks(
+    workspaceId: string,
+    status: TaskStatus,
+    aboveId?: string,
+    belowId?: string,
+  ) {
+    const read = () =>
+      Promise.all([
+        this.neighborPosition(workspaceId, status, aboveId),
+        this.neighborPosition(workspaceId, status, belowId),
+      ]);
+    let [above, below] = await read();
+    if (!hasRoom(above, below)) {
+      await this.renumber(workspaceId, status);
+      [above, below] = await read();
+      if (!hasRoom(above, below)) {
+        throw new BadRequestException('Neighbor tasks are out of order');
+      }
+    }
+    return positionBetween(above, below);
+  }
+
+  private async neighborPosition(
+    workspaceId: string,
+    status: TaskStatus,
+    id?: string,
+  ) {
+    if (!id) return undefined;
+    const task = await this.prisma.task.findFirst({
+      where: { id, workspaceId, status },
+      select: { position: true },
+    });
+    if (!task) {
+      throw new BadRequestException('Neighbor task not in that column');
+    }
+    return task.position;
+  }
+
+  // Resets a column to 1, 2, 3... in its current order when midpoints run out of room.
+  private async renumber(workspaceId: string, status: TaskStatus) {
+    const tasks = await this.prisma.task.findMany({
+      where: { workspaceId, status },
+      orderBy: [{ position: 'asc' }, { createdAt: 'desc' }],
+      select: { id: true },
+    });
+    await this.prisma.$transaction(
+      tasks.map((task, index) =>
+        this.prisma.task.update({
+          where: { id: task.id },
+          data: { position: index + 1 },
+        }),
+      ),
+    );
   }
 
   private async assertRefsInWorkspace(workspaceId: string, refs: TaskRefs) {

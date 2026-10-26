@@ -72,7 +72,7 @@ export class TasksController {
     @Param('taskId', ParseUUIDPipe) taskId: string,
     @Body() dto: UpdateTaskStatusDto,
   ) {
-    return this.tasksService.changeStatus(workspaceId, taskId, dto.status);
+    return this.tasksService.changeStatus(workspaceId, taskId, dto);
   }
 
   @Roles(Role.OWNER, Role.EDITOR)
