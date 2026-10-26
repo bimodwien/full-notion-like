@@ -6,7 +6,7 @@ import { useDismiss } from '@/component/ui/use.dismiss';
 import { useWorkspaceDocuments } from '@/component/document/documents.context';
 import { DeleteTaskDialog } from '@/component/task/delete.task.dialog';
 import { Task, TaskStatus } from '@/model/task.model';
-import { NEXT_STATUS, STATUS_LABEL } from '@/util/task.board';
+import { STATUSES, STATUS_LABEL } from '@/util/task.board';
 
 const TRIGGER =
   '-my-3 -mr-2 grid h-11 w-9 shrink-0 cursor-pointer place-items-center rounded-sm text-ink-muted hover:bg-black/5 hover:text-ink aria-expanded:bg-black/5 aria-expanded:text-ink';
@@ -24,16 +24,15 @@ type MenuProps = {
   onDelete: () => void;
 };
 
-// The API only lets a task move one step forward.
 function TaskActionsMenu({ id, task, onAdvance, onDelete }: MenuProps) {
-  const next = NEXT_STATUS[task.status];
+  const targets = STATUSES.filter((status) => status !== task.status);
   return (
     <div id={id} className={`absolute top-8 right-0 w-52 ${MENU_SURFACE}`}>
-      {next && (
-        <button type="button" onClick={() => onAdvance(next)} className={MENU_ROW}>
-          Move to {STATUS_LABEL[next]}
+      {targets.map((status) => (
+        <button key={status} type="button" onClick={() => onAdvance(status)} className={MENU_ROW}>
+          Move to {STATUS_LABEL[status]}
         </button>
-      )}
+      ))}
       <button type="button" onClick={onDelete} className={MENU_ROW}>
         Delete
       </button>

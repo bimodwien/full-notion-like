@@ -33,6 +33,7 @@ export function useAdvanceTask(task: Task) {
       focusCard(task.id);
     } catch {
       setFailed(true);
+    } finally {
       setBusy(false);
     }
   }
