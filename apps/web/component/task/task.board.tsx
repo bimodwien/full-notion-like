@@ -1,11 +1,22 @@
+'use client';
+
+import { useState } from 'react';
+import { DndContext, DragEndEvent, DragOverlay, DragStartEvent, useDroppable } from '@dnd-kit/core';
 import { Task, TaskStatus } from '@/model/task.model';
 import { STATUSES, STATUS_LABEL, tasksWithStatus } from '@/util/task.board';
-import { TaskCard } from '@/component/task/task.card';
+import { useBoardSensors } from '@/component/task/board.sensors';
+import { DraggableTaskCard, TaskCardPreview } from '@/component/task/draggable.task.card';
+import { useMoveTask } from '@/component/task/use.move.task';
 
 function TaskColumn({ status, tasks }: { status: TaskStatus; tasks: Task[] }) {
+  const { setNodeRef, isOver } = useDroppable({ id: status });
   const headingId = `column-${status}`;
   return (
-    <section aria-labelledby={headingId} className="rounded-md bg-canvas-soft p-2">
+    <section
+      ref={setNodeRef}
+      aria-labelledby={headingId}
+      className={`rounded-md bg-canvas-soft p-2 ${isOver ? 'ring-2 ring-primary' : ''}`}
+    >
       <h2
         id={headingId}
         tabIndex={-1}
@@ -19,7 +30,7 @@ function TaskColumn({ status, tasks }: { status: TaskStatus; tasks: Task[] }) {
       ) : (
         <ul className="flex flex-col gap-2">
           {tasks.map((task) => (
-            <TaskCard key={task.id} task={task} />
+            <DraggableTaskCard key={task.id} task={task} />
           ))}
         </ul>
       )}
@@ -28,11 +39,33 @@ function TaskColumn({ status, tasks }: { status: TaskStatus; tasks: Task[] }) {
 }
 
 export function TaskBoard({ tasks }: { tasks: Task[] }) {
+  const sensors = useBoardSensors();
+  const move = useMoveTask();
+  const [dragged, setDragged] = useState<Task | null>(null);
+
+  function handleDragStart({ active }: DragStartEvent) {
+    setDragged((active.data.current?.task as Task | undefined) ?? null);
+  }
+
+  function handleDragEnd({ active, over }: DragEndEvent) {
+    setDragged(null);
+    const task = active.data.current?.task as Task | undefined;
+    if (task && over) move(task, over.id as TaskStatus);
+  }
+
   return (
-    <div className="grid items-start gap-3 sm:grid-cols-2 xl:grid-cols-4">
-      {STATUSES.map((status) => (
-        <TaskColumn key={status} status={status} tasks={tasksWithStatus(tasks, status)} />
-      ))}
-    </div>
+    <DndContext
+      sensors={sensors}
+      onDragStart={handleDragStart}
+      onDragEnd={handleDragEnd}
+      onDragCancel={() => setDragged(null)}
+    >
+      <div className="grid items-start gap-3 sm:grid-cols-2 xl:grid-cols-4">
+        {STATUSES.map((status) => (
+          <TaskColumn key={status} status={status} tasks={tasksWithStatus(tasks, status)} />
+        ))}
+      </div>
+      <DragOverlay>{dragged && <TaskCardPreview task={dragged} />}</DragOverlay>
+    </DndContext>
   );
 }

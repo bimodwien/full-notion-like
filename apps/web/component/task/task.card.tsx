@@ -7,6 +7,7 @@ import { useAdvanceTask } from '@/component/task/use.advance.task';
 import { Task, TaskPriority } from '@/model/task.model';
 import { TaskAssignee } from '@/component/task/task.assignee';
 import { STATUS_LABEL } from '@/util/task.board';
+import type { useDraggable } from '@dnd-kit/core';
 
 const PRIORITY_TEXT: Record<TaskPriority, string> = {
   LOW: 'text-ink-muted',
@@ -14,15 +15,24 @@ const PRIORITY_TEXT: Record<TaskPriority, string> = {
   CRITICAL: 'font-medium text-error',
 };
 
-type Props = { task: Task; showStatus?: boolean };
+export type CardDrag = Pick<
+  ReturnType<typeof useDraggable>,
+  'setNodeRef' | 'listeners' | 'isDragging'
+>;
 
-export function TaskCard({ task, showStatus = false }: Props) {
+const DRAG_CLASS = 'cursor-grab touch-manipulation';
+
+type Props = { task: Task; showStatus?: boolean; drag?: CardDrag };
+
+export function TaskCard({ task, showStatus = false, drag }: Props) {
   const { failed, advance } = useAdvanceTask(task);
   return (
     <li
+      ref={drag?.setNodeRef}
+      {...drag?.listeners}
       tabIndex={-1}
       data-task-card={task.id}
-      className="group relative flex flex-col gap-2 rounded-sm border border-hairline bg-canvas p-3 hover:border-field"
+      className={`group relative flex flex-col gap-2 rounded-sm border border-hairline bg-canvas p-3 hover:border-field ${drag ? DRAG_CLASS : ''} ${drag?.isDragging ? 'opacity-40' : ''}`}
     >
       <div className="flex items-start gap-2">
         <TaskOpenButton task={task} />
