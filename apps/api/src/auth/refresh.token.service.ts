@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { createHash, randomBytes } from 'node:crypto';
 import { PrismaService } from '../prisma/prisma.service';
 
-const REFRESH_TTL_MS = 7 * 24 * 60 * 60 * 1000;
+export const REFRESH_TTL_MS = 7 * 24 * 60 * 60 * 1000;
 
 @Injectable()
 export class RefreshTokenService {

@@ -5,14 +5,21 @@ import {
   HttpCode,
   Post,
   Req,
+  Res,
   UseGuards,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import type { AuthenticatedRequest } from './authenticated.request';
+import type { Request, Response } from 'express';
 import { LoginDto } from './dto/login.dto';
-import { RefreshTokenDto } from './dto/refresh.token.dto';
 import { RegisterDto } from './dto/register.dto';
 import { JwtAuthGuard } from './jwt.auth.guard';
+import {
+  clearAuthCookies,
+  setAuthCookies,
+  REFRESH_COOKIE,
+  readCookie,
+} from './auth.cookies';
 
 @Controller('auth')
 export class AuthController {
@@ -24,21 +31,38 @@ export class AuthController {
   }
 
   @Post('login')
-  @HttpCode(200)
-  login(@Body() dto: LoginDto) {
-    return this.authService.login(dto);
+  @HttpCode(204)
+  async login(
+    @Body() dto: LoginDto,
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    setAuthCookies(res, await this.authService.login(dto));
   }
 
   @Post('refresh')
-  @HttpCode(200)
-  refresh(@Body() dto: RefreshTokenDto) {
-    return this.authService.refresh(dto.refreshToken);
+  @HttpCode(204)
+  async refresh(
+    @Req() req: Request,
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    try {
+      setAuthCookies(
+        res,
+        await this.authService.refresh(readCookie(req, REFRESH_COOKIE)),
+      );
+    } catch (error) {
+      // A dead refresh cookie would keep proxy.ts treating the visitor as signed in.
+      clearAuthCookies(res);
+      throw error;
+    }
   }
 
   @Post('logout')
   @HttpCode(204)
-  async logout(@Body() dto: RefreshTokenDto) {
-    await this.authService.logout(dto.refreshToken);
+  async logout(@Req() req: Request, @Res({ passthrough: true }) res: Response) {
+    const refreshToken = readCookie(req, REFRESH_COOKIE);
+    if (refreshToken) await this.authService.logout(refreshToken);
+    clearAuthCookies(res);
   }
 
   @UseGuards(JwtAuthGuard)

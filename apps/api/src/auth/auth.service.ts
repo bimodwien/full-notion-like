@@ -51,8 +51,9 @@ export class AuthService {
     return this.issueTokens(user.id);
   }
 
-  async refresh(refreshToken: string) {
-    const userId = await this.refreshTokenService.consume(refreshToken);
+  async refresh(refreshToken: string | undefined) {
+    const userId =
+      refreshToken && (await this.refreshTokenService.consume(refreshToken));
     if (!userId) throw new UnauthorizedException('Invalid refresh token');
     return this.issueTokens(userId);
   }
