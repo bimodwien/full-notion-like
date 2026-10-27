@@ -4,17 +4,19 @@ import { toast } from 'sonner';
 import { buttonStyles } from '@/component/ui/button.styles';
 import { useAuth } from '@/context/auth.context';
 import { logout } from '@/helper/auth.api';
-import { getRefreshToken } from '@/util/token.storage';
 
 export function SignOutButton({ className = buttonStyles('utility') }: { className?: string }) {
   const { signOut } = useAuth();
 
-  function handleClick() {
-    const refreshToken = getRefreshToken();
-    // Not awaited: this browser signs out even when the server can't be reached.
-    if (refreshToken) logout(refreshToken).catch(() => undefined);
-    signOut();
-    toast('Signed out.');
+  // Only the API can clear httpOnly cookies, so signing out waits for it.
+  async function handleClick() {
+    try {
+      await logout();
+      signOut();
+      toast('Signed out.');
+    } catch {
+      toast("Couldn't sign out. Check your connection and try again.");
+    }
   }
 
   return (

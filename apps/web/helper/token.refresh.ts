@@ -1,19 +1,18 @@
 import { isAxiosError } from 'axios';
-import { refreshTokens } from './auth.api';
-import { clearTokens, getRefreshToken, saveTokens } from '@/util/token.storage';
+import { refreshSession } from './auth.api';
+import { hasSession, notifySession } from '@/util/session.cookie';
 
-let pending: Promise<string | null> | null = null;
+let pending: Promise<boolean> | null = null;
 
 async function runRefresh() {
-  const refreshToken = getRefreshToken();
-  if (!refreshToken) return null;
+  if (!hasSession()) return false;
   try {
-    const tokens = await refreshTokens(refreshToken);
-    saveTokens(tokens);
-    return tokens.accessToken;
+    await refreshSession();
+    return true;
   } catch (error) {
-    if (isAxiosError(error) && error.response?.status === 401) clearTokens();
-    return null;
+    // The API already cleared the cookies; the UI only needs to hear about it.
+    if (isAxiosError(error) && error.response?.status === 401) notifySession();
+    return false;
   }
 }
 

@@ -1,21 +1,15 @@
 import axios from 'axios';
 import { api } from '@/lib/axios';
-import {
-  AuthToken,
-  RegisterInput,
-  RegisteredUser,
-  LoginInput,
-  UserProfile,
-} from '@/model/auth.model';
+import { RegisterInput, RegisteredUser, LoginInput, UserProfile } from '@/model/auth.model';
 
 export async function register(input: RegisterInput) {
   const { data } = await api.post<RegisteredUser>('/auth/register', input);
   return data;
 }
 
+// The API answers with cookies, not tokens.
 export async function login(input: LoginInput) {
-  const { data } = await api.post<AuthToken>('/auth/login', input);
-  return data;
+  await api.post('/auth/login', input);
 }
 
 // The register endpoint returns the user without tokens, so sign in right after.
@@ -29,13 +23,13 @@ export async function getProfile() {
   return data;
 }
 
-export async function logout(refreshToken: string) {
-  await api.post('/auth/logout', { refreshToken });
+export async function logout() {
+  await api.post('/auth/logout');
 }
 
-export async function refreshTokens(refreshToken: string) {
-  const { data } = await axios.post<AuthToken>(`${process.env.NEXT_PUBLIC_API_URL}/auth/refresh`, {
-    refreshToken,
+// Plain axios, not `api`: a 401 here must not trigger another refresh.
+export async function refreshSession() {
+  await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/auth/refresh`, undefined, {
+    withCredentials: true,
   });
-  return data;
 }

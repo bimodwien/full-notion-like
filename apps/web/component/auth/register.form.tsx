@@ -41,7 +41,8 @@ function useRegisterForm() {
     setPending(true);
     try {
       // GuestOnly redirects once the status flips, so `pending` stays on until then.
-      signIn(await registerAndLogin(input));
+      await registerAndLogin(input);
+      signIn();
       toast('Account created.');
     } catch (error) {
       setFormError(authErrorMessage(error));

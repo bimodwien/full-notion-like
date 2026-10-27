@@ -41,7 +41,8 @@ function useSigninForm() {
     setPending(true);
     try {
       // GuestOnly redirects once the status flips, so `pending` stays on until then.
-      signIn(await login(input));
+      await login(input);
+      signIn();
       toast('Signed in.');
     } catch (error) {
       setFormError(authErrorMessage(error));

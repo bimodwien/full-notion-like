@@ -1,8 +1,3 @@
-export type AuthToken = {
-  accessToken: string;
-  refreshToken: string;
-};
-
 export type RegisterInput = {
   email: string;
   name: string;
@@ -24,7 +19,7 @@ export type AuthStatus = 'loading' | 'authenticated' | 'unauthenticated';
 
 export type AuthContextValue = {
   status: AuthStatus;
-  signIn: (tokens: AuthToken) => void;
+  signIn: () => void;
   signOut: () => void;
 };
 

@@ -2,12 +2,12 @@
 
 import { createContext, useContext, useSyncExternalStore } from 'react';
 import { AuthContextValue, AuthStatus } from '@/model/auth.model';
-import { clearTokens, getAccessToken, saveTokens, subscribeTokens } from '@/util/token.storage';
+import { hasSession, notifySession, subscribeSession } from '@/util/session.cookie';
 
 const AuthContext = createContext<AuthContextValue | null>(null);
 
 function getSnapshot(): AuthStatus {
-  return getAccessToken() ? 'authenticated' : 'unauthenticated';
+  return hasSession() ? 'authenticated' : 'unauthenticated';
 }
 
 function getServerSnapshot(): AuthStatus {
@@ -15,10 +15,10 @@ function getServerSnapshot(): AuthStatus {
 }
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const status = useSyncExternalStore(subscribeTokens, getSnapshot, getServerSnapshot);
+  const status = useSyncExternalStore(subscribeSession, getSnapshot, getServerSnapshot);
 
   return (
-    <AuthContext.Provider value={{ status, signIn: saveTokens, signOut: clearTokens }}>
+    <AuthContext.Provider value={{ status, signIn: notifySession, signOut: notifySession }}>
       {children}
     </AuthContext.Provider>
   );
