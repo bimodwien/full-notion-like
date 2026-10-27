@@ -50,7 +50,7 @@
     "@types/supertest": "^7.2.1",
     "jest": "^30.5.2",
     "oxlint": "^1.89.0",
-    "oxlint-tsgolint": "^7.0.2004",
+    "oxlint-tsgolint": "^7.0.2005",
     "prettier": "^3.9.10",
     "prisma": "7.10.1",
     "source-map-support": "^0.5.21",
