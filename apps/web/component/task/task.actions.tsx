@@ -25,14 +25,21 @@ type MenuProps = {
 };
 
 function TaskActionsMenu({ id, task, onAdvance, onDelete }: MenuProps) {
+  const labelId = useId();
   const targets = STATUSES.filter((status) => status !== task.status);
   return (
     <div id={id} className={`absolute top-8 right-0 w-52 ${MENU_SURFACE}`}>
-      {targets.map((status) => (
-        <button key={status} type="button" onClick={() => onAdvance(status)} className={MENU_ROW}>
-          Move to {STATUS_LABEL[status]}
-        </button>
-      ))}
+      <div role="group" aria-labelledby={labelId}>
+        <p id={labelId} className="px-2 py-1 text-xs text-ink-muted">
+          Move to
+        </p>
+        {targets.map((status) => (
+          <button key={status} type="button" onClick={() => onAdvance(status)} className={MENU_ROW}>
+            {STATUS_LABEL[status]}
+          </button>
+        ))}
+      </div>
+      <div className="my-1 border-t border-hairline" />
       <button type="button" onClick={onDelete} className={MENU_ROW}>
         Delete
       </button>
