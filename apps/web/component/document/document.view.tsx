@@ -7,6 +7,7 @@ import { useWorkspaceDocuments } from '@/component/document/documents.context';
 import { TitleField } from '@/component/document/title.field';
 import { PageTasks } from '@/component/task/page.tasks';
 import { DocumentContent } from '@/component/document/document.content';
+import { ShortcutsButton } from '@/component/document/shortcuts.button';
 
 function MissingPage() {
   return (
@@ -52,7 +53,8 @@ function DocumentBody({ documentId }: { documentId: string }) {
     <>
       {canEdit ? (
         <>
-          <div className="mb-6 flex justify-end">
+          <div className="mb-6 flex justify-end gap-2">
+            <ShortcutsButton />
             <DeletePageButton document={document} />
           </div>
           {/* Keyed so switching pages resets the unsaved draft. */}
