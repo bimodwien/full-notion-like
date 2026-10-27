@@ -1,0 +1,94 @@
+.tiptap {
+  line-height: 1.6;
+}
+
+.tiptap > * + * {
+  margin-top: 0.5em;
+}
+
+.tiptap > :first-child {
+  margin-top: 0;
+}
+
+/* The page title is already h1-sized, so headings inside the page step down one size. */
+.tiptap h1 {
+  margin-top: 1.5em;
+  font-size: var(--text-h2);
+  line-height: var(--text-h2--line-height);
+  letter-spacing: var(--text-h2--letter-spacing);
+  font-weight: var(--text-h2--font-weight);
+}
+
+.tiptap h2 {
+  margin-top: 1.25em;
+  font-size: var(--text-h3);
+  line-height: var(--text-h3--line-height);
+  letter-spacing: var(--text-h3--letter-spacing);
+  font-weight: var(--text-h3--font-weight);
+}
+
+.tiptap h3 {
+  margin-top: 1em;
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.tiptap ul {
+  list-style: disc;
+  padding-left: 1.5em;
+}
+
+.tiptap ol {
+  list-style: decimal;
+  padding-left: 1.5em;
+}
+
+.tiptap blockquote {
+  border-left: 3px solid var(--color-hairline);
+  padding-left: 1em;
+  color: var(--color-ink-secondary);
+}
+
+.tiptap code {
+  font-family: var(--font-mono);
+  font-size: 0.875em;
+  background: var(--color-canvas-soft);
+  padding: 0.1em 0.3em;
+  border-radius: 4px;
+}
+
+.tiptap pre {
+  font-family: var(--font-mono);
+  background: var(--color-canvas-soft);
+  padding: 1em;
+  border-radius: 6px;
+  overflow-x: auto;
+}
+
+.tiptap pre code {
+  background: none;
+  padding: 0;
+}
+
+.tiptap hr {
+  margin: 1.5em 0;
+  border-top: 1px solid var(--color-hairline);
+}
+
+.tiptap a {
+  color: var(--color-primary);
+  text-decoration: underline;
+}
+
+/* The caret marks focus in a writing surface; a box around the whole page adds noise. */
+.tiptap:focus-visible {
+  outline: none;
+}
+
+.tiptap .is-empty::before {
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  color: var(--color-ink-faint);
+  pointer-events: none;
+}

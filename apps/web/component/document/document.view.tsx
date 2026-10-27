@@ -6,6 +6,7 @@ import { DeletePageButton } from '@/component/document/delete.page.button';
 import { useWorkspaceDocuments } from '@/component/document/documents.context';
 import { TitleField } from '@/component/document/title.field';
 import { PageTasks } from '@/component/task/page.tasks';
+import { DocumentContent } from '@/component/document/document.content';
 
 function MissingPage() {
   return (
@@ -60,6 +61,7 @@ function DocumentBody({ documentId }: { documentId: string }) {
       ) : (
         <h1 className="text-h1 wrap-break-word text-ink">{document.title}</h1>
       )}
+      <DocumentContent key={`content-${document.id}`} documentId={document.id} editable={canEdit} />
       <PageTasks key={document.id} documentId={document.id} />
     </>
   );
