@@ -11,6 +11,9 @@ export type NewTask = {
   reviewerId?: string;
 };
 
+// The cards that will sit directly above and below it; leave both out to go to the top.
+export type TaskPlace = { aboveId?: string; belowId?: string };
+
 // Mirrors UpdateTaskDto: a missing field stays as it is, null clears it.
 export type TaskChanges = {
   title?: string;
@@ -38,9 +41,15 @@ export async function updateTask(workspaceId: string, taskId: string, changes: T
   return data;
 }
 
-export async function changeTaskStatus(workspaceId: string, taskId: string, status: TaskStatus) {
+export async function changeTaskStatus(
+  workspaceId: string,
+  taskId: string,
+  status: TaskStatus,
+  place: TaskPlace = {},
+) {
   const { data } = await api.patch<Task>(`/workspaces/${workspaceId}/tasks/${taskId}/status`, {
     status,
+    ...place,
   });
   return data;
 }

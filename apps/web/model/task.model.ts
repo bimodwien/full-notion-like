@@ -13,6 +13,7 @@ export type Task = {
   description: string | null;
   priority: TaskPriority;
   status: TaskStatus;
+  position: number;
   createdAt: string;
   updatedAt: string;
 };

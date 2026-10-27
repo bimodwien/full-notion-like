@@ -7,7 +7,8 @@ import { useAdvanceTask } from '@/component/task/use.advance.task';
 import { Task, TaskPriority } from '@/model/task.model';
 import { TaskAssignee } from '@/component/task/task.assignee';
 import { STATUS_LABEL } from '@/util/task.board';
-import type { useDraggable } from '@dnd-kit/core';
+import type { CSSProperties } from 'react';
+import type { useSortable } from '@dnd-kit/sortable';
 
 const PRIORITY_TEXT: Record<TaskPriority, string> = {
   LOW: 'text-ink-muted',
@@ -16,9 +17,9 @@ const PRIORITY_TEXT: Record<TaskPriority, string> = {
 };
 
 export type CardDrag = Pick<
-  ReturnType<typeof useDraggable>,
+  ReturnType<typeof useSortable>,
   'setNodeRef' | 'listeners' | 'isDragging'
->;
+> & { style: CSSProperties };
 
 const DRAG_CLASS = 'cursor-grab touch-manipulation';
 
@@ -29,6 +30,7 @@ export function TaskCard({ task, showStatus = false, drag }: Props) {
   return (
     <li
       ref={drag?.setNodeRef}
+      style={drag?.style}
       {...drag?.listeners}
       tabIndex={-1}
       data-task-card={task.id}

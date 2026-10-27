@@ -10,5 +10,5 @@ export const STATUS_LABEL: Record<TaskStatus, string> = {
 };
 
 export function tasksWithStatus(tasks: Task[], status: TaskStatus) {
-  return tasks.filter((task) => task.status === status);
+  return tasks.filter((task) => task.status === status).sort((a, b) => a.position - b.position);
 }

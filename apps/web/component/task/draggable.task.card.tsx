@@ -1,12 +1,18 @@
 'use client';
 
-import { useDraggable } from '@dnd-kit/core';
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 import { TaskCard } from '@/component/task/task.card';
 import { Task } from '@/model/task.model';
 
 export function DraggableTaskCard({ task }: { task: Task }) {
-  const { setNodeRef, listeners, isDragging } = useDraggable({ id: task.id, data: { task } });
-  return <TaskCard task={task} drag={{ setNodeRef, listeners, isDragging }} />;
+  const { setNodeRef, listeners, isDragging, transform, transition } = useSortable({
+    id: task.id,
+    data: { task },
+  });
+  // Translate, not Transform: cards differ in height, so scaling them to fit would squash the text.
+  const style = { transform: CSS.Translate.toString(transform), transition };
+  return <TaskCard task={task} drag={{ setNodeRef, listeners, isDragging, style }} />;
 }
 
 // What follows the pointer while dragging: the title only, no buttons to tab into.
