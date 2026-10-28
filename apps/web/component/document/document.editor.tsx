@@ -14,7 +14,7 @@ export function DocumentEditor({ ydoc, editable }: { ydoc: Y.Doc; editable: bool
       StarterKit.configure({ heading: { levels: [1, 2, 3] }, undoRedo: false }),
       Placeholder.configure({
         placeholder: ({ node }) =>
-          node.type.name === 'heading' ? 'Heading' : 'Type "# " for a heading, "- " for a list',
+          node.type.name === 'heading' ? 'Heading' : 'Start your journey here...',
       }),
       Collaboration.configure({ document: ydoc }),
     ],
