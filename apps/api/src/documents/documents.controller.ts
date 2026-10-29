@@ -54,6 +54,16 @@ export class DocumentsController {
     return this.documentsService.findOne(workspaceId, documentId);
   }
 
+  @Get(':documentId/access')
+  async access(
+    @Req() req: AuthenticatedRequest,
+    @Param('workspaceId') workspaceId: string,
+    @Param('documentId', ParseUUIDPipe) documentId: string,
+  ) {
+    await this.documentsService.findOne(workspaceId, documentId);
+    return { role: req.member!.role };
+  }
+
   @Roles(Role.OWNER, Role.EDITOR)
   @Patch(':documentId')
   update(
