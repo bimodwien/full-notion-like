@@ -5,6 +5,7 @@ import { useWorkspaceDocuments } from '@/component/document/documents.context';
 import { DocumentEditor } from '@/component/document/document.editor';
 import { useDocumentContent } from '@/component/document/use.document.content';
 import { useContentAutosave } from '@/component/document/use.content.autosave';
+import { useDocumentSync } from '@/component/document/use.document.sync';
 
 export function DocumentContent({
   documentId,
@@ -17,6 +18,7 @@ export function DocumentContent({
   const { state, retry } = useDocumentContent(workspaceId, documentId);
   const ydoc = state.kind === 'ready' ? state.ydoc : null;
   useContentAutosave(workspaceId, documentId, editable ? ydoc : null);
+  useDocumentSync(workspaceId, documentId, ydoc);
 
   if (state.kind === 'loading') {
     return (
