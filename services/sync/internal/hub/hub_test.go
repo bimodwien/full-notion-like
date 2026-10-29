@@ -55,6 +55,22 @@ func TestServeRemovesEmptyRoom(t *testing.T) {
 	}
 }
 
+func TestServeFiltersReadOnlyClients(t *testing.T) {
+	h := New()
+	url := startServer(t, h)
+	viewer := dial(t, url+"/doc1?readonly")
+	editor := dial(t, url+"/doc1")
+	waitForClients(t, h, "/doc1", 2)
+
+	send(t, viewer, "\x01presence")
+	if got := receive(t, editor); got != "\x01presence" {
+		t.Fatalf("editor got %q, want the presence message", got)
+	}
+
+	send(t, viewer, "\x00\x02update")
+	expectSilence(t, editor)
+}
+
 func startServer(t *testing.T, h *Hub) string {
 	t.Helper()
 	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -63,7 +79,8 @@ func startServer(t *testing.T, h *Hub) string {
 			return
 		}
 		defer conn.CloseNow()
-		h.Serve(r.Context(), r.URL.Path, conn)
+		readOnly := r.URL.Query().Has("readonly")
+		h.Serve(r.Context(), r.URL.Path, conn, !readOnly)
 	}))
 	t.Cleanup(srv.Close)
 	return "ws" + strings.TrimPrefix(srv.URL, "http")

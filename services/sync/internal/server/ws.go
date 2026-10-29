@@ -31,8 +31,9 @@ func wsHandler(webOrigin string, h *hub.Hub, access *auth.Access) http.HandlerFu
 		defer conn.CloseNow()
 		conn.SetReadLimit(maxMessageSize)
 
+		canWrite := role == "OWNER" || role == "EDITOR"
 		log.Printf("ws open: %s (%s)", documentID, role)
-		h.Serve(r.Context(), documentID, conn)
+		h.Serve(r.Context(), documentID, conn, canWrite)
 		log.Printf("ws closed: %s", documentID)
 	}
 }

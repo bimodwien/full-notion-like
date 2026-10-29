@@ -18,7 +18,7 @@ func New() *Hub {
 
 // Serve relays conn's messages to the other clients on the same document
 // and blocks until the connection closes.
-func (h *Hub) Serve(ctx context.Context, documentID string, conn *websocket.Conn) {
+func (h *Hub) Serve(ctx context.Context, documentID string, conn *websocket.Conn, canWrite bool) {
 	c := newClient(conn)
 	room := h.join(documentID, c)
 	defer h.leave(documentID, c)
@@ -29,6 +29,9 @@ func (h *Hub) Serve(ctx context.Context, documentID string, conn *websocket.Conn
 		_, msg, err := conn.Read(ctx)
 		if err != nil {
 			return
+		}
+		if !canWrite && !readOnlyAllows(msg) {
+			continue
 		}
 		room.broadcast(c, msg)
 	}
