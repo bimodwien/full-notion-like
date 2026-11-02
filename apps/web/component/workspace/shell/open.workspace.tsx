@@ -67,7 +67,7 @@ function pickWorkspace(workspaces: Workspace[]) {
 export function OpenWorkspace() {
   const { state, retry } = useWorkspaces();
   const router = useRouter();
-  const targetId = state.kind === 'ready' ? pickWorkspace(state.workspaces) : undefined;
+  const targetId = state.kind === 'ready' ? pickWorkspace(state.items) : undefined;
 
   useEffect(() => {
     // replace, not push: Back must skip this page or it would redirect forward again.

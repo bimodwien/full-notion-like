@@ -1,46 +1,17 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { LoadedList, useLoadedList } from '@/component/ui/use.loaded.list';
 import { getWorkspaces } from '@/helper/workspace.api';
 import { Workspace } from '@/model/workspace.model';
 
-export type WorkspacesState =
-  { kind: 'loading' } | { kind: 'error' } | { kind: 'ready'; workspaces: Workspace[] };
+export type WorkspacesState = LoadedList<Workspace>;
 
 export function findWorkspace(state: WorkspacesState, workspaceId: string) {
-  return state.kind === 'ready' ? state.workspaces.find(({ id }) => id === workspaceId) : undefined;
+  return state.kind === 'ready' ? state.items.find(({ id }) => id === workspaceId) : undefined;
 }
 
 export function useWorkspaces() {
-  const [state, setState] = useState<WorkspacesState>({ kind: 'loading' });
-  const [attempt, setAttempt] = useState(0);
-
-  useEffect(() => {
-    let active = true;
-    getWorkspaces()
-      .then((workspaces) => {
-        if (active) setState({ kind: 'ready', workspaces });
-      })
-      .catch(() => {
-        if (active) setState({ kind: 'error' });
-      });
-    return () => {
-      active = false;
-    };
-  }, [attempt]);
-
-  function retry() {
-    setState({ kind: 'loading' });
-    setAttempt((count) => count + 1);
-  }
-
-  function updateList(change: (workspaces: Workspace[]) => Workspace[]) {
-    setState((current) =>
-      current.kind === 'ready'
-        ? { kind: 'ready', workspaces: change(current.workspaces) }
-        : current,
-    );
-  }
+  const { state, retry, updateList } = useLoadedList(getWorkspaces);
 
   // Newest first, matching the API's order.
   function add(workspace: Workspace) {

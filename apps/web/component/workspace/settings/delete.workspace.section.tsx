@@ -21,7 +21,7 @@ function useDeleteWorkspace(workspace: Workspace) {
   return async function deleteAndLeave() {
     await deleteWorkspace(workspace.id);
     const next =
-      state.kind === 'ready' ? state.workspaces.find(({ id }) => id !== workspace.id) : undefined;
+      state.kind === 'ready' ? state.items.find(({ id }) => id !== workspace.id) : undefined;
     toast('Workspace deleted.');
     // Same transition, so this page never renders "doesn't exist" on the way out.
     startTransition(() => {

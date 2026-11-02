@@ -72,7 +72,7 @@ function WorkspaceRows({ state, currentId, onPick, onRetry }: Omit<MenuProps, 'i
   }
   return (
     <ul>
-      {state.workspaces.map((workspace) => (
+      {state.items.map((workspace) => (
         <WorkspaceRow
           key={workspace.id}
           workspace={workspace}
