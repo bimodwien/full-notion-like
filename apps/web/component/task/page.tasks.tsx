@@ -26,12 +26,12 @@ function PageTasksBody() {
       </div>
     );
   }
-  if (state.tasks.length === 0) {
+  if (state.items.length === 0) {
     return <p className="text-body-sm text-ink-muted">No tasks are linked to this page yet.</p>;
   }
   return (
     <ul className="flex flex-col gap-2">
-      {state.tasks.map((task) => (
+      {state.items.map((task) => (
         <TaskCard key={task.id} task={task} showStatus />
       ))}
     </ul>

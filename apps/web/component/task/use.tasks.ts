@@ -1,39 +1,15 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useCallback } from 'react';
+import { LoadedList, useLoadedList } from '@/component/ui/use.loaded.list';
 import { getTasks } from '@/helper/task.api';
 import { Task } from '@/model/task.model';
 
-export type TasksState = { kind: 'loading' } | { kind: 'error' } | { kind: 'ready'; tasks: Task[] };
+export type TasksState = LoadedList<Task>;
 
 export function useTasks(workspaceId: string, documentId?: string) {
-  const [state, setState] = useState<TasksState>({ kind: 'loading' });
-  const [attempt, setAttempt] = useState(0);
-
-  useEffect(() => {
-    let active = true;
-    getTasks(workspaceId, documentId)
-      .then((tasks) => {
-        if (active) setState({ kind: 'ready', tasks });
-      })
-      .catch(() => {
-        if (active) setState({ kind: 'error' });
-      });
-    return () => {
-      active = false;
-    };
-  }, [workspaceId, documentId, attempt]);
-
-  function retry() {
-    setState({ kind: 'loading' });
-    setAttempt((count) => count + 1);
-  }
-
-  function updateList(change: (tasks: Task[]) => Task[]) {
-    setState((current) =>
-      current.kind === 'ready' ? { kind: 'ready', tasks: change(current.tasks) } : current,
-    );
-  }
+  const load = useCallback(() => getTasks(workspaceId, documentId), [workspaceId, documentId]);
+  const { state, retry, updateList } = useLoadedList(load);
 
   function add(task: Task) {
     updateList((tasks) => [task, ...tasks]);

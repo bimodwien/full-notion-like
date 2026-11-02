@@ -37,7 +37,7 @@ function TasksBody() {
       </div>
     );
   }
-  return <TaskBoard tasks={state.tasks} />;
+  return <TaskBoard tasks={state.items} />;
 }
 
 export function TasksView() {
