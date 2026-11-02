@@ -1,40 +1,15 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useCallback } from 'react';
+import { LoadedList, useLoadedList } from '@/component/ui/use.loaded.list';
 import { getMembers } from '@/helper/member.api';
 import { Member, MemberRole } from '@/model/member.model';
 
-export type MembersState =
-  { kind: 'loading' } | { kind: 'error' } | { kind: 'ready'; members: Member[] };
+export type MembersState = LoadedList<Member>;
 
 export function useMembers(workspaceId: string) {
-  const [state, setState] = useState<MembersState>({ kind: 'loading' });
-  const [attempt, setAttempt] = useState(0);
-
-  useEffect(() => {
-    let active = true;
-    getMembers(workspaceId)
-      .then((members) => {
-        if (active) setState({ kind: 'ready', members });
-      })
-      .catch(() => {
-        if (active) setState({ kind: 'error' });
-      });
-    return () => {
-      active = false;
-    };
-  }, [workspaceId, attempt]);
-
-  function retry() {
-    setState({ kind: 'loading' });
-    setAttempt((count) => count + 1);
-  }
-
-  function updateList(change: (members: Member[]) => Member[]) {
-    setState((current) =>
-      current.kind === 'ready' ? { kind: 'ready', members: change(current.members) } : current,
-    );
-  }
+  const load = useCallback(() => getMembers(workspaceId), [workspaceId]);
+  const { state, retry, updateList } = useLoadedList(load);
 
   function add(member: Member) {
     updateList((members) => [...members, member]);

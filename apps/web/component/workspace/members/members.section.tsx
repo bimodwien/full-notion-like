@@ -36,7 +36,7 @@ function MembersList({ workspaceId, members, heading }: BodyProps) {
   return (
     <>
       <ul className="divide-y divide-hairline border-y border-hairline">
-        {state.members.map((member) => (
+        {state.items.map((member) => (
           <MemberRow
             key={member.user.id}
             workspaceId={workspaceId}
@@ -50,7 +50,7 @@ function MembersList({ workspaceId, members, heading }: BodyProps) {
           />
         ))}
       </ul>
-      {state.members.length === 1 && (
+      {state.items.length === 1 && (
         <p className="mt-3 text-body-sm text-ink-muted">
           Only you so far. Add someone by email to work on pages together.
         </p>
@@ -62,7 +62,7 @@ function MembersList({ workspaceId, members, heading }: BodyProps) {
 export function MembersSection({ workspaceId }: { workspaceId: string }) {
   const members = useMembers(workspaceId);
   const heading = useRef<HTMLHeadingElement>(null);
-  const count = members.state.kind === 'ready' ? members.state.members.length : undefined;
+  const count = members.state.kind === 'ready' ? members.state.items.length : undefined;
 
   return (
     <section aria-labelledby="members-heading" className="mt-12 border-t border-hairline pt-8">

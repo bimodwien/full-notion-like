@@ -50,7 +50,7 @@ export function PersonField({ label, name, emptyLabel, value, members }: Props) 
         className={SELECT}
       >
         {members.kind === 'ready' ? (
-          <PeopleOptions members={members.members} value={value} emptyLabel={emptyLabel} />
+          <PeopleOptions members={members.items} value={value} emptyLabel={emptyLabel} />
         ) : (
           <option value={value ?? ''}>{failed ? 'Unavailable' : 'Loading members…'}</option>
         )}
