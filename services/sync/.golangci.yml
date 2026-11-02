@@ -1,0 +1,21 @@
+version: '2'
+
+linters:
+  default: standard
+  enable:
+    - bodyclose
+    - errorlint
+    - misspell
+  settings:
+    errcheck:
+      exclude-functions:
+        - (*github.com/coder/websocket.Conn).CloseNow
+        - (net/http.ResponseWriter).Write
+  exclusions:
+    presets:
+      - std-error-handling
+
+formatters:
+  enable:
+    - gofmt
+    - goimports

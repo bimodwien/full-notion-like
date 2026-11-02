@@ -14,8 +14,24 @@ jobs:
         with:
           node-version-file: .nvmrc
           cache: npm
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: services/sync/go.mod
+          cache-dependency-path: services/sync/go.sum
       - run: npm ci
       - run: npx prettier --check .
       - run: npm run lint
       - run: npm run build
       - run: npm test
+  golangci-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: services/sync/go.mod
+          cache-dependency-path: services/sync/go.sum
+      - uses: golangci/golangci-lint-action@v9
+        with:
+          version: v2.15.0
+          working-directory: services/sync

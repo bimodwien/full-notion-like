@@ -88,7 +88,7 @@ func startServer(t *testing.T, h *Hub) string {
 
 func dial(t *testing.T, url string) *websocket.Conn {
 	t.Helper()
-	conn, _, err := websocket.Dial(context.Background(), url, nil)
+	conn, _, err := websocket.Dial(context.Background(), url, nil) //nolint:bodyclose // coder/websocket closes the body itself
 	if err != nil {
 		t.Fatalf("dial %s: %v", url, err)
 	}
