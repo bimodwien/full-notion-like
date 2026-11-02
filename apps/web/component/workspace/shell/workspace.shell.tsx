@@ -8,6 +8,7 @@ import { useSidebarDrawer } from '@/component/workspace/shell/use.sidebar.drawer
 import { findWorkspace, WorkspacesState } from '@/component/workspace/use.workspaces';
 import { WorkspaceSidebar } from '@/component/workspace/shell/workspace.sidebar';
 import { WorkspaceSwitcher } from '@/component/workspace/switcher/workspace.switcher';
+import { WorkspaceAccessProvider } from '@/component/workspace/workspace.access.context';
 import { useWorkspacesContext, WorkspacesProvider } from '@/component/workspace/workspaces.context';
 import { saveLastWorkspace } from '@/util/last.workspace';
 
@@ -46,26 +47,31 @@ function ShellFrame({ children }: { children: React.ReactNode }) {
   );
 
   return (
-    <DocumentsProvider key={workspaceId} workspaceId={workspaceId} canEdit={canEdit}>
-      <div className="flex flex-1 flex-col md:flex-row">
-        <MobileTopBar
-          workspaceLabel={label}
-          open={drawer.open}
-          onOpen={drawer.show}
-          buttonRef={drawer.menuButton}
-        />
-        <WorkspaceSidebar
-          switcher={switcher}
-          open={drawer.open}
-          onClose={drawer.close}
-          closeButtonRef={drawer.closeButton}
-        />
-        {/* Inert while the drawer covers it, so Tab stays inside the drawer. */}
-        <main inert={drawer.open} className="min-w-0 flex-1 bg-canvas px-4 py-8 sm:px-12 md:py-10">
-          {children}
-        </main>
-      </div>
-    </DocumentsProvider>
+    <WorkspaceAccessProvider workspaceId={workspaceId} canEdit={canEdit}>
+      <DocumentsProvider key={workspaceId} workspaceId={workspaceId} canEdit={canEdit}>
+        <div className="flex flex-1 flex-col md:flex-row">
+          <MobileTopBar
+            workspaceLabel={label}
+            open={drawer.open}
+            onOpen={drawer.show}
+            buttonRef={drawer.menuButton}
+          />
+          <WorkspaceSidebar
+            switcher={switcher}
+            open={drawer.open}
+            onClose={drawer.close}
+            closeButtonRef={drawer.closeButton}
+          />
+          {/* Inert while the drawer covers it, so Tab stays inside the drawer. */}
+          <main
+            inert={drawer.open}
+            className="min-w-0 flex-1 bg-canvas px-4 py-8 sm:px-12 md:py-10"
+          >
+            {children}
+          </main>
+        </div>
+      </DocumentsProvider>
+    </WorkspaceAccessProvider>
   );
 }
 
