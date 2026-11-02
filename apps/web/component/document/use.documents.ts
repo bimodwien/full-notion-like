@@ -1,41 +1,16 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useCallback } from 'react';
+import { LoadedList, useLoadedList } from '@/component/ui/use.loaded.list';
 import { getDocuments } from '@/helper/document.api';
 import { WorkspaceDocument } from '@/model/document.model';
 import { subtreeIds } from '@/util/document.tree';
 
-export type DocumentsState =
-  { kind: 'loading' } | { kind: 'error' } | { kind: 'ready'; documents: WorkspaceDocument[] };
+export type DocumentsState = LoadedList<WorkspaceDocument>;
 
 export function useDocuments(workspaceId: string) {
-  const [state, setState] = useState<DocumentsState>({ kind: 'loading' });
-  const [attempt, setAttempt] = useState(0);
-
-  useEffect(() => {
-    let active = true;
-    getDocuments(workspaceId)
-      .then((documents) => {
-        if (active) setState({ kind: 'ready', documents });
-      })
-      .catch(() => {
-        if (active) setState({ kind: 'error' });
-      });
-    return () => {
-      active = false;
-    };
-  }, [workspaceId, attempt]);
-
-  function retry() {
-    setState({ kind: 'loading' });
-    setAttempt((count) => count + 1);
-  }
-
-  function updateList(change: (documents: WorkspaceDocument[]) => WorkspaceDocument[]) {
-    setState((current) =>
-      current.kind === 'ready' ? { kind: 'ready', documents: change(current.documents) } : current,
-    );
-  }
+  const load = useCallback(() => getDocuments(workspaceId), [workspaceId]);
+  const { state, retry, updateList } = useLoadedList(load);
 
   function add(document: WorkspaceDocument) {
     updateList((documents) => [...documents, document]);

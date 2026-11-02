@@ -42,7 +42,7 @@ export function PageField({ value }: { value: string | null }) {
         className={SELECT}
       >
         {state.kind === 'ready' ? (
-          <PageOptions documents={state.documents} />
+          <PageOptions documents={state.items} />
         ) : (
           <option value={value ?? ''}>{failed ? 'Unavailable' : 'Loading pages…'}</option>
         )}

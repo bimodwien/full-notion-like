@@ -47,7 +47,7 @@ function DocumentBody({ documentId }: { documentId: string }) {
   }
   if (state.kind === 'error') return <LoadError onRetry={retry} />;
 
-  const document = state.documents.find((doc) => doc.id === documentId);
+  const document = state.items.find((doc) => doc.id === documentId);
   if (!document) return <MissingPage />;
   return (
     <>

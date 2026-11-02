@@ -50,7 +50,7 @@ function DocumentsBody() {
   }
   return (
     <>
-      <DocumentRows documents={state.documents} />
+      <DocumentRows documents={state.items} />
       {canEdit && <NewPageButton />}
     </>
   );

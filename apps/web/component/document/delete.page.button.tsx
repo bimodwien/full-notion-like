@@ -25,7 +25,7 @@ function useDeletePage({ document, onDeleted }: DialogProps) {
 
   return async function deletePage(dialog: HTMLDialogElement | null) {
     await deleteDocument(workspaceId, document.id);
-    const documents = state.kind === 'ready' ? state.documents : [];
+    const documents = state.kind === 'ready' ? state.items : [];
     if (openId && subtreeIds(documents, document.id).has(openId)) {
       // Same transition, so the open page never renders "doesn't exist" on the way out.
       startTransition(() => {

@@ -75,7 +75,7 @@ export function MovePageDialog({ document, onClose, onMoved }: Props) {
   const ref = useRef<HTMLDialogElement>(null);
   const { state } = useWorkspaceDocuments();
   const { busy, failed, moveTo } = useMovePage(document, onMoved);
-  const targets = state.kind === 'ready' ? moveTargets(state.documents, document.id) : [];
+  const targets = state.kind === 'ready' ? moveTargets(state.items, document.id) : [];
   useShowModal(ref);
 
   return (

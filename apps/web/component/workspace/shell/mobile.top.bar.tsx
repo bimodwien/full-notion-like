@@ -10,7 +10,7 @@ function useCurrentTitle(fallback: string) {
   const { documentId } = useParams<{ documentId?: string }>();
   const { state } = useWorkspaceDocuments();
   if (state.kind !== 'ready' || !documentId) return fallback;
-  return state.documents.find((doc) => doc.id === documentId)?.title ?? fallback;
+  return state.items.find((doc) => doc.id === documentId)?.title ?? fallback;
 }
 
 type Props = {
