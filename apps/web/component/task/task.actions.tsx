@@ -3,7 +3,7 @@
 import { useId, useRef, useState } from 'react';
 import { MENU_ROW, MENU_SURFACE } from '@/component/ui/menu.styles';
 import { useDismiss } from '@/component/ui/use.dismiss';
-import { useWorkspaceDocuments } from '@/component/document/documents.context';
+import { useWorkspaceAccess } from '@/component/workspace/workspace.access.context';
 import { DeleteTaskDialog } from '@/component/task/delete.task.dialog';
 import { Task, TaskStatus } from '@/model/task.model';
 import { STATUSES, STATUS_LABEL } from '@/util/task.board';
@@ -50,7 +50,7 @@ function TaskActionsMenu({ id, task, onAdvance, onDelete }: MenuProps) {
 type Props = { task: Task; onAdvance: (to: TaskStatus) => void };
 
 export function TaskActions({ task, onAdvance }: Props) {
-  const { canEdit } = useWorkspaceDocuments();
+  const { canEdit } = useWorkspaceAccess();
   const [open, setOpen] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const root = useRef<HTMLDivElement>(null);

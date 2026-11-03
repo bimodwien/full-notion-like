@@ -1,13 +1,13 @@
 'use client';
 
 import { buttonStyles } from '@/component/ui/button.styles';
-import { useWorkspaceDocuments } from '@/component/document/documents.context';
+import { useWorkspaceAccess } from '@/component/workspace/workspace.access.context';
 import { NewTaskButton } from '@/component/task/new.task.button';
 import { TaskBoard } from '@/component/task/task.board';
 import { TasksProvider, useWorkspaceTasks } from '@/component/task/tasks.context';
 
 function TasksHeader() {
-  const { canEdit } = useWorkspaceDocuments();
+  const { canEdit } = useWorkspaceAccess();
   const { state } = useWorkspaceTasks();
   return (
     <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
@@ -41,7 +41,7 @@ function TasksBody() {
 }
 
 export function TasksView() {
-  const { workspaceId } = useWorkspaceDocuments();
+  const { workspaceId } = useWorkspaceAccess();
   return (
     <TasksProvider workspaceId={workspaceId}>
       <div className="mx-auto max-w-360">

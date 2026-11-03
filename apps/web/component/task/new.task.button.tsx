@@ -3,13 +3,13 @@
 import { useRef, useState } from 'react';
 import { toast } from 'sonner';
 import { buttonStyles } from '@/component/ui/button.styles';
-import { useWorkspaceDocuments } from '@/component/document/documents.context';
+import { useWorkspaceAccess } from '@/component/workspace/workspace.access.context';
 import { NewTaskDialog } from '@/component/task/new.task.dialog';
 import { Task } from '@/model/task.model';
 import { useWorkspaceTasks } from '@/component/task/tasks.context';
 
 export function NewTaskButton() {
-  const { workspaceId } = useWorkspaceDocuments();
+  const { workspaceId } = useWorkspaceAccess();
   const { add, documentId } = useWorkspaceTasks();
   const [open, setOpen] = useState(false);
   const trigger = useRef<HTMLButtonElement>(null);

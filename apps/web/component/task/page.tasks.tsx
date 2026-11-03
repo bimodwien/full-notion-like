@@ -1,7 +1,7 @@
 'use client';
 
 import { buttonStyles } from '@/component/ui/button.styles';
-import { useWorkspaceDocuments } from '@/component/document/documents.context';
+import { useWorkspaceAccess } from '@/component/workspace/workspace.access.context';
 import { TaskCard } from '@/component/task/task.card';
 import { TasksProvider, useWorkspaceTasks } from '@/component/task/tasks.context';
 import { NewTaskButton } from '@/component/task/new.task.button';
@@ -39,14 +39,14 @@ function PageTasksBody() {
 }
 
 function PageTasksAction() {
-  const { canEdit } = useWorkspaceDocuments();
+  const { canEdit } = useWorkspaceAccess();
   const { state } = useWorkspaceTasks();
   if (!canEdit || state.kind !== 'ready') return null;
   return <NewTaskButton />;
 }
 
 export function PageTasks({ documentId }: { documentId: string }) {
-  const { workspaceId } = useWorkspaceDocuments();
+  const { workspaceId } = useWorkspaceAccess();
   return (
     <TasksProvider workspaceId={workspaceId} documentId={documentId}>
       <section aria-labelledby="page-tasks-heading" className="mt-12 max-w-3xl">

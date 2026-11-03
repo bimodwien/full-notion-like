@@ -2,10 +2,10 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useWorkspaceDocuments } from '@/component/document/documents.context';
+import { useWorkspaceAccess } from '@/component/workspace/workspace.access.context';
 
 export function TasksLink() {
-  const { workspaceId } = useWorkspaceDocuments();
+  const { workspaceId } = useWorkspaceAccess();
   const pathname = usePathname();
   const href = `/workspaces/${workspaceId}/tasks`;
   const active = pathname === href;
