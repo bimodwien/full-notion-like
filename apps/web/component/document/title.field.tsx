@@ -33,13 +33,11 @@ function useAutoHeight(ref: RefObject<HTMLTextAreaElement | null>, value: string
   }, [ref, value]);
 }
 
-export function TitleField({ document }: { document: WorkspaceDocument }) {
+function useTitleDraft(document: WorkspaceDocument) {
   const { rename } = useWorkspaceDocuments();
   const [draft, setDraft] = useState(document.title);
   const [failed, setFailed] = useState(false);
   const saved = useRef(document.title);
-  const field = useRef<HTMLTextAreaElement>(null);
-  useAutoHeight(field, draft);
 
   // Rename the sidebar row right away; put the old title back if the API refuses.
   async function save() {
@@ -60,12 +58,24 @@ export function TitleField({ document }: { document: WorkspaceDocument }) {
     }
   }
 
+  function revert() {
+    setDraft(saved.current);
+  }
+
+  return { draft, setDraft, failed, save, revert };
+}
+
+export function TitleField({ document }: { document: WorkspaceDocument }) {
+  const { draft, setDraft, failed, save, revert } = useTitleDraft(document);
+  const field = useRef<HTMLTextAreaElement>(null);
+  useAutoHeight(field, draft);
+
   function handleKeyDown(event: KeyboardEvent<HTMLTextAreaElement>) {
     if (event.key === 'Enter' && !event.nativeEvent.isComposing) {
       event.preventDefault();
       event.currentTarget.blur();
     }
-    if (event.key === 'Escape') setDraft(saved.current);
+    if (event.key === 'Escape') revert();
   }
 
   return (

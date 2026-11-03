@@ -43,26 +43,46 @@ function useDeletePage({ document, onDeleted }: DialogProps) {
   };
 }
 
-// Mounted only while open, so a sidebar full of pages doesn't carry a dialog per row.
-export function DeletePageDialog(props: DialogProps) {
-  const { document, onClose } = props;
-  const ref = useRef<HTMLDialogElement>(null);
+function useConfirmDeletePage(props: DialogProps) {
   const deletePage = useDeletePage(props);
   const [busy, setBusy] = useState(false);
   const [failed, setFailed] = useState(false);
 
-  useShowModal(ref);
-
-  async function confirmDelete() {
+  async function confirm(dialog: HTMLDialogElement | null) {
     setBusy(true);
     setFailed(false);
     try {
-      await deletePage(ref.current);
+      await deletePage(dialog);
     } catch {
       setFailed(true);
       setBusy(false);
     }
   }
+
+  return { busy, failed, confirm };
+}
+
+type ButtonsProps = { busy: boolean; onCancel: () => void; onConfirm: () => void };
+
+function DeleteButtons({ busy, onCancel, onConfirm }: ButtonsProps) {
+  return (
+    <div className="mt-5 flex flex-wrap justify-end gap-2">
+      <button type="button" onClick={onCancel} className={buttonStyles('utility')}>
+        Cancel
+      </button>
+      <button type="button" onClick={onConfirm} disabled={busy} className={buttonStyles('danger')}>
+        {busy ? 'Deleting…' : 'Delete page'}
+      </button>
+    </div>
+  );
+}
+
+// Mounted only while open, so a sidebar full of pages doesn't carry a dialog per row.
+export function DeletePageDialog(props: DialogProps) {
+  const { document, onClose } = props;
+  const ref = useRef<HTMLDialogElement>(null);
+  const { busy, failed, confirm } = useConfirmDeletePage(props);
+  useShowModal(ref);
 
   return (
     <dialog
@@ -83,23 +103,11 @@ export function DeletePageDialog(props: DialogProps) {
           Couldn&apos;t delete the page. Try again.
         </p>
       )}
-      <div className="mt-5 flex flex-wrap justify-end gap-2">
-        <button
-          type="button"
-          onClick={() => ref.current?.close()}
-          className={buttonStyles('utility')}
-        >
-          Cancel
-        </button>
-        <button
-          type="button"
-          onClick={confirmDelete}
-          disabled={busy}
-          className={buttonStyles('danger')}
-        >
-          {busy ? 'Deleting…' : 'Delete page'}
-        </button>
-      </div>
+      <DeleteButtons
+        busy={busy}
+        onCancel={() => ref.current?.close()}
+        onConfirm={() => confirm(ref.current)}
+      />
     </dialog>
   );
 }

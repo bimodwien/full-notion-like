@@ -11,7 +11,7 @@ import { useWorkspaceDocuments } from '@/component/document/documents.context';
 import { useWorkspaceAccess } from '@/component/workspace/workspace.access.context';
 import { updateDocument } from '@/helper/document.api';
 import { WorkspaceDocument } from '@/model/document.model';
-import { moveTargets } from '@/util/document.tree';
+import { MoveTarget, moveTargets } from '@/util/document.tree';
 
 const INDENT_PX = 12;
 
@@ -66,6 +66,40 @@ function useMovePage(document: WorkspaceDocument, onMoved: (parentId: string | n
   return { busy, failed, moveTo };
 }
 
+type ListProps = {
+  document: WorkspaceDocument;
+  targets: MoveTarget[];
+  busy: boolean;
+  onPick: (parentId: string | null, label: string) => void;
+};
+
+function DestinationList({ document, targets, busy, onPick }: ListProps) {
+  return (
+    <ul
+      aria-label="Destinations"
+      className="mt-4 max-h-72 overflow-y-auto rounded-md border border-hairline p-1"
+    >
+      <TargetButton
+        label="Top level"
+        depth={0}
+        current={document.parentId === null}
+        busy={busy}
+        onPick={() => onPick(null, 'Top level')}
+      />
+      {targets.map(({ doc, depth }) => (
+        <TargetButton
+          key={doc.id}
+          label={doc.title}
+          depth={depth + 1}
+          current={doc.id === document.parentId}
+          busy={busy}
+          onPick={() => onPick(doc.id, doc.title)}
+        />
+      ))}
+    </ul>
+  );
+}
+
 type Props = {
   document: WorkspaceDocument;
   onClose: () => void;
@@ -93,28 +127,12 @@ export function MovePageDialog({ document, onClose, onMoved }: Props) {
       <p className="mt-2 text-base text-ink-muted">
         Pick where it goes. Pages inside it move along with it.
       </p>
-      <ul
-        aria-label="Destinations"
-        className="mt-4 max-h-72 overflow-y-auto rounded-md border border-hairline p-1"
-      >
-        <TargetButton
-          label="Top level"
-          depth={0}
-          current={document.parentId === null}
-          busy={busy}
-          onPick={() => moveTo(null, 'Top level', ref.current)}
-        />
-        {targets.map(({ doc, depth }) => (
-          <TargetButton
-            key={doc.id}
-            label={doc.title}
-            depth={depth + 1}
-            current={doc.id === document.parentId}
-            busy={busy}
-            onPick={() => moveTo(doc.id, doc.title, ref.current)}
-          />
-        ))}
-      </ul>
+      <DestinationList
+        document={document}
+        targets={targets}
+        busy={busy}
+        onPick={(parentId, label) => moveTo(parentId, label, ref.current)}
+      />
       {failed && (
         <p role="alert" className="mt-3 text-body-sm text-error">
           Couldn&apos;t move the page. Try again.
