@@ -7,6 +7,7 @@ import { buttonStyles } from '@/component/ui/button.styles';
 import { DIALOG_PANEL } from '@/component/ui/dialog.styles';
 import { useShowModal } from '@/component/ui/use.show.modal';
 import { useWorkspaceDocuments } from '@/component/document/documents.context';
+import { useWorkspaceAccess } from '@/component/workspace/workspace.access.context';
 import { deleteDocument } from '@/helper/document.api';
 import { WorkspaceDocument } from '@/model/document.model';
 import { subtreeIds } from '@/util/document.tree';
@@ -21,7 +22,8 @@ type DialogProps = {
 function useDeletePage({ document, onDeleted }: DialogProps) {
   const router = useRouter();
   const { documentId: openId } = useParams<{ documentId?: string }>();
-  const { workspaceId, state, remove } = useWorkspaceDocuments();
+  const { workspaceId } = useWorkspaceAccess();
+  const { state, remove } = useWorkspaceDocuments();
 
   return async function deletePage(dialog: HTMLDialogElement | null) {
     await deleteDocument(workspaceId, document.id);

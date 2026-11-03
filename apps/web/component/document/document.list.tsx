@@ -5,6 +5,7 @@ import { buttonStyles } from '@/component/ui/button.styles';
 import { DocumentRow, PageTree } from '@/component/document/document.row';
 import { NewPageButton } from '@/component/document/new.page.button';
 import { useWorkspaceDocuments } from '@/component/document/documents.context';
+import { useWorkspaceAccess } from '@/component/workspace/workspace.access.context';
 import { WorkspaceDocument } from '@/model/document.model';
 import { ancestorIds, childrenOf } from '@/util/document.tree';
 
@@ -29,7 +30,8 @@ function DocumentRows({ documents }: { documents: WorkspaceDocument[] }) {
 }
 
 function DocumentsBody() {
-  const { canEdit, state, retry } = useWorkspaceDocuments();
+  const { canEdit } = useWorkspaceAccess();
+  const { state, retry } = useWorkspaceDocuments();
 
   if (state.kind === 'loading') {
     return (

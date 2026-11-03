@@ -4,6 +4,7 @@ import { useParams } from 'next/navigation';
 import { buttonStyles } from '@/component/ui/button.styles';
 import { DeletePageButton } from '@/component/document/delete.page.button';
 import { useWorkspaceDocuments } from '@/component/document/documents.context';
+import { useWorkspaceAccess } from '@/component/workspace/workspace.access.context';
 import { TitleField } from '@/component/document/title.field';
 import { PageTasks } from '@/component/task/page.tasks';
 import { DocumentContent } from '@/component/document/document.content';
@@ -36,7 +37,8 @@ function LoadError({ onRetry }: { onRetry: () => void }) {
 }
 
 function DocumentBody({ documentId }: { documentId: string }) {
-  const { state, retry, canEdit } = useWorkspaceDocuments();
+  const { canEdit } = useWorkspaceAccess();
+  const { state, retry } = useWorkspaceDocuments();
 
   if (state.kind === 'loading') {
     return (

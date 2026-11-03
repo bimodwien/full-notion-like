@@ -8,6 +8,7 @@ import { DIALOG_PANEL } from '@/component/ui/dialog.styles';
 import { MENU_ROW } from '@/component/ui/menu.styles';
 import { useShowModal } from '@/component/ui/use.show.modal';
 import { useWorkspaceDocuments } from '@/component/document/documents.context';
+import { useWorkspaceAccess } from '@/component/workspace/workspace.access.context';
 import { updateDocument } from '@/helper/document.api';
 import { WorkspaceDocument } from '@/model/document.model';
 import { moveTargets } from '@/util/document.tree';
@@ -41,7 +42,8 @@ function TargetButton({ label, depth, current, busy, onPick }: TargetProps) {
 }
 
 function useMovePage(document: WorkspaceDocument, onMoved: (parentId: string | null) => void) {
-  const { workspaceId, move } = useWorkspaceDocuments();
+  const { workspaceId } = useWorkspaceAccess();
+  const { move } = useWorkspaceDocuments();
   const [busy, setBusy] = useState(false);
   const [failed, setFailed] = useState(false);
 

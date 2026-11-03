@@ -3,12 +3,14 @@
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useWorkspaceDocuments } from '@/component/document/documents.context';
+import { useWorkspaceAccess } from '@/component/workspace/workspace.access.context';
 import { createDocument } from '@/helper/document.api';
 
 // Shared by "New page" and the per-row "+": create, add to the sidebar, open it.
 export function useCreatePage() {
   const router = useRouter();
-  const { workspaceId, add } = useWorkspaceDocuments();
+  const { workspaceId } = useWorkspaceAccess();
+  const { add } = useWorkspaceDocuments();
   const [busy, setBusy] = useState(false);
   const [failed, setFailed] = useState(false);
 
