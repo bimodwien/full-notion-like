@@ -1,7 +1,7 @@
 'use client';
 
 import { buttonStyles } from '@/component/ui/button.styles';
-import { useWorkspaceDocuments } from '@/component/document/documents.context';
+import { useWorkspaceAccess } from '@/component/workspace/workspace.access.context';
 import { DocumentEditor } from '@/component/document/document.editor';
 import { useDocumentContent } from '@/component/document/use.document.content';
 import { useContentAutosave } from '@/component/document/use.content.autosave';
@@ -14,7 +14,7 @@ export function DocumentContent({
   documentId: string;
   editable: boolean;
 }) {
-  const { workspaceId } = useWorkspaceDocuments();
+  const { workspaceId } = useWorkspaceAccess();
   const { state, retry } = useDocumentContent(workspaceId, documentId);
   const ydoc = state.kind === 'ready' ? state.ydoc : null;
   useContentAutosave(workspaceId, documentId, editable ? ydoc : null);

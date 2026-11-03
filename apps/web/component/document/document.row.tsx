@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
-import { useWorkspaceDocuments } from '@/component/document/documents.context';
+import { useWorkspaceAccess } from '@/component/workspace/workspace.access.context';
 import { PageActions } from '@/component/document/page.actions';
 import { REVEAL_ON_ROW, ROW_ICON } from '@/component/document/row.styles';
 import { useCreatePage } from '@/component/document/use.create.page';
@@ -67,7 +67,7 @@ function useRowOpen(onTrail: boolean, activeId?: string) {
 type RowProps = { doc: WorkspaceDocument; tree: PageTree; depth: number };
 
 export function DocumentRow({ doc, tree, depth }: RowProps) {
-  const { canEdit } = useWorkspaceDocuments();
+  const { canEdit } = useWorkspaceAccess();
   const { busy, failed, create } = useCreatePage();
   const [open, setOpen] = useRowOpen(tree.trail.has(doc.id), tree.activeId);
   const children = childrenOf(tree.documents, doc.id);
