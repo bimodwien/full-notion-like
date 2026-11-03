@@ -12,7 +12,7 @@ import {
 import { Task, TaskStatus } from '@/model/task.model';
 import { STATUSES, STATUS_LABEL, tasksWithStatus } from '@/util/task.board';
 import { useBoardSensors } from '@/component/task/board.sensors';
-import { DraggableTaskCard, TaskCardPreview } from '@/component/task/draggable.task.card';
+import { SortableTaskCard, TaskCardPreview } from '@/component/task/sortable.task.card';
 import { useMoveTask } from '@/component/task/use.move.task';
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { dropTarget } from '@/util/task.drop';
@@ -44,7 +44,7 @@ function TaskColumn({ status, tasks }: { status: TaskStatus; tasks: Task[] }) {
         >
           <ul className="flex flex-col gap-2">
             {tasks.map((task) => (
-              <DraggableTaskCard key={task.id} task={task} />
+              <SortableTaskCard key={task.id} task={task} />
             ))}
           </ul>
         </SortableContext>

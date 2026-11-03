@@ -5,7 +5,7 @@ import { CSS } from '@dnd-kit/utilities';
 import { TaskCard } from '@/component/task/task.card';
 import { Task } from '@/model/task.model';
 
-export function DraggableTaskCard({ task }: { task: Task }) {
+export function SortableTaskCard({ task }: { task: Task }) {
   const { setNodeRef, listeners, isDragging, transform, transition } = useSortable({
     id: task.id,
     data: { task },
