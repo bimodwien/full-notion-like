@@ -54,11 +54,7 @@ export class TasksService {
     const task = await this.findInWorkspace(workspaceId, taskId);
     const { status, aboveId, belowId } = dto;
     const reorder = Boolean(aboveId || belowId);
-    if (status !== task.status && !canTransition(task.status, status)) {
-      throw new BadRequestException(
-        `Cannot change status from ${task.status} to ${status}`,
-      );
-    }
+
     if (status === task.status && !reorder) {
       throw new BadRequestException(`Task is already ${status}`);
     }
