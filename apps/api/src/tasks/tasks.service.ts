@@ -9,7 +9,6 @@ import { CreateTaskDto } from './dto/create.task.dto';
 import { UpdateTaskDto } from './dto/update.task.dto';
 import { ListTasksQueryDto } from './dto/list.tasks.query.dto';
 import { UpdateTaskStatusDto } from './dto/update.task.status.dto';
-import { canTransition } from './tasks.transitions';
 import { hasRoom, positionBetween } from './tasks.position';
 
 interface TaskRefs {
@@ -32,7 +31,7 @@ export class TasksService {
 
   list(workspaceId: string, query: ListTasksQueryDto) {
     return this.prisma.task.findMany({
-      where: { workspaceId, ...query },
+      where: { ...query, workspaceId },
       orderBy: [{ status: 'asc' }, { position: 'asc' }, { createdAt: 'desc' }],
     });
   }
