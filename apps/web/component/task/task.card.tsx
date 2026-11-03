@@ -3,7 +3,7 @@
 import { PRIORITY_LABEL } from '@/component/task/priority.field';
 import { TaskActions } from '@/component/task/task.actions';
 import { TaskOpenButton } from '@/component/task/task.open.button';
-import { useAdvanceTask } from '@/component/task/use.advance.task';
+import { useChangeTaskStatus } from '@/component/task/use.change.task.status';
 import { Task, TaskPriority } from '@/model/task.model';
 import { TaskAssignee } from '@/component/task/task.assignee';
 import { STATUS_LABEL } from '@/util/task.board';
@@ -26,7 +26,7 @@ const DRAG_CLASS = 'cursor-grab touch-manipulation';
 type Props = { task: Task; showStatus?: boolean; drag?: CardDrag };
 
 export function TaskCard({ task, showStatus = false, drag }: Props) {
-  const { failed, advance } = useAdvanceTask(task);
+  const { failed, changeStatus } = useChangeTaskStatus(task);
   return (
     <li
       ref={drag?.setNodeRef}
@@ -38,7 +38,7 @@ export function TaskCard({ task, showStatus = false, drag }: Props) {
     >
       <div className="flex items-start gap-2">
         <TaskOpenButton task={task} />
-        <TaskActions task={task} onAdvance={advance} />
+        <TaskActions task={task} onChangeStatus={changeStatus} />
       </div>
       <div className="flex items-center justify-between gap-2">
         <div className="flex items-center gap-3 text-xs">

@@ -20,11 +20,11 @@ function focusAfterDelete(status: TaskStatus) {
 type MenuProps = {
   id: string;
   task: Task;
-  onAdvance: (to: TaskStatus) => void;
+  onChangeStatus: (to: TaskStatus) => void;
   onDelete: () => void;
 };
 
-function TaskActionsMenu({ id, task, onAdvance, onDelete }: MenuProps) {
+function TaskActionsMenu({ id, task, onChangeStatus, onDelete }: MenuProps) {
   const labelId = useId();
   const targets = STATUSES.filter((status) => status !== task.status);
   return (
@@ -34,7 +34,12 @@ function TaskActionsMenu({ id, task, onAdvance, onDelete }: MenuProps) {
           Move to
         </p>
         {targets.map((status) => (
-          <button key={status} type="button" onClick={() => onAdvance(status)} className={MENU_ROW}>
+          <button
+            key={status}
+            type="button"
+            onClick={() => onChangeStatus(status)}
+            className={MENU_ROW}
+          >
             {STATUS_LABEL[status]}
           </button>
         ))}
@@ -47,9 +52,9 @@ function TaskActionsMenu({ id, task, onAdvance, onDelete }: MenuProps) {
   );
 }
 
-type Props = { task: Task; onAdvance: (to: TaskStatus) => void };
+type Props = { task: Task; onChangeStatus: (to: TaskStatus) => void };
 
-export function TaskActions({ task, onAdvance }: Props) {
+export function TaskActions({ task, onChangeStatus }: Props) {
   const { canEdit } = useWorkspaceAccess();
   const [open, setOpen] = useState(false);
   const [deleting, setDeleting] = useState(false);
@@ -59,10 +64,10 @@ export function TaskActions({ task, onAdvance }: Props) {
   useDismiss(open, setOpen, { root, trigger });
   if (!canEdit) return null;
 
-  function advance(to: TaskStatus) {
+  function changeStatus(to: TaskStatus) {
     setOpen(false);
     trigger.current?.focus();
-    onAdvance(to);
+    onChangeStatus(to);
   }
 
   function closeDialog() {
@@ -88,7 +93,7 @@ export function TaskActions({ task, onAdvance }: Props) {
         <TaskActionsMenu
           id={menuId}
           task={task}
-          onAdvance={advance}
+          onChangeStatus={changeStatus}
           onDelete={() => {
             setOpen(false);
             setDeleting(true);

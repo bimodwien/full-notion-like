@@ -16,13 +16,13 @@ function focusCard(taskId: string) {
   (actions ?? card)?.focus();
 }
 
-export function useAdvanceTask(task: Task) {
+export function useChangeTaskStatus(task: Task) {
   const { workspaceId } = useWorkspaceAccess();
   const { replace } = useWorkspaceTasks();
   const [busy, setBusy] = useState(false);
   const [failed, setFailed] = useState(false);
 
-  async function advance(to: TaskStatus) {
+  async function changeStatus(to: TaskStatus) {
     if (busy) return;
     setBusy(true);
     setFailed(false);
@@ -38,5 +38,5 @@ export function useAdvanceTask(task: Task) {
     }
   }
 
-  return { failed, advance };
+  return { failed, changeStatus };
 }
