@@ -1,6 +1,6 @@
 'use client';
 
-import { useId, useRef, useState } from 'react';
+import { RefObject, useId, useRef, useState } from 'react';
 import { MENU_ROW, MENU_SURFACE } from '@/component/ui/menu.styles';
 import { useDismiss } from '@/component/ui/use.dismiss';
 import { useWorkspaceAccess } from '@/component/workspace/workspace.access.context';
@@ -52,17 +52,42 @@ function TaskActionsMenu({ id, task, onChangeStatus, onDelete }: MenuProps) {
   );
 }
 
-type Props = { task: Task; onChangeStatus: (to: TaskStatus) => void };
+type TriggerProps = {
+  ref: RefObject<HTMLButtonElement | null>;
+  task: Task;
+  open: boolean;
+  menuId: string;
+  onToggle: () => void;
+};
 
-export function TaskActions({ task, onChangeStatus }: Props) {
-  const { canEdit } = useWorkspaceAccess();
+function ActionsTrigger({ ref, task, open, menuId, onToggle }: TriggerProps) {
+  return (
+    <button
+      ref={ref}
+      type="button"
+      onClick={onToggle}
+      aria-expanded={open}
+      aria-controls={menuId}
+      aria-label={`More actions for ${task.title}`}
+      data-task-actions={task.id}
+      className={TRIGGER}
+    >
+      <span aria-hidden="true">⋯</span>
+    </button>
+  );
+}
+
+// Open state and focus handling for the ⋯ menu and the delete dialog it launches.
+type MenuRefs = {
+  root: RefObject<HTMLDivElement | null>;
+  trigger: RefObject<HTMLButtonElement | null>;
+};
+
+function useActionsMenu({ root, trigger }: MenuRefs, onChangeStatus: (to: TaskStatus) => void) {
   const [open, setOpen] = useState(false);
   const [deleting, setDeleting] = useState(false);
-  const root = useRef<HTMLDivElement>(null);
-  const trigger = useRef<HTMLButtonElement>(null);
   const menuId = useId();
   useDismiss(open, setOpen, { root, trigger });
-  if (!canEdit) return null;
 
   function changeStatus(to: TaskStatus) {
     setOpen(false);
@@ -70,40 +95,49 @@ export function TaskActions({ task, onChangeStatus }: Props) {
     onChangeStatus(to);
   }
 
+  function startDelete() {
+    setOpen(false);
+    setDeleting(true);
+  }
+
   function closeDialog() {
     setDeleting(false);
     trigger.current?.focus();
   }
 
+  return { open, setOpen, deleting, menuId, changeStatus, startDelete, closeDialog };
+}
+
+type Props = { task: Task; onChangeStatus: (to: TaskStatus) => void };
+
+export function TaskActions({ task, onChangeStatus }: Props) {
+  const { canEdit } = useWorkspaceAccess();
+  const root = useRef<HTMLDivElement>(null);
+  const trigger = useRef<HTMLButtonElement>(null);
+  const menu = useActionsMenu({ root, trigger }, onChangeStatus);
+  if (!canEdit) return null;
+
   return (
     <div ref={root} className="relative">
-      <button
+      <ActionsTrigger
         ref={trigger}
-        type="button"
-        onClick={() => setOpen(!open)}
-        aria-expanded={open}
-        aria-controls={menuId}
-        aria-label={`More actions for ${task.title}`}
-        data-task-actions={task.id}
-        className={TRIGGER}
-      >
-        <span aria-hidden="true">⋯</span>
-      </button>
-      {open && (
+        task={task}
+        open={menu.open}
+        menuId={menu.menuId}
+        onToggle={() => menu.setOpen(!menu.open)}
+      />
+      {menu.open && (
         <TaskActionsMenu
-          id={menuId}
+          id={menu.menuId}
           task={task}
-          onChangeStatus={changeStatus}
-          onDelete={() => {
-            setOpen(false);
-            setDeleting(true);
-          }}
+          onChangeStatus={menu.changeStatus}
+          onDelete={menu.startDelete}
         />
       )}
-      {deleting && (
+      {menu.deleting && (
         <DeleteTaskDialog
           task={task}
-          onClose={closeDialog}
+          onClose={menu.closeDialog}
           onDeleted={() => focusAfterDelete(task.status)}
         />
       )}
