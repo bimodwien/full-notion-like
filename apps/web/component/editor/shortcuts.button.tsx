@@ -4,7 +4,7 @@ import { useRef, useState } from 'react';
 import { buttonStyles } from '@/component/ui/button.styles';
 import { DIALOG_PANEL_WIDE } from '@/component/ui/dialog.styles';
 import { useShowModal } from '@/component/ui/use.show.modal';
-import { BLOCK_SHORTCUTS, FORMAT_SHORTCUTS, Shortcut } from '@/component/document/editor.shortcuts';
+import { BLOCK_SHORTCUTS, FORMAT_SHORTCUTS, Shortcut } from '@/component/editor/editor.shortcuts';
 
 function keyLabel(key: string, isMac: boolean) {
   if (key === 'Mod') return isMac ? '⌘' : 'Ctrl';

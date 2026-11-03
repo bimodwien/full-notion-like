@@ -8,7 +8,7 @@ import { useWorkspaceAccess } from '@/component/workspace/workspace.access.conte
 import { TitleField } from '@/component/document/title.field';
 import { PageTasks } from '@/component/task/page.tasks';
 import { DocumentContent } from '@/component/document/document.content';
-import { ShortcutsButton } from '@/component/document/shortcuts.button';
+import { ShortcutsButton } from '@/component/editor/shortcuts.button';
 
 function MissingPage() {
   return (

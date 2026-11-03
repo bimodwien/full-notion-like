@@ -2,7 +2,7 @@
 
 import { buttonStyles } from '@/component/ui/button.styles';
 import { useWorkspaceAccess } from '@/component/workspace/workspace.access.context';
-import { DocumentEditor } from '@/component/document/document.editor';
+import { DocumentEditor } from '@/component/editor/document.editor';
 import { useDocumentContent } from '@/component/document/use.document.content';
 import { useContentAutosave } from '@/component/document/use.content.autosave';
 import { useDocumentSync } from '@/component/document/use.document.sync';
