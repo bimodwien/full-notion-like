@@ -6,7 +6,7 @@ import { DIALOG_PANEL_WIDE } from '@/component/ui/dialog.styles';
 import { FormAlert } from '@/component/ui/form.alert';
 import { TextField } from '@/component/ui/text.field';
 import { useShowModal } from '@/component/ui/use.show.modal';
-import { useWorkspaceDocuments } from '@/component/document/documents.context';
+import { useWorkspaceAccess } from '@/component/workspace/workspace.access.context';
 import { DescriptionField } from '@/component/task/description.field';
 import { PageField } from '@/component/task/page.field';
 import { PersonField } from '@/component/task/person.field';
@@ -23,7 +23,7 @@ type Props = { task: Task; onClose: () => void };
 // Viewers get the same dialog with every field disabled and no Save button.
 export function TaskDetailDialog({ task, onClose }: Props) {
   const ref = useRef<HTMLDialogElement>(null);
-  const { canEdit } = useWorkspaceDocuments();
+  const { canEdit } = useWorkspaceAccess();
   const { members } = useWorkspaceTasks();
   const form = useTaskDetailForm(task, () => ref.current?.close());
   useShowModal(ref);

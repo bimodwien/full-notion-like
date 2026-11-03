@@ -7,7 +7,7 @@ import { toast } from 'sonner';
 import { buttonStyles } from '@/component/ui/button.styles';
 import { DIALOG_PANEL } from '@/component/ui/dialog.styles';
 import { useShowModal } from '@/component/ui/use.show.modal';
-import { useWorkspaceDocuments } from '@/component/document/documents.context';
+import { useWorkspaceAccess } from '@/component/workspace/workspace.access.context';
 import { useWorkspaceTasks } from '@/component/task/tasks.context';
 import { deleteTask } from '@/helper/task.api';
 import { Task } from '@/model/task.model';
@@ -20,7 +20,7 @@ type Props = {
 };
 
 function useDeleteTask(task: Task, onDeleted: () => void) {
-  const { workspaceId } = useWorkspaceDocuments();
+  const { workspaceId } = useWorkspaceAccess();
   const { remove } = useWorkspaceTasks();
   const [busy, setBusy] = useState(false);
   const [failed, setFailed] = useState(false);

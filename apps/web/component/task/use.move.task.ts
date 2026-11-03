@@ -2,7 +2,7 @@
 
 import { useRef } from 'react';
 import { toast } from 'sonner';
-import { useWorkspaceDocuments } from '@/component/document/documents.context';
+import { useWorkspaceAccess } from '@/component/workspace/workspace.access.context';
 import { useWorkspaceTasks } from '@/component/task/tasks.context';
 import { changeTaskStatus } from '@/helper/task.api';
 import { Task } from '@/model/task.model';
@@ -10,7 +10,7 @@ import { Drop } from '@/util/task.drop';
 
 // Moves the card right away, then puts it back if the API refuses.
 export function useMoveTask() {
-  const { workspaceId } = useWorkspaceDocuments();
+  const { workspaceId } = useWorkspaceAccess();
   const { replace } = useWorkspaceTasks();
   const pending = useRef(new Set<string>());
 

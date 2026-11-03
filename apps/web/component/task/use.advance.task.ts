@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { flushSync } from 'react-dom';
 import { toast } from 'sonner';
-import { useWorkspaceDocuments } from '@/component/document/documents.context';
+import { useWorkspaceAccess } from '@/component/workspace/workspace.access.context';
 import { useWorkspaceTasks } from '@/component/task/tasks.context';
 import { changeTaskStatus } from '@/helper/task.api';
 import { Task, TaskStatus } from '@/model/task.model';
@@ -17,7 +17,7 @@ function focusCard(taskId: string) {
 }
 
 export function useAdvanceTask(task: Task) {
-  const { workspaceId } = useWorkspaceDocuments();
+  const { workspaceId } = useWorkspaceAccess();
   const { replace } = useWorkspaceTasks();
   const [busy, setBusy] = useState(false);
   const [failed, setFailed] = useState(false);

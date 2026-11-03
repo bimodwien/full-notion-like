@@ -3,7 +3,7 @@
 import { isAxiosError } from 'axios';
 import { useState } from 'react';
 import { toast } from 'sonner';
-import { useWorkspaceDocuments } from '@/component/document/documents.context';
+import { useWorkspaceAccess } from '@/component/workspace/workspace.access.context';
 import { useWorkspaceTasks } from '@/component/task/tasks.context';
 import { requestErrorMessage } from '@/helper/request.error';
 import { updateTask } from '@/helper/task.api';
@@ -19,7 +19,7 @@ function saveErrorMessage(caught: unknown) {
 }
 
 export function useTaskDetailForm(task: Task, onDone: () => void) {
-  const { workspaceId } = useWorkspaceDocuments();
+  const { workspaceId } = useWorkspaceAccess();
   const { replace } = useWorkspaceTasks();
   const [error, setError] = useState('');
   const [formError, setFormError] = useState('');
