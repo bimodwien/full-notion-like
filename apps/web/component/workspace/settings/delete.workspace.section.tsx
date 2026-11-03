@@ -1,35 +1,14 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
-import { RefObject, startTransition, useId, useRef, useState } from 'react';
-import { toast } from 'sonner';
+import { RefObject, useRef, useState } from 'react';
 import { buttonStyles } from '@/component/ui/button.styles';
 import { DIALOG_PANEL } from '@/component/ui/dialog.styles';
 import { FormAlert } from '@/component/ui/form.alert';
-import { INPUT } from '@/component/ui/text.field';
-import { useWorkspacesContext } from '@/component/workspace/workspaces.context';
-import { requestErrorMessage } from '@/helper/request.error';
-import { deleteWorkspace } from '@/helper/workspace.api';
+import { ConfirmNameField } from '@/component/workspace/settings/confirm.name.field';
+import { useConfirmDelete } from '@/component/workspace/settings/use.confirm.delete.workspace';
 import { Workspace } from '@/model/workspace.model';
 
 const HEADING_ID = 'delete-workspace-dialog-heading';
-
-function useDeleteWorkspace(workspace: Workspace) {
-  const router = useRouter();
-  const { state, remove } = useWorkspacesContext();
-
-  return async function deleteAndLeave() {
-    await deleteWorkspace(workspace.id);
-    const next =
-      state.kind === 'ready' ? state.items.find(({ id }) => id !== workspace.id) : undefined;
-    toast('Workspace deleted.');
-    // Same transition, so this page never renders "doesn't exist" on the way out.
-    startTransition(() => {
-      router.replace(next ? `/workspaces/${next.id}` : '/workspaces');
-      remove(workspace.id);
-    });
-  };
-}
 
 function ConfirmDeleteForm({
   workspace,
@@ -38,32 +17,10 @@ function ConfirmDeleteForm({
   workspace: Workspace;
   onCancel: () => void;
 }) {
-  const deleteAndLeave = useDeleteWorkspace(workspace);
-  const [typed, setTyped] = useState('');
-  const [fieldError, setFieldError] = useState('');
-  const [formError, setFormError] = useState('');
-  const [busy, setBusy] = useState(false);
-  const inputId = useId();
-
-  async function handleSubmit(event: React.SubmitEvent<HTMLFormElement>) {
-    event.preventDefault();
-    setFormError('');
-    if (typed.trim() !== workspace.name.trim()) {
-      setFieldError('Type the workspace name exactly as shown.');
-      return;
-    }
-    setFieldError('');
-    setBusy(true);
-    try {
-      await deleteAndLeave();
-    } catch (caught) {
-      setFormError(requestErrorMessage(caught));
-      setBusy(false);
-    }
-  }
+  const { typed, fieldError, formError, busy, type, submit } = useConfirmDelete(workspace);
 
   return (
-    <form onSubmit={handleSubmit} noValidate>
+    <form onSubmit={submit} noValidate>
       <h2 id={HEADING_ID} className="text-h3">
         Delete this workspace?
       </h2>
@@ -71,27 +28,7 @@ function ConfirmDeleteForm({
         Every page in &ldquo;{workspace.name}&rdquo; will be deleted for all members. This
         can&apos;t be undone.
       </p>
-      <label htmlFor={inputId} className="mt-4 block text-xs font-medium text-ink-muted">
-        Type <span className="font-semibold wrap-break-word text-ink">{workspace.name}</span> to
-        confirm
-      </label>
-      <input
-        id={inputId}
-        value={typed}
-        onChange={(event) => {
-          setTyped(event.target.value);
-          setFieldError('');
-        }}
-        autoComplete="off"
-        aria-invalid={fieldError ? true : undefined}
-        aria-describedby={fieldError ? `${inputId}-error` : undefined}
-        className={`${INPUT} mt-1`}
-      />
-      {fieldError && (
-        <p id={`${inputId}-error`} className="mt-1 text-sm text-error">
-          {fieldError}
-        </p>
-      )}
+      <ConfirmNameField name={workspace.name} value={typed} error={fieldError} onChange={type} />
       {formError && (
         <div className="mt-3">
           <FormAlert message={formError} />
