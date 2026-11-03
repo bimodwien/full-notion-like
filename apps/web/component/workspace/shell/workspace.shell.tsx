@@ -48,7 +48,7 @@ function ShellFrame({ children }: { children: React.ReactNode }) {
 
   return (
     <WorkspaceAccessProvider workspaceId={workspaceId} canEdit={canEdit}>
-      <DocumentsProvider key={workspaceId} workspaceId={workspaceId} canEdit={canEdit}>
+      <DocumentsProvider key={workspaceId} workspaceId={workspaceId}>
         <div className="flex flex-1 flex-col md:flex-row">
           <MobileTopBar
             workspaceLabel={label}
