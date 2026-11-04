@@ -39,7 +39,7 @@ export function CreateWorkspaceDialog({ ref, onClose }: Props) {
       onClose={handleClose}
       className={DIALOG_PANEL}
     >
-      <h2 id="new-workspace-heading" className="mb-4 text-h3">
+      <h2 id="new-workspace-heading" className="mb-4 text-lg font-semibold">
         New workspace
       </h2>
       <CreateWorkspaceForm

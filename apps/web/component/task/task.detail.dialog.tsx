@@ -44,12 +44,12 @@ export function TaskDetailDialog({ task, onClose }: Props) {
       onClose={onClose}
       className={DIALOG_PANEL_WIDE}
     >
-      <h2 id="task-detail-heading" className="text-h3">
+      <h2 id="task-detail-heading" className="text-lg font-semibold">
         {canEdit ? 'Edit task' : 'Task details'}
       </h2>
       <p className="mt-1 mb-4 text-body-sm text-ink-muted">Status: {STATUS_LABEL[task.status]}</p>
       <form onSubmit={form.handleSubmit} noValidate className="flex flex-col gap-4">
-        <fieldset disabled={!canEdit} className="flex min-w-0 flex-col gap-4">
+        <fieldset disabled={!canEdit} className="flex min-w-0 flex-col gap-3">
           <TaskDetailFields task={task} error={form.error} />
         </fieldset>
         <FormAlert message={form.formError} />

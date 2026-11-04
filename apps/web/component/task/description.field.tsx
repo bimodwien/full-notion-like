@@ -14,7 +14,7 @@ export function DescriptionField({ defaultValue }: { defaultValue: string }) {
       <textarea
         id={id}
         name="description"
-        rows={5}
+        rows={4}
         maxLength={DESCRIPTION_MAX}
         defaultValue={defaultValue}
         className={`${INPUT} resize-y py-2`}

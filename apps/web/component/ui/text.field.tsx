@@ -13,7 +13,7 @@ type Props = {
 };
 
 export const INPUT =
-  'min-h-11 w-full rounded-xs border border-field bg-surface px-3 text-base text-ink placeholder:text-ink-faint focus-visible:shadow-soft aria-invalid:border-2 aria-invalid:border-error';
+  'min-h-9 pointer-coarse:min-h-11 w-full rounded-xs border border-field bg-surface px-3 text-sm pointer-coarse:text-base text-ink placeholder:text-ink-faint focus-visible:shadow-soft aria-invalid:border-2 aria-invalid:border-error';
 
 export function TextField(props: Props) {
   const { label, name, type = 'text', autoComplete, placeholder, hint, error } = props;

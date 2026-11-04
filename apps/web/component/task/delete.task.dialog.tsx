@@ -61,7 +61,7 @@ export function DeleteTaskDialog({ task, onClose, onDeleted }: Props) {
       onClose={onClose}
       className={DIALOG_PANEL}
     >
-      <h2 id="delete-task-heading" className="text-h3">
+      <h2 id="delete-task-heading" className="text-lg font-semibold">
         Delete this task?
       </h2>
       <p className="mt-2 text-base wrap-break-word text-ink-muted">

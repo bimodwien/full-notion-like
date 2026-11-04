@@ -23,16 +23,16 @@ function ShortcutList({
 }) {
   return (
     <section>
-      <h3 className="text-base font-semibold">{title}</h3>
+      <h3 className="text-body-sm font-semibold">{title}</h3>
       <dl className="mt-2">
         {items.map((item) => (
-          <div key={item.label} className="flex items-center justify-between gap-4 py-1.5">
-            <dt className="text-base">{item.label}</dt>
+          <div key={item.label} className="flex min-h-8 items-center justify-between gap-4">
+            <dt className="text-body-sm">{item.label}</dt>
             <dd className="flex gap-1">
               {item.keys.map((key) => (
                 <kbd
                   key={key}
-                  className="rounded border border-hairline bg-canvas-soft px-1.5 font-mono text-body-sm"
+                  className="min-w-6 rounded border border-hairline bg-canvas-soft px-1.5 py-0.5 text-center font-mono text-xs"
                 >
                   {keyLabel(key, isMac)}
                 </kbd>
@@ -58,14 +58,14 @@ function ShortcutsDialog({ onClose }: { onClose: () => void }) {
       onClose={onClose}
       className={DIALOG_PANEL_WIDE}
     >
-      <h2 id="shortcuts-heading" className="text-h3">
+      <h2 id="shortcuts-heading" className="text-lg font-semibold">
         Writing shortcuts
       </h2>
       <div className="mt-4 grid gap-6 sm:grid-cols-2">
         <ShortcutList title="Format text" items={FORMAT_SHORTCUTS} isMac={isMac} />
         <ShortcutList title="Start a line with" items={BLOCK_SHORTCUTS} isMac={isMac} />
       </div>
-      <div className="mt-5 flex justify-end">
+      <div className="mt-4 flex justify-end">
         <button
           type="button"
           onClick={() => ref.current?.close()}
@@ -87,7 +87,7 @@ export function ShortcutsButton() {
         ref={trigger}
         type="button"
         onClick={() => setOpen(true)}
-        className={buttonStyles('utility')}
+        className={buttonStyles('ghost')}
       >
         Shortcuts
       </button>
