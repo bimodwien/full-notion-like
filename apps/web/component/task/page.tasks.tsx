@@ -30,7 +30,7 @@ function PageTasksBody() {
     return <p className="text-body-sm text-ink-muted">No tasks are linked to this page yet.</p>;
   }
   return (
-    <ul className="flex flex-col gap-2">
+    <ul className="grid grid-cols-[repeat(auto-fill,minmax(20rem,1fr))] gap-4">
       {state.items.map((task) => (
         <TaskCard key={task.id} task={task} showStatus />
       ))}
@@ -49,7 +49,7 @@ export function PageTasks({ documentId }: { documentId: string }) {
   const { workspaceId } = useWorkspaceAccess();
   return (
     <TasksProvider workspaceId={workspaceId} documentId={documentId}>
-      <section aria-labelledby="page-tasks-heading" className="mt-12 max-w-3xl">
+      <section aria-labelledby="page-tasks-heading" className="mt-12">
         <div className="mb-3 flex flex-wrap items-center justify-between gap-4">
           <h2 id="page-tasks-heading" tabIndex={-1} className="text-h3 text-ink">
             Tasks

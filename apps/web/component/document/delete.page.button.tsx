@@ -66,7 +66,7 @@ type ButtonsProps = { busy: boolean; onCancel: () => void; onConfirm: () => void
 
 function DeleteButtons({ busy, onCancel, onConfirm }: ButtonsProps) {
   return (
-    <div className="mt-5 flex flex-wrap justify-end gap-2">
+    <div className="mt-4 flex flex-wrap justify-end gap-2">
       <button type="button" onClick={onCancel} className={buttonStyles('utility')}>
         Cancel
       </button>
@@ -91,10 +91,10 @@ export function DeletePageDialog(props: DialogProps) {
       onClose={onClose}
       className={DIALOG_PANEL}
     >
-      <h2 id="delete-page-heading" className="text-h3">
+      <h2 id="delete-page-heading" className="text-lg font-semibold">
         Delete this page?
       </h2>
-      <p className="mt-2 text-base wrap-break-word text-ink-muted">
+      <p className="mt-2 text-body-sm wrap-break-word text-ink-muted">
         &ldquo;{document.title}&rdquo; and any pages inside it will be deleted. This can&apos;t be
         undone.
       </p>
@@ -121,7 +121,7 @@ export function DeletePageButton({ document }: { document: WorkspaceDocument }) 
         ref={trigger}
         type="button"
         onClick={() => setOpen(true)}
-        className={buttonStyles('utility')}
+        className={buttonStyles('ghost')}
       >
         Delete page
       </button>

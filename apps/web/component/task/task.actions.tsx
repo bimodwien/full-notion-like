@@ -7,9 +7,10 @@ import { useWorkspaceAccess } from '@/component/workspace/workspace.access.conte
 import { DeleteTaskDialog } from '@/component/task/delete.task.dialog';
 import { Task, TaskStatus } from '@/model/task.model';
 import { STATUSES, STATUS_LABEL } from '@/util/task.board';
+import { EllipsisIcon } from '@/component/ui/icons';
 
 const TRIGGER =
-  '-my-3 -mr-2 grid h-11 w-9 shrink-0 cursor-pointer place-items-center rounded-sm text-ink-muted hover:bg-black/5 hover:text-ink aria-expanded:bg-black/5 aria-expanded:text-ink';
+  '-my-3 -mr-3 grid h-8 w-8 shrink-0 cursor-pointer place-items-center rounded-sm text-ink-muted hover:bg-black/5 hover:text-ink aria-expanded:bg-black/5 aria-expanded:text-ink';
 
 // The card is gone after a delete: focus its board column, or the page's Tasks heading.
 function focusAfterDelete(status: TaskStatus) {
@@ -72,7 +73,7 @@ function ActionsTrigger({ ref, task, open, menuId, onToggle }: TriggerProps) {
       data-task-actions={task.id}
       className={TRIGGER}
     >
-      <span aria-hidden="true">⋯</span>
+      <EllipsisIcon />
     </button>
   );
 }

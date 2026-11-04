@@ -2,6 +2,7 @@
 
 import { useId, useRef, useState } from 'react';
 import { MENU_ROW, MENU_SURFACE } from '@/component/ui/menu.styles';
+import { EllipsisIcon } from '@/component/ui/icons';
 import { useDismiss } from '@/component/ui/use.dismiss';
 import { DeletePageDialog } from '@/component/document/delete.page.button';
 import { MovePageDialog } from '@/component/document/move.page.dialog';
@@ -65,9 +66,9 @@ export function PageActions({ doc }: { doc: WorkspaceDocument }) {
         aria-label={`More actions for ${doc.title}`}
         data-page-actions={doc.id}
         title="Move or delete"
-        className={`${ROW_ICON} ${REVEAL_ON_ROW} aria-expanded:opacity-100`}
+        className={`${ROW_ICON} w-7 ${REVEAL_ON_ROW} aria-expanded:opacity-100`}
       >
-        <span aria-hidden="true">⋯</span>
+        <EllipsisIcon />
       </button>
       {open && (
         <PageActionsMenu

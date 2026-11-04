@@ -1,5 +1,6 @@
 'use client';
 
+import { PlusIcon } from '@/component/ui/icons';
 import { MENU_TRIGGER } from '@/component/ui/menu.styles';
 import { useCreatePage } from '@/component/document/use.create.page';
 
@@ -14,7 +15,7 @@ export function NewPageButton() {
         disabled={busy}
         className={`${MENU_TRIGGER} text-body-sm text-ink-secondary disabled:cursor-wait`}
       >
-        <span aria-hidden="true">+</span>
+        <PlusIcon />
         {busy ? 'Creating page…' : 'New page'}
       </button>
       {failed && (

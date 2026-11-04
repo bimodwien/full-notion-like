@@ -5,7 +5,7 @@ export function Wordmark() {
   return (
     <Link
       href="/"
-      className="inline-flex min-h-11 items-center text-lg font-bold tracking-tight text-ink"
+      className="inline-flex min-h-11 items-center text-lg font-semibold tracking-tight text-ink"
     >
       {SITE_NAME}
     </Link>

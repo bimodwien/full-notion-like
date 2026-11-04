@@ -14,7 +14,7 @@ export function TasksLink() {
     <Link
       href={href}
       aria-current={active ? 'page' : undefined}
-      className={`mt-2 flex min-h-11 items-center gap-2 rounded-sm px-2 text-body-sm hover:bg-black/5 ${active ? 'bg-black/5 font-medium text-ink' : 'text-ink-secondary'}`}
+      className={`mt-2 flex min-h-9 pointer-coarse:min-h-11 items-center gap-2 rounded-sm px-2 text-body-sm transition-colors hover:bg-black/5 ${active ? 'bg-black/5 font-medium text-ink' : 'text-ink-secondary'}`}
     >
       <svg aria-hidden="true" viewBox="0 0 16 16" className="size-4 shrink-0 text-ink-muted">
         <rect
@@ -25,9 +25,9 @@ export function TasksLink() {
           rx="2"
           fill="none"
           stroke="currentColor"
-          strokeWidth="1.3"
+          strokeWidth="1.5"
         />
-        <path d="M5.5 8.2l1.7 1.7 3.3-3.6" fill="none" stroke="currentColor" strokeWidth="1.3" />
+        <path d="M5.5 8.2l1.7 1.7 3.3-3.6" fill="none" stroke="currentColor" strokeWidth="1.5" />
       </svg>
       Tasks
     </Link>

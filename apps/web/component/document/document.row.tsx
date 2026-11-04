@@ -6,6 +6,7 @@ import { useWorkspaceAccess } from '@/component/workspace/workspace.access.conte
 import { PageActions } from '@/component/document/page.actions';
 import { REVEAL_ON_ROW, ROW_ICON } from '@/component/document/row.styles';
 import { useCreatePage } from '@/component/document/use.create.page';
+import { ChevronRightIcon, PlusIcon } from '@/component/ui/icons';
 import { WorkspaceDocument } from '@/model/document.model';
 import { childrenOf } from '@/util/document.tree';
 
@@ -22,16 +23,18 @@ type ToggleProps = { title: string; open: boolean; hasChildren: boolean; onToggl
 
 function ToggleButton({ title, open, hasChildren, onToggle }: ToggleProps) {
   // Same width as the button so titles line up whether a page has children or not.
-  if (!hasChildren) return <span aria-hidden="true" className="w-7 shrink-0" />;
+  if (!hasChildren) return <span aria-hidden="true" className="w-8 shrink-0" />;
   return (
     <button
       type="button"
       onClick={onToggle}
       aria-expanded={open}
       aria-label={`Pages inside ${title}`}
-      className={ROW_ICON}
+      className={`${ROW_ICON} w-8`}
     >
-      <span aria-hidden="true">{open ? '▾' : '▸'}</span>
+      <ChevronRightIcon
+        className={`transition-transform motion-reduce:transition-none ${open ? 'rotate-90' : ''}`}
+      />
     </button>
   );
 }
@@ -46,9 +49,9 @@ function AddSubpageButton({ title, busy, onAdd }: AddProps) {
       disabled={busy}
       aria-label={`Add a page inside ${title}`}
       title="Add a page inside"
-      className={`${ROW_ICON} ${REVEAL_ON_ROW} disabled:cursor-wait`}
+      className={`${ROW_ICON} w-7 ${REVEAL_ON_ROW} disabled:cursor-wait`}
     >
-      <span aria-hidden="true">+</span>
+      <PlusIcon />
     </button>
   );
 }
@@ -78,7 +81,7 @@ export function DocumentRow({ doc, tree, depth }: RowProps) {
     <li>
       <div
         style={indent}
-        className={`group flex min-h-11 items-center rounded-sm pr-1 hover:bg-black/5 ${active ? 'bg-black/5' : ''}`}
+        className={`group flex items-center rounded-sm pr-1 transition-colors hover:bg-black/5 ${active ? 'bg-black/5' : ''}`}
       >
         <ToggleButton
           title={doc.title}
@@ -90,7 +93,7 @@ export function DocumentRow({ doc, tree, depth }: RowProps) {
           href={`/workspaces/${doc.workspaceId}/${doc.id}`}
           title={doc.title}
           aria-current={active ? 'page' : undefined}
-          className={`flex min-h-11 min-w-0 flex-1 items-center pr-1 text-body-sm ${active ? 'font-medium text-ink' : 'text-ink-secondary'}`}
+          className={`flex min-h-9 pointer-coarse:min-h-11 min-w-0 flex-1 items-center pr-1 text-body-sm ${active ? 'font-medium text-ink' : 'text-ink-secondary'}`}
         >
           <span className="truncate">{doc.title}</span>
         </Link>
@@ -121,8 +124,14 @@ function SubpageList({
   depth: number;
 }) {
   if (pages.length === 0) return null;
+  // The hairline sits under the parent's toggle (16px in from its row) and marks how deep these pages go.
   return (
-    <ul>
+    <ul className="relative">
+      <span
+        aria-hidden="true"
+        style={{ left: depth * INDENT_PX + 4 }}
+        className="absolute inset-y-0 w-px bg-hairline"
+      />
       {pages.map((page) => (
         <DocumentRow key={page.id} doc={page} tree={tree} depth={depth} />
       ))}

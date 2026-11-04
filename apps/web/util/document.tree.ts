@@ -16,6 +16,24 @@ export function ancestorIds(documents: WorkspaceDocument[], documentId: string |
   return ids;
 }
 
+const MAX_PATH = 28;
+
+// "Parent / Child": a page's title with the titles above it, for places that can't draw a tree.
+export function pagePath(documents: WorkspaceDocument[], doc: WorkspaceDocument) {
+  const byId = new Map(documents.map((page) => [page.id, page]));
+  const titles = [doc.title || 'Untitled'];
+  const seen = new Set([doc.id]);
+  let parent = doc.parentId ? byId.get(doc.parentId) : undefined;
+  while (parent && !seen.has(parent.id)) {
+    seen.add(parent.id);
+    titles.unshift(parent.title || 'Untitled');
+    parent = parent.parentId ? byId.get(parent.parentId) : undefined;
+  }
+  const path = titles.join(' / ');
+  if (path.length <= MAX_PATH) return path;
+  return `… / ${titles[titles.length - 1]}`;
+}
+
 // documentId plus every page nested under it, at any depth.
 export function subtreeIds(documents: WorkspaceDocument[], rootId: string) {
   const ids = new Set([rootId]);

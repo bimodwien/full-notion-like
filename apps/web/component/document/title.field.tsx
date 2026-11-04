@@ -91,7 +91,7 @@ export function TitleField({ document }: { document: WorkspaceDocument }) {
           onChange={(event) => setDraft(singleLine(event.target.value))}
           onBlur={save}
           onKeyDown={handleKeyDown}
-          className="-mx-1 block w-[calc(100%+0.5rem)] resize-none overflow-hidden rounded-sm bg-transparent px-1 text-h1 text-ink placeholder:text-ink-faint hover:bg-black/5"
+          className="-mx-1 block w-[calc(100%+0.5rem)] resize-none overflow-hidden rounded-sm bg-transparent px-1 text-h1 text-ink transition-colors placeholder:text-ink-faint hover:bg-black/5"
         />
       </h1>
       {failed && (

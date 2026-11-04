@@ -121,7 +121,7 @@ export function MovePageDialog({ document, onClose, onMoved }: Props) {
       onClose={onClose}
       className={DIALOG_PANEL}
     >
-      <h2 id="move-page-heading" className="text-h3 wrap-break-word">
+      <h2 id="move-page-heading" className="text-lg font-semibold wrap-break-word">
         Move &ldquo;{document.title}&rdquo;
       </h2>
       <p className="mt-2 text-base text-ink-muted">

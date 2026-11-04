@@ -13,8 +13,7 @@ export function DocumentEditor({ ydoc, editable }: { ydoc: Y.Doc; editable: bool
       // Yjs keeps its own undo history, so the built-in one has to go.
       StarterKit.configure({ heading: { levels: [1, 2, 3] }, undoRedo: false }),
       Placeholder.configure({
-        placeholder: ({ node }) =>
-          node.type.name === 'heading' ? 'Heading' : 'Start your journey here...',
+        placeholder: ({ node }) => (node.type.name === 'heading' ? 'Heading' : 'Start writing'),
       }),
       Collaboration.configure({ document: ydoc }),
     ],

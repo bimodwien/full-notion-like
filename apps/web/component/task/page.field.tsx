@@ -2,18 +2,15 @@ import { useId } from 'react';
 import { FIELD_LABEL, SELECT } from '@/component/ui/select.styles';
 import { useWorkspaceDocuments } from '@/component/document/documents.context';
 import { WorkspaceDocument } from '@/model/document.model';
-import { pagesInTreeOrder } from '@/util/document.tree';
-
-const INDENT = '   ';
+import { pagesInTreeOrder, pagePath } from '@/util/document.tree';
 
 function PageOptions({ documents }: { documents: WorkspaceDocument[] }) {
   return (
     <>
       <option value="">No page</option>
-      {pagesInTreeOrder(documents).map(({ doc, depth }) => (
+      {pagesInTreeOrder(documents).map(({ doc }) => (
         <option key={doc.id} value={doc.id}>
-          {INDENT.repeat(depth)}
-          {doc.title || 'Untitled'}
+          {pagePath(documents, doc)}
         </option>
       ))}
     </>

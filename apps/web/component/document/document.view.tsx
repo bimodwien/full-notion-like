@@ -13,7 +13,7 @@ import { ShortcutsButton } from '@/component/editor/shortcuts.button';
 function MissingPage() {
   return (
     <div>
-      <h1 className="text-h3 text-ink">This page doesn&apos;t exist.</h1>
+      <h1 className="text-h3 text-ink">This page doesn&apos;t exist</h1>
       <p className="mt-1 text-base text-ink-muted">
         It may have been deleted, or the link belongs to another workspace. Pick a page from the
         sidebar.
@@ -55,7 +55,7 @@ function DocumentBody({ documentId }: { documentId: string }) {
     <>
       {canEdit ? (
         <>
-          <div className="mb-6 flex justify-end gap-2">
+          <div className="mb-4 flex justify-end gap-1">
             <ShortcutsButton />
             <DeletePageButton document={document} />
           </div>

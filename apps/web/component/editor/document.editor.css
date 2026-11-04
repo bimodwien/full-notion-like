@@ -54,14 +54,14 @@
   font-size: 0.875em;
   background: var(--color-canvas-soft);
   padding: 0.1em 0.3em;
-  border-radius: 4px;
+  border-radius: var(--radius-xs);
 }
 
 .tiptap pre {
   font-family: var(--font-mono);
   background: var(--color-canvas-soft);
   padding: 1em;
-  border-radius: 6px;
+  border-radius: var(--radius-md);
   overflow-x: auto;
 }
 
@@ -78,6 +78,7 @@
 .tiptap a {
   color: var(--color-primary);
   text-decoration: underline;
+  text-underline-offset: 0.2em;
 }
 
 /* The caret marks focus in a writing surface; a box around the whole page adds noise. */

@@ -1,6 +1,7 @@
-// 28px wide keeps nested titles readable in a 240px sidebar; height stays 44px.
+// Width is set where it is used: 32px for the toggle so it lines up with the Tasks icon, 28px for the
+// actions on the right so titles keep room in a 240px sidebar.
 export const ROW_ICON =
-  'grid h-11 w-7 shrink-0 cursor-pointer place-items-center rounded-sm text-ink-muted hover:text-ink';
+  'grid h-9 pointer-coarse:h-11 shrink-0 cursor-pointer place-items-center rounded-sm text-ink-muted transition-[color,background-color,opacity] hover:text-ink';
 
 // Hidden until the row is hovered or focused; touch screens have no hover, so always shown there.
 export const REVEAL_ON_ROW =
