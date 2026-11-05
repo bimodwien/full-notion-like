@@ -8,7 +8,7 @@ export const ROLE_LABELS: Record<WorkspaceRole, string> = {
 };
 
 const SELECT =
-  'min-h-11 cursor-pointer rounded-xs border border-field bg-surface px-2 text-base text-ink disabled:cursor-wait';
+  'min-h-9 pointer-coarse:min-h-11 cursor-pointer rounded-xs border border-field bg-surface px-2 text-sm pointer-coarse:text-base text-ink disabled:cursor-wait';
 
 // Only the roles the API lets an owner hand out.
 export function RoleSelect({ className = '', ...props }: SelectHTMLAttributes<HTMLSelectElement>) {

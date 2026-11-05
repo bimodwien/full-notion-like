@@ -96,11 +96,11 @@ export function MemberRow(props: Props) {
         <div className="flex min-w-0 flex-1 items-center gap-3">
           <Initial name={name} />
           <div className="min-w-0">
-            <p className="text-base font-medium wrap-break-word text-ink">
+            <p className="text-body-sm font-medium wrap-break-word text-ink">
               {name}
               {isYou && <span className="font-normal text-ink-muted"> (you)</span>}
             </p>
-            <p className="text-body-sm break-all text-ink-muted">{email}</p>
+            <p className="text-xs break-all text-ink-muted">{email}</p>
           </div>
         </div>
         <div className="pl-11 sm:pl-0">

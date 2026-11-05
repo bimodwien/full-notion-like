@@ -21,10 +21,10 @@ function ConfirmDeleteForm({
 
   return (
     <form onSubmit={submit} noValidate>
-      <h2 id={HEADING_ID} className="text-h3">
+      <h2 id={HEADING_ID} className="text-lg font-semibold">
         Delete this workspace?
       </h2>
-      <p className="mt-2 text-base wrap-break-word text-ink-muted">
+      <p className="mt-2 text-body-sm wrap-break-word text-ink-muted">
         Every page in &ldquo;{workspace.name}&rdquo; will be deleted for all members. This
         can&apos;t be undone.
       </p>
@@ -73,7 +73,7 @@ export function DeleteWorkspaceSection({ workspace }: { workspace: Workspace }) 
       <h2 id="delete-workspace-heading" className="text-h3 text-ink">
         Delete workspace
       </h2>
-      <p className="mt-2 text-base text-ink-muted">
+      <p className="mt-2 text-body-sm text-ink-muted">
         Deletes this workspace and every page in it, for all members. This can&apos;t be undone.
       </p>
       <button

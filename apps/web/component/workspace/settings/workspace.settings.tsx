@@ -12,7 +12,7 @@ function Notice({ title, text }: { title: string; text: string }) {
   return (
     <div>
       <h1 className="text-h3 text-ink">{title}</h1>
-      <p className="mt-1 text-base text-ink-muted">{text}</p>
+      <p className="mt-1 text-body-sm text-ink-muted">{text}</p>
     </div>
   );
 }
@@ -22,7 +22,7 @@ function SettingsBody({ workspaceId }: { workspaceId: string }) {
 
   if (state.kind === 'loading') {
     return (
-      <p role="status" className="text-base text-ink-muted">
+      <p role="status" className="text-body-sm text-ink-muted">
         Loading settings…
       </p>
     );
@@ -30,7 +30,7 @@ function SettingsBody({ workspaceId }: { workspaceId: string }) {
   if (state.kind === 'error') {
     return (
       <div role="alert">
-        <p className="text-base font-semibold text-ink">Couldn&apos;t load this workspace.</p>
+        <p className="text-body-sm font-semibold text-ink">Couldn&apos;t load this workspace.</p>
         <button type="button" onClick={retry} className={buttonStyles('utility', 'mt-4')}>
           Try again
         </button>
@@ -42,7 +42,7 @@ function SettingsBody({ workspaceId }: { workspaceId: string }) {
   if (!workspace) {
     return (
       <Notice
-        title="This workspace doesn't exist."
+        title="This workspace doesn't exist"
         text="It may have been deleted. Pick another one from the menu at the top of the sidebar."
       />
     );
@@ -50,14 +50,14 @@ function SettingsBody({ workspaceId }: { workspaceId: string }) {
   if (workspace.members[0]?.role !== 'OWNER') {
     return (
       <Notice
-        title="Only the owner can change these settings."
+        title="Only the owner can change these settings"
         text="Ask the workspace owner if the name or the member list needs to change."
       />
     );
   }
   return (
     <>
-      <h1 className="mb-8 text-h2 text-ink">Workspace settings</h1>
+      <h1 className="mb-8 text-h1 text-ink">Workspace settings</h1>
       <RenameWorkspaceForm key={workspace.id} workspace={workspace} />
       <MembersSection key={`members-${workspace.id}`} workspaceId={workspace.id} />
       <DeleteWorkspaceSection workspace={workspace} />
@@ -68,7 +68,7 @@ function SettingsBody({ workspaceId }: { workspaceId: string }) {
 export function WorkspaceSettings() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   return (
-    <div className="mx-auto w-full max-w-180">
+    <div className="mx-auto w-full max-w-240">
       <SettingsBody workspaceId={workspaceId} />
     </div>
   );

@@ -17,7 +17,7 @@ function MembersList({ workspaceId, members, heading }: BodyProps) {
 
   if (state.kind === 'loading') {
     return (
-      <p role="status" className="text-base text-ink-muted">
+      <p role="status" className="text-body-sm text-ink-muted">
         Loading members…
       </p>
     );
@@ -25,7 +25,7 @@ function MembersList({ workspaceId, members, heading }: BodyProps) {
   if (state.kind === 'error') {
     return (
       <div role="alert">
-        <p className="text-base text-ink">Couldn&apos;t load the members.</p>
+        <p className="text-body-sm text-ink">Couldn&apos;t load the members.</p>
         <button type="button" onClick={retry} className={buttonStyles('utility', 'mt-3')}>
           Try again
         </button>
@@ -69,13 +69,13 @@ export function MembersSection({ workspaceId }: { workspaceId: string }) {
       <h2 id="members-heading" className="text-h3 text-ink">
         Members
       </h2>
-      <p className="mt-2 text-base text-ink-muted">
+      <p className="mt-2 text-body-sm text-ink-muted">
         Editors can add and change pages. Viewers can only read them.
       </p>
       <div className="mt-6">
         <AddMemberForm workspaceId={workspaceId} onAdded={members.add} />
       </div>
-      <h3 ref={heading} tabIndex={-1} className="mt-8 mb-2 text-base font-semibold text-ink">
+      <h3 ref={heading} tabIndex={-1} className="mt-8 mb-2 text-body-sm font-semibold text-ink">
         People with access{count !== undefined && ` (${count})`}
       </h3>
       <MembersList workspaceId={workspaceId} members={members} heading={heading} />

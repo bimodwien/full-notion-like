@@ -22,21 +22,26 @@ export function RenameWorkspaceForm({ workspace }: { workspace: Workspace }) {
   });
 
   return (
-    <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-4">
-      <TextField
-        label="Workspace name"
-        name="name"
-        autoComplete="off"
-        defaultValue={workspace.name}
-        maxLength={WORKSPACE_NAME_MAX}
-        error={error}
-      />
-      <FormAlert message={formError} />
-      <div>
-        <button type="submit" disabled={pending} className={buttonStyles('primary')}>
-          {pending ? 'Saving…' : 'Save name'}
-        </button>
-      </div>
-    </form>
+    <section aria-labelledby="general-heading">
+      <h2 id="general-heading" className="text-h3 text-ink">
+        General
+      </h2>
+      <form onSubmit={handleSubmit} noValidate className="mt-4 flex flex-col gap-3">
+        <TextField
+          label="Workspace name"
+          name="name"
+          autoComplete="off"
+          defaultValue={workspace.name}
+          maxLength={WORKSPACE_NAME_MAX}
+          error={error}
+        />
+        <FormAlert message={formError} />
+        <div>
+          <button type="submit" disabled={pending} className={buttonStyles('primary')}>
+            {pending ? 'Saving…' : 'Save name'}
+          </button>
+        </div>
+      </form>
+    </section>
   );
 }
