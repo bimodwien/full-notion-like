@@ -10,7 +10,7 @@ import { TasksLink } from '@/component/task/tasks.link';
 // From md up: the fixed-width column it has always been.
 const ASIDE =
   'fixed inset-y-0 left-0 z-30 flex w-[min(18rem,calc(100vw-3rem))] flex-col gap-1 border-r border-hairline bg-canvas-soft p-3 shadow-soft duration-200 motion-reduce:transition-none ' +
-  'md:visible md:sticky md:top-0 md:bottom-auto md:z-auto md:h-dvh md:w-60 md:shrink-0 md:translate-x-0 md:shadow-none md:transition-none';
+  'md:visible md:sticky md:top-0 md:bottom-auto md:z-auto md:h-dvh md:w-75 md:shrink-0 md:translate-x-0 md:shadow-none md:transition-none';
 
 // Opening shows it at once so focus can land inside; closing keeps it visible until the slide ends.
 const OPEN = 'visible translate-x-0 transition-[translate]';
