@@ -4,6 +4,7 @@ import {
   ancestorIds,
   childrenOf,
   moveTargets,
+  pagePath,
   pagesInTreeOrder,
   subtreeIds,
 } from '@/util/document.tree';
@@ -69,6 +70,41 @@ describe('subtreeIds', () => {
 describe('pagesInTreeOrder', () => {
   it('lists pages in sidebar order with their depth', () => {
     expect(ids(pagesInTreeOrder(documents))).toEqual(['home:0', 'plans:1', 'q4:2', 'notes:0']);
+  });
+});
+
+const titled = (id: string, parentId: string | null, title: string) => ({
+  ...page(id, parentId),
+  title,
+});
+
+describe('pagePath', () => {
+  it('is just the title for a top-level page', () => {
+    expect(pagePath(documents, documents[0])).toBe('home');
+  });
+
+  it('joins the titles from the top-level page down', () => {
+    expect(pagePath(documents, documents[2])).toBe('home / plans / q4');
+  });
+
+  it('shows Untitled for a page or parent with an empty title', () => {
+    const pages = [titled('a', null, ''), titled('b', 'a', '')];
+    expect(pagePath(pages, pages[1])).toBe('Untitled / Untitled');
+  });
+
+  it('keeps a path of exactly 28 characters', () => {
+    const pages = [titled('a', null, 'abcdefghijklmn'), titled('b', 'a', 'abcdefghijk')];
+    expect(pagePath(pages, pages[1])).toBe('abcdefghijklmn / abcdefghijk');
+  });
+
+  it('shortens a path over 28 characters to the page title', () => {
+    const pages = [titled('a', null, 'abcdefghijklmn'), titled('b', 'a', 'abcdefghijkl')];
+    expect(pagePath(pages, pages[1])).toBe('… / abcdefghijkl');
+  });
+
+  it('stops instead of looping forever on a broken parent chain', () => {
+    const loop = [page('p', 'q'), page('q', 'p')];
+    expect(pagePath(loop, loop[0])).toBe('q / p');
   });
 });
 
