@@ -72,16 +72,11 @@ export function NewTaskDialog({ workspaceId, documentId, onCreated, onClose }: P
   useShowModal(ref);
 
   return (
-    <dialog
-      ref={ref}
-      aria-labelledby="new-task-heading"
-      onClose={onClose}
-      className={`${DIALOG_PANEL} pb-6`}
-    >
+    <dialog ref={ref} aria-labelledby="new-task-heading" onClose={onClose} className={DIALOG_PANEL}>
       <h2 id="new-task-heading" className="mb-4 text-lg font-semibold">
         New task
       </h2>
-      <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-4">
+      <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-3">
         <TextField
           label="Title"
           name="title"
@@ -91,7 +86,7 @@ export function NewTaskDialog({ workspaceId, documentId, onCreated, onClose }: P
         />
         <PriorityField />
         <FormAlert message={formError} />
-        <div className="flex flex-wrap justify-end gap-2 mt-5">
+        <div className="mt-2 flex flex-wrap justify-end gap-2">
           <button
             type="button"
             onClick={() => ref.current?.close()}

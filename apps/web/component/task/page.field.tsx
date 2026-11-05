@@ -25,7 +25,7 @@ export function PageField({ value }: { value: string | null }) {
   const failed = state.kind === 'error';
 
   return (
-    <div className="flex flex-col gap-1">
+    <div className="flex min-w-0 flex-col gap-1">
       <label htmlFor={id} className={FIELD_LABEL}>
         Page
       </label>
@@ -36,7 +36,7 @@ export function PageField({ value }: { value: string | null }) {
         defaultValue={value ?? ''}
         disabled={state.kind !== 'ready'}
         aria-describedby={failed ? noteId : undefined}
-        className={SELECT}
+        className={`${SELECT} truncate`}
       >
         {state.kind === 'ready' ? (
           <PageOptions documents={state.items} />
