@@ -29,7 +29,7 @@ function TaskActionsMenu({ id, task, onChangeStatus, onDelete }: MenuProps) {
   const labelId = useId();
   const targets = STATUSES.filter((status) => status !== task.status);
   return (
-    <div id={id} className={`absolute top-8 right-0 w-52 ${MENU_SURFACE}`}>
+    <div id={id} className={`absolute top-1 -right-1 w-52 ${MENU_SURFACE}`}>
       <div role="group" aria-labelledby={labelId}>
         <p id={labelId} className="px-2 py-1 text-xs text-ink-muted">
           Move to
