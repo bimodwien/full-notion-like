@@ -22,7 +22,7 @@ export function DocumentContent({
 
   if (state.kind === 'loading') {
     return (
-      <p role="status" className="mt-6 text-base text-ink-muted">
+      <p role="status" className="mt-6 text-body-sm text-ink-muted">
         Loading page content…
       </p>
     );
@@ -30,7 +30,7 @@ export function DocumentContent({
   if (state.kind === 'error') {
     return (
       <div role="alert" className="mt-6">
-        <p className="text-base text-ink">Couldn&apos;t load this page&apos;s content.</p>
+        <p className="text-body-sm text-ink">Couldn&apos;t load this page&apos;s content.</p>
         <button type="button" onClick={retry} className={buttonStyles('utility', 'mt-3')}>
           Try again
         </button>

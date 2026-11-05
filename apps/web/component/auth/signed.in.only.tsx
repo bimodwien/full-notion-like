@@ -16,7 +16,7 @@ export function SignedInOnly({ children }: { children: React.ReactNode }) {
 
   if (status === 'unauthenticated') {
     return (
-      <p role="status" className="text-base text-ink-muted">
+      <p role="status" className="text-body-sm text-ink-muted">
         You&apos;re signed out. Opening the sign-in page…
       </p>
     );

@@ -14,7 +14,7 @@ function MissingPage() {
   return (
     <div>
       <h1 className="text-h3 text-ink">This page doesn&apos;t exist</h1>
-      <p className="mt-1 text-base text-ink-muted">
+      <p className="mt-1 text-body-sm text-ink-muted">
         It may have been deleted, or the link belongs to another workspace. Pick a page from the
         sidebar.
       </p>
@@ -25,8 +25,8 @@ function MissingPage() {
 function LoadError({ onRetry }: { onRetry: () => void }) {
   return (
     <div role="alert">
-      <p className="text-base font-semibold text-ink">Couldn&apos;t load this page.</p>
-      <p className="mt-1 text-base text-ink-muted">
+      <p className="text-body-sm font-semibold text-ink">Couldn&apos;t load this page.</p>
+      <p className="mt-1 text-body-sm text-ink-muted">
         Check that you&apos;re online, then try again.
       </p>
       <button type="button" onClick={onRetry} className={buttonStyles('utility', 'mt-4')}>
@@ -42,7 +42,7 @@ function DocumentBody({ documentId }: { documentId: string }) {
 
   if (state.kind === 'loading') {
     return (
-      <p role="status" className="text-base text-ink-muted">
+      <p role="status" className="text-body-sm text-ink-muted">
         Loading page…
       </p>
     );

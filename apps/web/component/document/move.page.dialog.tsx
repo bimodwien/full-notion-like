@@ -124,7 +124,7 @@ export function MovePageDialog({ document, onClose, onMoved }: Props) {
       <h2 id="move-page-heading" className="text-lg font-semibold wrap-break-word">
         Move &ldquo;{document.title}&rdquo;
       </h2>
-      <p className="mt-2 text-base text-ink-muted">
+      <p className="mt-2 text-body-sm text-ink-muted">
         Pick where it goes. Pages inside it move along with it.
       </p>
       <DestinationList

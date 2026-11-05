@@ -14,7 +14,7 @@ export function GuestOnly({ children }: { children: React.ReactNode }) {
 
   if (status === 'authenticated') {
     return (
-      <p role="status" className="text-center text-base text-ink-muted">
+      <p role="status" className="text-center text-body-sm text-ink-muted">
         You&apos;re signed in. Opening the home page…
       </p>
     );

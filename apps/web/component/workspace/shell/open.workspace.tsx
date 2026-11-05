@@ -26,8 +26,8 @@ function NoWorkspaceFrame({ children }: { children: React.ReactNode }) {
 function ErrorState({ onRetry }: { onRetry: () => void }) {
   return (
     <div role="alert">
-      <p className="text-base font-semibold text-ink">Couldn&apos;t load your workspaces.</p>
-      <p className="mt-1 text-base text-ink-muted">
+      <p className="text-body-sm font-semibold text-ink">Couldn&apos;t load your workspaces.</p>
+      <p className="mt-1 text-body-sm text-ink-muted">
         Check that you&apos;re online, then try again.
       </p>
       <button type="button" onClick={onRetry} className={buttonStyles('utility', 'mt-4')}>
@@ -47,8 +47,8 @@ function EmptyState() {
 
   return (
     <div className="max-w-md">
-      <p className="text-base font-semibold text-ink">You aren&apos;t in a workspace yet.</p>
-      <p className="mt-1 text-base text-ink-muted">
+      <p className="text-body-sm font-semibold text-ink">You aren&apos;t in a workspace yet.</p>
+      <p className="mt-1 text-body-sm text-ink-muted">
         Create one to start writing pages, or ask a workspace owner to add you.
       </p>
       <div className="mt-6">
