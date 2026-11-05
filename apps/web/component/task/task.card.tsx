@@ -10,10 +10,10 @@ import { STATUS_LABEL } from '@/util/task.board';
 import type { CSSProperties } from 'react';
 import type { useSortable } from '@dnd-kit/sortable';
 
-const PRIORITY_TEXT: Record<TaskPriority, string> = {
-  LOW: 'text-ink-muted',
-  MEDIUM: 'text-ink-secondary',
-  CRITICAL: 'font-medium text-error',
+const PRIORITY_BADGE: Record<TaskPriority, string> = {
+  LOW: 'bg-[#03571f09] text-[#1f6b40]',
+  MEDIUM: 'bg-[#cfaf0010] text-[#7a5800]',
+  CRITICAL: 'bg-[#c7030309] text-[#bf3126]',
 };
 
 export type CardDrag = Pick<
@@ -41,14 +41,14 @@ export function TaskCard({ task, showStatus = false, drag }: Props) {
         <TaskActions task={task} onChangeStatus={changeStatus} />
       </div>
       <div className="flex items-center justify-between gap-2">
-        <div className="flex items-center gap-3 text-xs">
+        <div className="-ml-1.5 flex items-center gap-3 text-xs">
           {showStatus && (
-            <p className="text-ink-secondary">
+            <p className="pl-1.5 text-ink-secondary">
               <span className="sr-only">Status: </span>
               {STATUS_LABEL[task.status]}
             </p>
           )}
-          <p className={PRIORITY_TEXT[task.priority]}>
+          <p className={`rounded-xs px-1.5 py-0.5 font-medium ${PRIORITY_BADGE[task.priority]}`}>
             <span className="sr-only">Priority: </span>
             {PRIORITY_LABEL[task.priority]}
           </p>

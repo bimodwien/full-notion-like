@@ -2,5 +2,5 @@
 export const instant = false;
 
 export default function WorkspacePage() {
-  return <p className="text-base text-ink-muted">Pick a page from the sidebar to open it.</p>;
+  return <p className="text-body-sm text-ink-muted">Pick a page from the sidebar to open it.</p>;
 }

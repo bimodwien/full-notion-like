@@ -64,7 +64,7 @@ export function DeleteTaskDialog({ task, onClose, onDeleted }: Props) {
       <h2 id="delete-task-heading" className="text-lg font-semibold">
         Delete this task?
       </h2>
-      <p className="mt-2 text-base wrap-break-word text-ink-muted">
+      <p className="mt-2 text-body-sm wrap-break-word text-ink-muted">
         &ldquo;{task.title}&rdquo; will be deleted. This can&apos;t be undone.
       </p>
       {failed && (
