@@ -5,24 +5,30 @@ import { SignOutButton } from '@/component/auth/sign.out.button';
 import { buttonStyles } from '@/component/ui/button.styles';
 import { useAuth } from '@/context/auth.context';
 
+// Sign in and Sign out share this so the two states line up exactly.
+const TEXT_ACTION =
+  'inline-flex min-h-11 cursor-pointer items-center px-3 text-body-sm font-medium text-ink hover:underline';
+
 export function NavActions() {
   const { status } = useAuth();
 
   if (status === 'loading') return <div className="min-h-11" />;
-  if (status === 'authenticated') return <SignOutButton />;
+
+  const signedIn = status === 'authenticated';
 
   return (
     <div className="flex items-center gap-2">
-      <Link
-        href="/signin"
-        className="inline-flex min-h-11 items-center px-3 text-body-sm font-medium text-ink hover:underline"
-      >
-        Sign in
-      </Link>
+      {signedIn ? (
+        <SignOutButton className={TEXT_ACTION} />
+      ) : (
+        <Link href="/signin" className={TEXT_ACTION}>
+          Sign in
+        </Link>
+      )}
       {/* Phones get this action from the hero button right below the nav. */}
       <div className="hidden sm:block">
-        <Link href="/register" className={buttonStyles('utility')}>
-          Create account
+        <Link href={signedIn ? '/workspaces' : '/register'} className={buttonStyles('primary')}>
+          {signedIn ? 'Open workspace' : 'Create account'}
         </Link>
       </div>
     </div>
