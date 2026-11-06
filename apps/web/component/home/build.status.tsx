@@ -1,9 +1,7 @@
 import { BUILD_ITEMS, BuildItem, BuildState, STATE_LABEL } from '@/component/home/build.items';
 
-// The hollow ring keeps "Not started" readable without relying on color.
 const DOT: Record<BuildState, string> = {
-  web: 'bg-accent-teal',
-  api: 'bg-accent-orange',
+  done: 'bg-accent-teal',
   planned: 'border-2 border-field',
 };
 
@@ -29,9 +27,6 @@ export function BuildStatus() {
       <h2 id="build-status" className="text-h1 text-ink">
         Where the build stands
       </h2>
-      <p className="mt-3 max-w-xl text-base text-ink-muted">
-        “API only” means the server already handles it, and this site has no screen for it yet.
-      </p>
       <ul className="mt-8 divide-y divide-hairline rounded-lg border border-hairline bg-surface">
         {BUILD_ITEMS.map((item) => (
           <BuildRow key={item.name} {...item} />
