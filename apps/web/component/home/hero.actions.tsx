@@ -12,10 +12,7 @@ function HeroAction() {
   const signedIn = status === 'authenticated';
 
   return (
-    <Link
-      href={signedIn ? '/workspaces' : '/signin'}
-      className={buttonStyles('secondary', 'focus-visible:outline-on-primary')}
-    >
+    <Link href={signedIn ? '/workspaces' : '/signin'} className={buttonStyles('landing')}>
       {signedIn ? 'Open your workspace' : 'Sign in to your workspace'}
     </Link>
   );
@@ -24,7 +21,7 @@ function HeroAction() {
 export function HeroActions() {
   // The fixed minimum height keeps the band from jumping once the status is known.
   return (
-    <div className="mt-8 flex min-h-12 items-center">
+    <div className="mt-8 flex min-h-12 items-center justify-center">
       <HeroAction />
     </div>
   );

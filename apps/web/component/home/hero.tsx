@@ -2,14 +2,16 @@ import { HeroActions } from '@/component/home/hero.actions';
 
 export function Hero() {
   return (
-    <section className="bg-secondary text-on-primary">
-      <div className="mx-auto max-w-360 px-4 py-14 sm:px-8 sm:py-24">
-        <h1 className="max-w-[16ch] text-display">Team docs and tasks in one workspace.</h1>
-        <p className="mt-6 max-w-136 text-lg text-on-secondary-muted">
-          This is an early build. You can create an account today, and the list below shows what the
-          rest still needs.
-        </p>
-        <HeroActions />
+    <section className="flex min-h-[calc(100svh-61px)] items-center bg-canvas text-center text-ink">
+      <div className="mx-auto w-full max-w-360 px-4 py-14 sm:px-8 sm:py-24">
+        <div className="mx-auto max-w-280">
+          <h1 className="text-pretty text-display">Team docs and tasks in one workspace.</h1>
+          <p className="mx-auto mt-6 max-w-180 text-pretty text-lg text-ink-muted">
+            A workspace for nested pages and a task board. Create an account, start a workspace, and
+            invite people as editors or viewers.
+          </p>
+          <HeroActions />
+        </div>
       </div>
     </section>
   );
