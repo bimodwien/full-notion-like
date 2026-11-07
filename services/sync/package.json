@@ -4,6 +4,7 @@
   "scripts": {
     "dev": "go run .",
     "build": "go build -o bin/sync .",
+    "start": "./bin/sync",
     "lint": "go vet ./...",
     "test": "go test ./..."
   }
