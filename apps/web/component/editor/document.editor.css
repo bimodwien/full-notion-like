@@ -1,51 +1,52 @@
 .tiptap {
-  line-height: 1.6;
+  font-size: 0.875rem;
+  line-height: 1.375rem;
 }
 
 .tiptap > * + * {
-  margin-top: 0.5em;
+  margin-top: 0.5rem;
 }
 
 .tiptap > :first-child {
   margin-top: 0;
 }
 
-/* The page title is already h1-sized, so headings inside the page step down one size. */
 .tiptap h1 {
-  margin-top: 1.5em;
-  font-size: var(--text-h2);
-  line-height: var(--text-h2--line-height);
-  letter-spacing: var(--text-h2--letter-spacing);
-  font-weight: var(--text-h2--font-weight);
+  margin-top: 2rem;
+  font-size: 1.5rem;
+  line-height: 2rem;
+  letter-spacing: -0.02em;
+  font-weight: 600;
 }
 
 .tiptap h2 {
-  margin-top: 1.25em;
-  font-size: var(--text-h3);
-  line-height: var(--text-h3--line-height);
-  letter-spacing: var(--text-h3--letter-spacing);
-  font-weight: var(--text-h3--font-weight);
+  margin-top: 1.5rem;
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+  letter-spacing: -0.01em;
+  font-weight: 600;
 }
 
 .tiptap h3 {
-  margin-top: 1em;
-  font-size: 1.125rem;
+  margin-top: 1rem;
+  font-size: 1rem;
+  line-height: 1.5rem;
   font-weight: 600;
 }
 
 .tiptap ul {
   list-style: disc;
-  padding-left: 1.5em;
+  padding-left: 1.5rem;
 }
 
 .tiptap ol {
   list-style: decimal;
-  padding-left: 1.5em;
+  padding-left: 1.5rem;
 }
 
 .tiptap blockquote {
   border-left: 3px solid var(--color-hairline);
-  padding-left: 1em;
+  padding-left: 1rem;
   color: var(--color-ink-secondary);
 }
 
@@ -60,7 +61,8 @@
 .tiptap pre {
   font-family: var(--font-mono);
   background: var(--color-canvas-soft);
-  padding: 1em;
+  padding: 1rem;
+  line-height: 1.25rem;
   border-radius: var(--radius-md);
   overflow-x: auto;
 }
@@ -71,7 +73,7 @@
 }
 
 .tiptap hr {
-  margin: 1.5em 0;
+  margin: 1.5rem 0;
   border-top: 1px solid var(--color-hairline);
 }
 
