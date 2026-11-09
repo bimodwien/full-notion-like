@@ -18,6 +18,11 @@ export const BUILD_ITEMS: BuildItem[] = [
     state: 'done',
   },
   {
+    name: 'Email verification',
+    detail: 'A new account signs in only after opening the link sent to its email.',
+    state: 'done',
+  },
+  {
     name: 'Workspaces and roles',
     detail: 'An owner adds members as editors or viewers.',
     state: 'done',
@@ -40,11 +45,6 @@ export const BUILD_ITEMS: BuildItem[] = [
   {
     name: 'Shared cursors',
     detail: 'You cannot yet see where other people are typing.',
-    state: 'planned',
-  },
-  {
-    name: 'Email verification',
-    detail: 'New accounts are not checked by email yet.',
     state: 'planned',
   },
   {
