@@ -32,18 +32,20 @@ enum TaskStatus {
 }
 
 model User {
-  id        String   @id @default(uuid()) @db.Uuid
-  email     String   @unique
-  name      String
-  password  String   @map("password_hash")
-  createdAt DateTime @default(now()) @map("created_at")
+  id              String    @id @default(uuid()) @db.Uuid
+  email           String    @unique
+  name            String
+  password        String    @map("password_hash")
+  createdAt       DateTime  @default(now()) @map("created_at")
+  emailVerifiedAt DateTime? @map("email_verified_at")
 
-  refreshTokens RefreshToken[]
-  memberships   WorkspaceMember[]
-  documents     Document[]
-  createdTasks  Task[]            @relation("TaskCreator")
-  assignedTasks Task[]            @relation("TaskAssignee")
-  reviewTasks   Task[]            @relation("TaskReviewer")
+  emailVerification EmailVerification?
+  refreshTokens     RefreshToken[]
+  memberships       WorkspaceMember[]
+  documents         Document[]
+  createdTasks      Task[]             @relation("TaskCreator")
+  assignedTasks     Task[]             @relation("TaskAssignee")
+  reviewTasks       Task[]             @relation("TaskReviewer")
 
   @@map("users")
 }
@@ -140,4 +142,14 @@ model Task {
   @@index([workspaceId, status, position])
   @@index([assigneeId])
   @@map("tasks")
+}
+
+model EmailVerification {
+  userId    String   @id @map("user_id") @db.Uuid
+  tokenHash String   @unique @map("token_hash")
+  expiresAt DateTime @map("expires_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("email_verifications")
 }

@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { createHash, randomBytes } from 'node:crypto';
+import { randomBytes } from 'node:crypto';
 import { PrismaService } from '../prisma/prisma.service';
+import { hashToken } from './token.hash';
 
 export const REFRESH_TTL_MS = 7 * 24 * 60 * 60 * 1000;
 
@@ -13,20 +14,16 @@ export class RefreshTokenService {
     await this.prisma.refreshToken.create({
       data: {
         userId,
-        tokenHash: this.hash(token),
+        tokenHash: hashToken(token),
         expiresAt: new Date(Date.now() + REFRESH_TTL_MS),
       },
     });
     return token;
   }
 
-  private hash(token: string) {
-    return createHash('sha256').update(token).digest('hex');
-  }
-
   async consume(token: string) {
     const record = await this.prisma.refreshToken.findUnique({
-      where: { tokenHash: this.hash(token) },
+      where: { tokenHash: hashToken(token) },
     });
     if (!record) return null;
 
@@ -39,7 +36,7 @@ export class RefreshTokenService {
 
   async revoke(token: string) {
     await this.prisma.refreshToken.deleteMany({
-      where: { tokenHash: this.hash(token) },
+      where: { tokenHash: hashToken(token) },
     });
   }
 }

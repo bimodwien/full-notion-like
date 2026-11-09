@@ -1,6 +1,9 @@
 import {
+  BadRequestException,
   ConflictException,
+  ForbiddenException,
   Injectable,
+  Logger,
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
@@ -9,14 +12,18 @@ import { isUniqueViolation } from '../prisma/prisma.errors';
 import { UsersService } from '../users/users.service';
 import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
+import { EmailVerificationService } from './email.verification.service';
 import { RefreshTokenService } from './refresh.token.service';
 
 @Injectable()
 export class AuthService {
+  private readonly logger = new Logger(AuthService.name);
+
   constructor(
     private usersService: UsersService,
     private jwtService: JwtService,
     private refreshTokenService: RefreshTokenService,
+    private emailVerification: EmailVerificationService,
   ) {}
 
   async register(dto: RegisterDto) {
@@ -32,6 +39,12 @@ export class AuthService {
         name: dto.name,
         password,
       });
+      // The account exists either way; a failed send can be retried from sign in.
+      await this.emailVerification
+        .send(user)
+        .catch((error) =>
+          this.logger.error('Verification email failed', error),
+        );
       return { id: user.id, email: user.email, name: user.name };
     } catch (error) {
       if (isUniqueViolation(error)) {
@@ -47,8 +60,24 @@ export class AuthService {
     if (!user || !valid) {
       throw new UnauthorizedException('Invalid Email or Password');
     }
+    // Checked after the password, so a stranger can't learn which emails are unverified.
+    if (!user.emailVerifiedAt) {
+      throw new ForbiddenException('Verify your email before signing in');
+    }
 
     return this.issueTokens(user.id);
+  }
+
+  async verifyEmail(token: string) {
+    if (!(await this.emailVerification.verify(token))) {
+      throw new BadRequestException('This link is invalid or has expired');
+    }
+  }
+
+  // Same reply for unknown and verified emails, so this can't probe accounts.
+  async resendVerification(email: string) {
+    const user = await this.usersService.findByEmail(email);
+    if (user && !user.emailVerifiedAt) await this.emailVerification.send(user);
   }
 
   async refresh(refreshToken: string | undefined) {

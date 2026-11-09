@@ -5,6 +5,8 @@ import { UsersModule } from '../users/users.module';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { RefreshTokenService } from './refresh.token.service';
+import { EmailVerificationService } from './email.verification.service';
+import { MailService } from '../mail/mail.service';
 
 @Module({
   imports: [
@@ -17,7 +19,12 @@ import { RefreshTokenService } from './refresh.token.service';
       }),
     }),
   ],
-  providers: [AuthService, RefreshTokenService],
+  providers: [
+    AuthService,
+    RefreshTokenService,
+    MailService,
+    EmailVerificationService,
+  ],
   controllers: [AuthController],
   exports: [JwtModule],
 })

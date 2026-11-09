@@ -13,6 +13,8 @@ import type { AuthenticatedRequest } from './authenticated.request';
 import type { Request, Response } from 'express';
 import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
+import { ResendVerificationDto } from './dto/resend.verification.dto';
+import { VerifyEmailDto } from './dto/verify.email.dto';
 import { JwtAuthGuard } from './jwt.auth.guard';
 import {
   clearAuthCookies,
@@ -28,6 +30,18 @@ export class AuthController {
   @Post('register')
   register(@Body() dto: RegisterDto) {
     return this.authService.register(dto);
+  }
+
+  @Post('verify-email')
+  @HttpCode(204)
+  async verifyEmail(@Body() dto: VerifyEmailDto) {
+    await this.authService.verifyEmail(dto.token);
+  }
+
+  @Post('resend-verification')
+  @HttpCode(204)
+  async resendVerification(@Body() dto: ResendVerificationDto) {
+    await this.authService.resendVerification(dto.email);
   }
 
   @Post('login')
