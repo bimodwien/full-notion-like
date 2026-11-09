@@ -3,6 +3,7 @@
 import { useRef, useState } from 'react';
 import { buttonStyles } from '@/component/ui/button.styles';
 import { DIALOG_PANEL_WIDE } from '@/component/ui/dialog.styles';
+import { KBD } from '@/component/ui/kbd.styles';
 import { useShowModal } from '@/component/ui/use.show.modal';
 import { BLOCK_SHORTCUTS, FORMAT_SHORTCUTS, Shortcut } from '@/component/editor/editor.shortcuts';
 
@@ -30,10 +31,7 @@ function ShortcutList({
             <dt className="text-body-sm">{item.label}</dt>
             <dd className="flex gap-1">
               {item.keys.map((key) => (
-                <kbd
-                  key={key}
-                  className="min-w-6 rounded border border-hairline bg-canvas-soft px-1.5 py-0.5 text-center font-mono text-xs"
-                >
+                <kbd key={key} className={KBD}>
                   {keyLabel(key, isMac)}
                 </kbd>
               ))}

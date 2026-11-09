@@ -1,7 +1,7 @@
 // One set for the whole app: 16px box, 1.5 stroke, colour from the surrounding text.
 type IconProps = { className?: string };
 
-function Icon({ className = '', children }: IconProps & { children: React.ReactNode }) {
+export function Icon({ className = '', children }: IconProps & { children: React.ReactNode }) {
   return (
     <svg
       aria-hidden="true"
