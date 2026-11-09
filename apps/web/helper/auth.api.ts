@@ -12,10 +12,12 @@ export async function login(input: LoginInput) {
   await api.post('/auth/login', input);
 }
 
-// The register endpoint returns the user without tokens, so sign in right after.
-export async function registerAndLogin(input: RegisterInput) {
-  await register(input);
-  return login({ email: input.email, password: input.password });
+export async function verifyEmail(token: string) {
+  await api.post('/auth/verify-email', { token });
+}
+
+export async function resendVerification(email: string) {
+  await api.post('/auth/resend-verification', { email });
 }
 
 export async function getProfile() {

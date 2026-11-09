@@ -1,14 +1,13 @@
 'use client';
 
 import { useState } from 'react';
-import { toast } from 'sonner';
 import { AuthHeading } from '@/component/auth/auth.heading';
 import { AuthSwitch } from '@/component/auth/auth.switch';
+import { CheckEmail } from '@/component/auth/check.email';
 import { buttonStyles } from '@/component/ui/button.styles';
 import { FormAlert } from '@/component/ui/form.alert';
 import { TextField } from '@/component/ui/text.field';
-import { useAuth } from '@/context/auth.context';
-import { registerAndLogin } from '@/helper/auth.api';
+import { register } from '@/helper/auth.api';
 import { authErrorMessage } from '@/helper/auth.error';
 import { RegisterInput } from '@/model/auth.model';
 import { FieldErrors, validateRegister } from '@/util/auth.validation';
@@ -24,7 +23,7 @@ function readInput(form: HTMLFormElement): RegisterInput {
 }
 
 function useRegisterForm() {
-  const { signIn } = useAuth();
+  const [registeredEmail, setRegisteredEmail] = useState('');
   const [errors, setErrors] = useState<FieldErrors<RegisterInput>>({});
   const [formError, setFormError] = useState('');
   const [pending, setPending] = useState(false);
@@ -40,21 +39,20 @@ function useRegisterForm() {
 
     setPending(true);
     try {
-      // GuestOnly redirects once the status flips, so `pending` stays on until then.
-      await registerAndLogin(input);
-      signIn();
-      toast('Account created.');
+      await register(input);
+      setRegisteredEmail(input.email);
     } catch (error) {
       setFormError(authErrorMessage(error));
-      setPending(false);
     }
+    setPending(false);
   }
 
-  return { errors, formError, pending, handleSubmit };
+  return { registeredEmail, errors, formError, pending, handleSubmit };
 }
 
 export function RegisterForm() {
-  const { errors, formError, pending, handleSubmit } = useRegisterForm();
+  const { registeredEmail, errors, formError, pending, handleSubmit } = useRegisterForm();
+  if (registeredEmail) return <CheckEmail email={registeredEmail} />;
 
   return (
     <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-5">
