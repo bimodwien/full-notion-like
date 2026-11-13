@@ -6,6 +6,7 @@ import cookieParser from 'cookie-parser';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  app.setGlobalPrefix('api');
   // Document content arrives as base64 Yjs state, which outgrows the 100kb default.
   app.useBodyParser('json', { limit: '2mb' });
   app.use(cookieParser());

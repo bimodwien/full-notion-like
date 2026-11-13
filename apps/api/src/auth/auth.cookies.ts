@@ -18,7 +18,7 @@ const COOKIE_OPTIONS: CookieOptions = {
 // Only /auth/refresh and /auth/logout ever need the refresh token.
 const REFRESH_OPTIONS: CookieOptions = {
   ...COOKIE_OPTIONS,
-  path: '/auth',
+  path: '/api/auth',
   maxAge: REFRESH_TTL_MS,
 };
 
