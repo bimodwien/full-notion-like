@@ -1,0 +1,54 @@
+# Production stack for nobimotion.bimodwien.id.
+# Secrets come from a .env file next to this one (copy .env.production.example).
+name: nobimotion
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    image: nobimotion-api
+    network_mode: host
+    restart: unless-stopped
+    environment:
+      HOST: 127.0.0.1
+      PORT: 3001
+      WEB_ORIGIN: https://nobimotion.bimodwien.id
+      DATABASE_URL: ${DATABASE_URL:?set DATABASE_URL in .env}
+      JWT_ACCESS_SECRET: ${JWT_ACCESS_SECRET:?set JWT_ACCESS_SECRET in .env}
+      JWT_ACCESS_EXPIRES_IN: 30m
+      SMTP_HOST: smtp.gmail.com
+      SMTP_PORT: 587
+      SMTP_USER: ${SMTP_USER:?set SMTP_USER in .env}
+      SMTP_PASS: ${SMTP_PASS:?set SMTP_PASS in .env}
+      MAIL_FROM: ${MAIL_FROM:?set MAIL_FROM in .env}
+
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: https://nobimotion.bimodwien.id/api
+        NEXT_PUBLIC_SYNC_URL: wss://nobimotion.bimodwien.id
+    image: nobimotion-web
+    network_mode: host
+    restart: unless-stopped
+    environment:
+      # Set explicitly: Docker would otherwise fill HOSTNAME with the machine name.
+      HOSTNAME: 127.0.0.1
+      PORT: 3002
+    depends_on: [api]
+
+  sync:
+    build:
+      context: .
+      dockerfile: services/sync/Dockerfile
+    image: nobimotion-sync
+    network_mode: host
+    restart: unless-stopped
+    environment:
+      HOST: 127.0.0.1
+      PORT: 4000
+      WEB_ORIGIN: https://nobimotion.bimodwien.id
+      API_URL: http://127.0.0.1:3001/api
+    depends_on: [api]
