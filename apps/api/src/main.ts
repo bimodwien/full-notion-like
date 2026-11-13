@@ -15,6 +15,7 @@ async function bootstrap() {
     origin: process.env.WEB_ORIGIN,
     credentials: true,
   });
-  await app.listen(process.env.PORT ?? 3000);
+  // HOST=127.0.0.1 in production keeps the API reachable only from this machine.
+  await app.listen(process.env.PORT ?? 3001, process.env.HOST ?? '0.0.0.0');
 }
 void bootstrap();

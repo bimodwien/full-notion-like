@@ -3,6 +3,7 @@ package config
 import "os"
 
 type Config struct {
+	Host      string
 	Port      string
 	WebOrigin string
 	APIURL    string
@@ -10,6 +11,7 @@ type Config struct {
 
 func Load() Config {
 	return Config{
+		Host:      getEnv("HOST", ""),
 		Port:      getEnv("PORT", "4000"),
 		WebOrigin: getEnv("WEB_ORIGIN", "http://localhost:3002"),
 		APIURL:    getEnv("API_URL", "http://localhost:3001/api"),

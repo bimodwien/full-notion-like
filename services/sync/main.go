@@ -14,7 +14,7 @@ func main() {
 	cfg := config.Load()
 
 	srv := &http.Server{
-		Addr:              ":" + cfg.Port,
+		Addr:              cfg.Host + ":" + cfg.Port,
 		Handler:           server.New(cfg, hub.New()),
 		ReadHeaderTimeout: 5 * time.Second,
 	}
