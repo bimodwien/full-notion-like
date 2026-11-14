@@ -6,6 +6,8 @@ import cookieParser from 'cookie-parser';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  // Cloudflare Tunnel connects over loopback; trust its X-Forwarded-For so each visitor is limited separately.
+  app.set('trust proxy', 'loopback');
   app.setGlobalPrefix('api');
   // Document content arrives as base64 Yjs state, which outgrows the 100kb default.
   app.useBodyParser('json', { limit: '2mb' });
