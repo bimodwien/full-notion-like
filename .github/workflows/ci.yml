@@ -5,6 +5,9 @@ on:
     branches: [main]
   pull_request:
 
+permissions:
+  contents: read
+
 jobs:
   check:
     runs-on: ubuntu-latest
@@ -35,3 +38,46 @@ jobs:
         with:
           version: v2.15.0
           working-directory: services/sync
+  deploy:
+    needs: [check, golangci-lint]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: [self-hosted, nobimotion]
+    concurrency:
+      group: deploy-production
+      cancel-in-progress: false
+    defaults:
+      run:
+        shell: bash
+        working-directory: /home/bimodwien/deploy/nobimotion
+    env:
+      BACKUP_DIR: /home/bimodwien/backups/nobimotion
+    steps:
+      - name: Update code to the tested commit
+        run: |
+          git fetch --prune origin
+          git reset --hard "$GITHUB_SHA"
+
+      - name: Back up the database
+        run: |
+          mkdir -p "$BACKUP_DIR"
+          url=$(grep '^DATABASE_URL=' .env | cut -d= -f2-)
+          pg_dump --format=custom \
+            --file="$BACKUP_DIR/$(date +%Y%m%d-%H%M%S)-${GITHUB_SHA::7}.dump" "$url"
+          ls -1t "$BACKUP_DIR"/*.dump | tail -n +15 | xargs -r rm --
+
+      - name: Build and restart containers
+        run: |
+          docker compose up -d --build
+          docker image prune -f
+
+      - name: Smoke test
+        run: |
+          for i in $(seq 1 30); do
+            web=$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:3002/)
+            api=$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:3001/api/workspaces)
+            sync=$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:4000/health)
+            echo "try $i: web=$web api=$api sync=$sync"
+            if [ "$web" = 200 ] && [ "$api" = 401 ] && [ "$sync" = 200 ]; then exit 0; fi
+            sleep 2
+          done
+          exit 1
