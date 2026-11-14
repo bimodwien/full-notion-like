@@ -73,9 +73,9 @@ jobs:
       - name: Smoke test
         run: |
           for i in $(seq 1 30); do
-            web=$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:3002/)
-            api=$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:3001/api/workspaces)
-            sync=$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:4000/health)
+            web=$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:3002/ || true)
+            api=$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:3001/api/workspaces || true)
+            sync=$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:4000/health || true)
             echo "try $i: web=$web api=$api sync=$sync"
             if [ "$web" = 200 ] && [ "$api" = 401 ] && [ "$sync" = 200 ]; then exit 0; fi
             sleep 2
